@@ -2,6 +2,7 @@ import { Navigation } from "@/components/portfolio/navigation";
 import { HeroSection } from "@/components/portfolio/hero-section";
 import { AboutSection } from "@/components/portfolio/about-section";
 import { WhyMeSection } from "@/components/portfolio/why-me-section";
+import { ServicesSection } from "@/components/portfolio/services-section";
 import { CaseStudiesSection } from "@/components/portfolio/case-studies-section";
 import { Testimonials } from "@/components/portfolio/testimonials-section";
 import { CTASection } from "@/components/portfolio/cta-section";
@@ -14,11 +15,15 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       
-      <section id="about">
+      <section id="services" className="hidden">
+        <ServicesSection />
+      </section>
+      
+      <section id="about" className="-mt-12 lg:-mt-16">
         <AboutSection />
       </section>
       
-      <section id="why-me">
+      <section id="trust">
         <WhyMeSection />
       </section>
       
@@ -30,7 +35,7 @@ export default function Home() {
         <Testimonials />
       </section>
       
-      <section id="cta">
+      <section id="contact">
         <CTASection />
       </section>
       

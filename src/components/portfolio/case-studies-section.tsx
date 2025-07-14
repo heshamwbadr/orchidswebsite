@@ -1,264 +1,903 @@
 "use client";
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Brain, MessageSquare, FileText, HelpCircle, Banknote, Building2 } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 const caseStudies = [
   {
     id: 1,
-    title: "AI-Powered Healthcare Platform",
-    subtitle: "Transforming patient care through intelligent automation",
+    title: "AI Capability Mapping",
+    subtitle: "Mapped hidden team capabilities to transformation goals. Empowered strategic workforce decisions.",
     icon: Brain,
-    tags: ["Healthcare", "AI/ML", "Process Automation"],
+    tags: ["AI Strategy", "Skill Inference", "Workforce Intelligence"],
     bullets: [
-      "Reduced patient wait times by 40%",
-      "Automated 70% of routine administrative tasks", 
-      "Improved diagnostic accuracy by 25%"
+      "Extracted latent skills from job and project data",
+      "Visualised skill alignment with transformation goals", 
+      "Proposed upskilling and role redefinition plans"
     ],
-    challenge: "A major healthcare provider was struggling with inefficient patient flow, manual administrative processes, and inconsistent diagnostic protocols across multiple facilities.",
-    solution: "Implemented an AI-driven platform that automated patient scheduling, streamlined administrative workflows, and provided decision support tools for medical professionals.",
-    impact: "The solution resulted in significantly improved patient satisfaction scores, reduced operational costs by $2M annually, and enhanced the overall quality of care delivery.",
+    challenge: "Organization lacked visibility into existing team capabilities and struggled to align workforce skills with digital transformation objectives.",
+    solution: "Implemented AI-powered skill mapping platform that analyzed job descriptions, project histories, and performance data to uncover hidden team capabilities and map them against transformation requirements.",
+    impact: "Enabled data-driven workforce planning and strategic capability development, resulting in more effective talent allocation and targeted upskilling programs.",
     metrics: [
-      { label: "Wait Time Reduction", value: "40%" },
-      { label: "Task Automation", value: "70%" },
-      { label: "Cost Savings", value: "$2M" }
+      { label: "Data-Backed Strategy", value: "✓" },
+      { label: "Skill Visibility", value: "3x" },
+      { label: "Actionable Role Blueprints", value: "✓" }
     ]
   },
   {
     id: 2,
-    title: "Financial Services Digital Transformation",
-    subtitle: "Modernizing legacy banking systems for the digital age",
+    title: "AI-Powered Complaint Categorisation",
+    subtitle: "Transformed customer resolution for a major bank by classifying complaints with AI. Reduced triage effort and improved regulatory response times.",
     icon: MessageSquare,
-    tags: ["FinTech", "Digital Transformation", "Security"],
+    tags: ["Multi-Agent AI", "Customer Resolution", "RegTech"],
     bullets: [
-      "Migrated 500K+ customers to new platform",
-      "Achieved 99.9% system uptime",
-      "Enhanced security protocols by 300%"
+      "Deployed multi-agent AI trained on tone, policy, and categories",
+      "Achieved real-time complaint triage with auto-routing",
+      "Scaled to support multiple departments"
     ],
-    challenge: "A traditional bank needed to modernize their legacy systems while maintaining regulatory compliance and ensuring zero downtime during the transition.",
-    solution: "Designed and executed a phased digital transformation strategy that included cloud migration, API modernization, and enhanced security frameworks.",
-    impact: "Successfully transformed the bank's infrastructure, resulting in improved customer experience, enhanced security posture, and increased operational efficiency.",
+    challenge: "Major bank struggled with manual complaint processing, inconsistent categorization, and regulatory compliance deadlines across multiple departments.",
+    solution: "Developed a multi-agent AI system that automatically categorizes customer complaints based on tone, policy requirements, and regulatory categories while providing real-time routing to appropriate teams.",
+    impact: "Dramatically reduced manual processing time, improved regulatory compliance, and enhanced customer satisfaction through faster resolution times.",
     metrics: [
-      { label: "Customer Migration", value: "500K+" },
-      { label: "System Uptime", value: "99.9%" },
-      { label: "Security Enhancement", value: "300%" }
+      { label: "Less Manual Triage", value: "85%" },
+      { label: "Classification Time", value: "30s" },
+      { label: "Audit-Ready Outputs", value: "✓" }
     ]
   },
   {
     id: 3,
-    title: "Supply Chain Optimization",
-    subtitle: "Leveraging data analytics to optimize global operations",
+    title: "GenAI for Process Reengineering",
+    subtitle: "Applied GenAI to automate documentation and insights. Enabled smarter daily workflows for ops teams.",
     icon: FileText,
-    tags: ["Supply Chain", "Data Analytics", "Operations"],
+    tags: ["GenAI", "Process Automation", "Compliance"],
     bullets: [
-      "Reduced inventory costs by 30%",
-      "Improved delivery accuracy to 98%",
-      "Streamlined vendor management processes"
+      "Built enterprise-wide prompt library",
+      "Integrated AI into BAU documentation",
+      "Set up compliance + review guardrails"
     ],
-    challenge: "A global manufacturing company faced challenges with inventory management, supplier coordination, and demand forecasting across multiple regions.",
-    solution: "Developed a comprehensive supply chain analytics platform that provided real-time visibility, predictive insights, and automated optimization recommendations.",
-    impact: "The implementation led to substantial cost savings, improved customer satisfaction, and enhanced operational resilience across the global supply network.",
+    challenge: "Operations teams spent excessive time on documentation and lacked standardized approaches to process improvement and compliance reporting.",
+    solution: "Implemented comprehensive GenAI solution with enterprise prompt libraries, automated documentation workflows, and built-in compliance review mechanisms for daily operations.",
+    impact: "Significant time savings in operational tasks while maintaining compliance standards and enabling teams to focus on higher-value strategic work.",
     metrics: [
-      { label: "Inventory Cost Reduction", value: "30%" },
-      { label: "Delivery Accuracy", value: "98%" },
-      { label: "Vendor Efficiency", value: "45%" }
+      { label: "Time Saved", value: "60%" },
+      { label: "Prompt Reuse Library", value: "✓" },
+      { label: "Risk Review Built-In", value: "✓" }
     ]
   },
   {
     id: 4,
-    title: "Customer Experience Platform",
-    subtitle: "Creating seamless omnichannel customer journeys",
+    title: "AI Knowledge Assistant",
+    subtitle: "Reduced internal support load through autonomous assistants. Enhanced consistency and availability of answers.",
     icon: HelpCircle,
-    tags: ["CX", "Omnichannel", "Customer Success"],
+    tags: ["AI Chatbot", "Knowledge Management", "Automation"],
     bullets: [
-      "Unified customer data across 8 channels",
-      "Increased customer satisfaction by 50%",
-      "Reduced response times to under 2 minutes"
+      "Designed chatbot with context-aware memory",
+      "Queried Supabase for dynamic knowledge injection",
+      "Implemented fallback + escalation logic"
     ],
-    challenge: "An e-commerce company struggled with fragmented customer data across multiple touchpoints, leading to inconsistent service experiences and decreased satisfaction.",
-    solution: "Built an integrated customer experience platform that unified data sources, enabled real-time personalization, and provided comprehensive analytics dashboards.",
-    impact: "The solution created a seamless customer journey that significantly improved satisfaction scores and increased customer lifetime value by 35%.",
+    challenge: "Internal support teams were overwhelmed with repetitive queries, leading to inconsistent responses and reduced productivity across the organization.",
+    solution: "Built an intelligent AI assistant with context-aware memory, dynamic knowledge base integration through Supabase, and sophisticated escalation pathways for complex queries.",
+    impact: "Dramatically reduced internal support burden while providing 24/7 availability and consistent, accurate responses across multiple knowledge domains.",
     metrics: [
-      { label: "Channel Integration", value: "8" },
-      { label: "Satisfaction Increase", value: "50%" },
-      { label: "Response Time", value: "<2min" }
+      { label: "Less Internal Queries", value: "70%" },
+      { label: "Support", value: "24/7" },
+      { label: "Knowledge Domains", value: "5" }
     ]
   },
   {
     id: 5,
-    title: "Enterprise Cloud Migration",
-    subtitle: "Scaling infrastructure for explosive growth",
+    title: "Mortgage Credit Transformation",
+    subtitle: "Accelerated credit assessment through Lean Six Sigma. Delivered faster outcomes and trained internal teams.",
     icon: Banknote,
-    tags: ["Cloud", "Infrastructure", "Scalability"],
+    tags: ["Financial Services", "Lean Six Sigma", "Decision Optimization"],
     bullets: [
-      "Migrated 200+ applications to cloud",
-      "Reduced infrastructure costs by 45%",
-      "Achieved 10x scalability improvement"
+      "Eliminated rework and improved handoffs in processing",
+      "Piloted decision flow redesign across branches",
+      "Upskilled employees via Six Sigma coaching"
     ],
-    challenge: "A rapidly growing startup needed to migrate their on-premises infrastructure to the cloud while maintaining performance and reducing costs.",
-    solution: "Executed a comprehensive cloud migration strategy using containerization, microservices architecture, and automated CI/CD pipelines.",
-    impact: "The migration enabled the company to scale efficiently, reduce operational overhead, and focus resources on core business innovation rather than infrastructure management.",
+    challenge: "Mortgage processing suffered from inefficient workflows, excessive rework, and inconsistent decision-making across multiple branch locations.",
+    solution: "Applied Lean Six Sigma methodology to redesign entire credit assessment process, eliminate waste, optimize decision flows, and train internal teams on continuous improvement practices.",
+    impact: "Achieved significant operational savings while accelerating time-to-decision and building internal capability for ongoing process optimization.",
     metrics: [
-      { label: "Applications Migrated", value: "200+" },
-      { label: "Cost Reduction", value: "45%" },
-      { label: "Scalability", value: "10x" }
+      { label: "Savings", value: "$1M+" },
+      { label: "Faster Time-to-Decision", value: "✓" },
+      { label: "Coached Practitioners", value: "2" }
     ]
   },
   {
     id: 6,
-    title: "Cybersecurity Framework Implementation",
-    subtitle: "Building robust defense against evolving threats",
+    title: "Enterprise Front Door Redesign",
+    subtitle: "Redesigned fragmented intake processes across business units. Unified decision-making and accelerated time-to-action.",
     icon: Building2,
-    tags: ["Cybersecurity", "Risk Management", "Compliance"],
+    tags: ["Change Management", "Process Mining", "Experience Design"],
     bullets: [
-      "Implemented zero-trust architecture",
-      "Reduced security incidents by 80%",
-      "Achieved SOC 2 Type II compliance"
+      "Mapped 7+ intake pathways and unified taxonomy",
+      "Created future-state intake workflow using process mining",
+      "Enabled change impact visibility upfront"
     ],
-    challenge: "A technology company needed to strengthen their cybersecurity posture to protect sensitive customer data and meet stringent compliance requirements.",
-    solution: "Designed and implemented a comprehensive cybersecurity framework including zero-trust architecture, advanced threat detection, and automated incident response.",
-    impact: "The new security framework significantly reduced the risk of data breaches, improved compliance standing, and enhanced customer trust in the platform.",
+    challenge: "Enterprise had multiple fragmented intake processes across business units, creating confusion, duplication, and delayed decision-making for internal and external stakeholders.",
+    solution: "Comprehensive process mining analysis to map existing pathways, design unified taxonomy and future-state workflows, with full change impact assessment and stakeholder alignment.",
+    impact: "Eliminated process duplication, accelerated time-to-action, and created single unified experience for all enterprise interactions.",
     metrics: [
-      { label: "Incident Reduction", value: "80%" },
-      { label: "Compliance Achievement", value: "SOC 2" },
-      { label: "Threat Detection", value: "Real-time" }
+      { label: "Time Reduction", value: "40%" },
+      { label: "Unified Experience", value: "1" },
+      { label: "Duplicates", value: "Zero" }
     ]
   }
 ];
 
-export default function CaseStudiesSection() {
+export function CaseStudiesSection() {
   const [selectedStudy, setSelectedStudy] = useState<number | null>(null);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
+  };
+
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Case Studies
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Real-world transformations that drive measurable business outcomes
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {caseStudies.map((study) => {
-            const Icon = study.icon;
-            return (
-              <Dialog key={study.id}>
-                <DialogTrigger asChild>
-                  <div className="group cursor-pointer bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                          {study.title}
-                        </h3>
-                      </div>
-                    </div>
-                    
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                      {study.subtitle}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {study.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    <ul className="space-y-2 mb-4">
-                      {study.bullets.map((bullet, index) => (
-                        <li key={index} className="text-sm text-gray-600 flex items-start">
-                          <span className="text-green-500 mr-2 mt-1">•</span>
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="text-blue-600 text-sm font-medium group-hover:text-blue-700">
-                      View full case study →
-                    </div>
-                  </div>
-                </DialogTrigger>
-                
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-                  <div className="space-y-6">
-                    <div className="flex items-start">
-                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-6 flex-shrink-0">
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                          {study.title}
-                        </h2>
-                        <p className="text-gray-600 mb-4">
-                          {study.subtitle}
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {study.tags.map((tag) => (
-                            <Badge key={tag} variant="secondary">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid gap-6">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                          The Challenge
-                        </h3>
-                        <p className="text-gray-600 leading-relaxed">
-                          {study.challenge}
-                        </p>
-                      </div>
-
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                          Our Solution
-                        </h3>
-                        <p className="text-gray-600 leading-relaxed">
-                          {study.solution}
-                        </p>
-                      </div>
-
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                          The Impact
-                        </h3>
-                        <p className="text-gray-600 leading-relaxed mb-4">
-                          {study.impact}
-                        </p>
-                        
-                        <div className="grid grid-cols-3 gap-4">
-                          {study.metrics.map((metric, index) => (
-                            <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
-                              <div className="text-2xl font-bold text-blue-600 mb-1">
-                                {metric.value}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                {metric.label}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            );
-          })}
-        </div>
+    <section className="relative min-h-screen responsive-py-lg mobile-safe-area overflow-hidden bg-background">
+      {/* Background Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full blur-3xl animate-pulse hidden lg:block" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-accent/15 to-secondary/15 rounded-full blur-3xl animate-pulse delay-1000 hidden lg:block" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full blur-2xl animate-pulse delay-500 hidden lg:block" />
       </div>
+
+      <div className="container-responsive max-w-7xl relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-12 lg:mb-16"
+        >
+          <motion.h2 
+            className="responsive-text-5xl font-light mb-4 lg:mb-6 text-foreground"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            Case <span className="text-transparent bg-gradient-to-r from-primary via-accent to-primary bg-clip-text">Studies</span>
+          </motion.h2>
+          <motion.p 
+            className="responsive-text-xl text-muted-foreground max-w-4xl mx-auto font-light leading-relaxed"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            Real-world AI transformations that drive measurable business outcomes across industries
+          </motion.p>
+        </motion.div>
+
+        {/* Case Studies Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="responsive-grid-2 lg:grid-cols-3 responsive-gap-lg"
+        >
+          {/* Desktop 3-column stacked layout */}
+          <div className="hidden lg:flex lg:flex-col lg:space-y-8">
+            {/* Column 1: Case 1 + Case 4 */}
+            {[0, 3].map((index) => {
+              const study = caseStudies[index];
+              const Icon = study.icon;
+              return (
+                <motion.div
+                  key={study.id}
+                  variants={itemVariants}
+                  whileHover={{ 
+                    scale: 1.02,
+                    transition: { duration: 0.3, ease: "easeOut" }
+                  }}
+                  className="group h-full"
+                >
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden cursor-pointer touch-target min-h-[350px] sm:min-h-[400px] flex flex-col">
+                        {/* Hover Glow Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        
+                        {/* Animated Border Gradient on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm rounded-xl lg:rounded-2xl" />
+                        
+                        <div className="relative z-10 h-full flex flex-col">
+                          {/* Header with Icon */}
+                          <div className="flex items-start mb-3 lg:mb-4">
+                            <motion.div 
+                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 mr-3 flex-shrink-0"
+                              whileHover={{ 
+                                rotate: 5,
+                                transition: { duration: 0.3, ease: "easeOut" }
+                              }}
+                            >
+                              <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </motion.div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300 leading-tight">
+                                {study.title}
+                              </h3>
+                            </div>
+                          </div>
+                          
+                          {/* Subtitle */}
+                          <p className="text-muted-foreground responsive-text-sm mb-3 lg:mb-4 leading-relaxed font-light line-clamp-3 flex-shrink-0">
+                            {study.subtitle}
+                          </p>
+
+                          {/* Tags */}
+                          <div className="flex flex-wrap responsive-gap-sm mb-3 lg:mb-4 flex-shrink-0">
+                            {study.tags.map((tag) => (
+                              <Badge 
+                                key={tag} 
+                                className="responsive-text-sm bg-card/60 text-muted-foreground border-border/50 hover:bg-primary/20 hover:text-primary hover:border-primary/50 transition-all duration-300"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+
+                          {/* Bullet Points */}
+                          <div className="space-y-1.5 sm:space-y-2 mb-4 lg:mb-6 flex-grow">
+                            {study.bullets.map((bullet, bulletIndex) => (
+                              <div key={bulletIndex} className="flex items-start responsive-text-sm">
+                                <div className="w-1.5 h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mr-2 sm:mr-3 mt-1.5 flex-shrink-0 group-hover:shadow-sm group-hover:shadow-primary/50 transition-all duration-300" />
+                                <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300 leading-relaxed">
+                                  {bullet}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* CTA */}
+                          <div className="text-primary responsive-text-sm font-medium group-hover:text-accent transition-colors duration-300 flex items-center flex-shrink-0 mt-auto">
+                            <span>View full case study</span>
+                            <motion.span 
+                              className="ml-2"
+                              animate={{ x: [0, 4, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              →
+                            </motion.span>
+                          </div>
+
+                          {/* Floating Particles */}
+                          <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse" />
+                          <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse delay-300" />
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    
+                    <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto bg-card/95 border-border/50 text-foreground mx-4 sm:mx-auto">
+                      <DialogTitle className="sr-only">
+                        {study.title} - Case Study Details
+                      </DialogTitle>
+                      <div className="responsive-card space-y-6 lg:space-y-8">
+                        {/* Dialog Header */}
+                        <div className="flex items-start responsive-gap-base">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-muted/50 to-secondary/50 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h2 className="responsive-text-2xl font-bold text-foreground mb-2">
+                              {study.title}
+                            </h2>
+                            <p className="text-muted-foreground mb-3 lg:mb-4 leading-relaxed responsive-text-base">
+                              {study.subtitle}
+                            </p>
+                            <div className="flex flex-wrap responsive-gap-sm">
+                              {study.tags.map((tag) => (
+                                <Badge 
+                                  key={tag} 
+                                  className="bg-card/60 text-muted-foreground border-border/50 responsive-text-sm"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Dialog Content */}
+                        <div className="grid gap-6 lg:gap-8">
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-primary mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                              The Challenge
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed pl-5 responsive-text-base">
+                              {study.challenge}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-accent mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-accent rounded-full mr-3"></div>
+                              Our Solution
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed pl-5 responsive-text-base">
+                              {study.solution}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-primary mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                              The Impact
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed mb-4 lg:mb-6 pl-5 responsive-text-base">
+                              {study.impact}
+                            </p>
+                            
+                            {/* Metrics Grid */}
+                            <div className="responsive-grid-3 responsive-gap-base pl-5">
+                              {study.metrics.map((metric, index) => (
+                                <div key={index} className="text-center responsive-card bg-card/40 border border-border/50 rounded-xl backdrop-blur-sm">
+                                  <div className="responsive-text-xl sm:responsive-text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text mb-1">
+                                    {metric.value}
+                                  </div>
+                                  <div className="responsive-text-sm text-muted-foreground">
+                                    {metric.label}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="hidden lg:flex lg:flex-col lg:space-y-8">
+            {/* Column 2: Case 2 + Case 5 */}
+            {[1, 4].map((index) => {
+              const study = caseStudies[index];
+              const Icon = study.icon;
+              return (
+                <motion.div
+                  key={study.id}
+                  variants={itemVariants}
+                  whileHover={{ 
+                    scale: 1.02,
+                    transition: { duration: 0.3, ease: "easeOut" }
+                  }}
+                  className="group h-full"
+                >
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden cursor-pointer touch-target min-h-[350px] sm:min-h-[400px] flex flex-col">
+                        {/* Hover Glow Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        
+                        {/* Animated Border Gradient on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm rounded-xl lg:rounded-2xl" />
+                        
+                        <div className="relative z-10 h-full flex flex-col">
+                          {/* Header with Icon */}
+                          <div className="flex items-start mb-3 lg:mb-4">
+                            <motion.div 
+                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 mr-3 flex-shrink-0"
+                              whileHover={{ 
+                                rotate: 5,
+                                transition: { duration: 0.3, ease: "easeOut" }
+                              }}
+                            >
+                              <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </motion.div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300 leading-tight">
+                                {study.title}
+                              </h3>
+                            </div>
+                          </div>
+                          
+                          {/* Subtitle */}
+                          <p className="text-muted-foreground responsive-text-sm mb-3 lg:mb-4 leading-relaxed font-light line-clamp-3 flex-shrink-0">
+                            {study.subtitle}
+                          </p>
+
+                          {/* Tags */}
+                          <div className="flex flex-wrap responsive-gap-sm mb-3 lg:mb-4 flex-shrink-0">
+                            {study.tags.map((tag) => (
+                              <Badge 
+                                key={tag} 
+                                className="responsive-text-sm bg-card/60 text-muted-foreground border-border/50 hover:bg-primary/20 hover:text-primary hover:border-primary/50 transition-all duration-300"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+
+                          {/* Bullet Points */}
+                          <div className="space-y-1.5 sm:space-y-2 mb-4 lg:mb-6 flex-grow">
+                            {study.bullets.map((bullet, bulletIndex) => (
+                              <div key={bulletIndex} className="flex items-start responsive-text-sm">
+                                <div className="w-1.5 h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mr-2 sm:mr-3 mt-1.5 flex-shrink-0 group-hover:shadow-sm group-hover:shadow-primary/50 transition-all duration-300" />
+                                <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300 leading-relaxed">
+                                  {bullet}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* CTA */}
+                          <div className="text-primary responsive-text-sm font-medium group-hover:text-accent transition-colors duration-300 flex items-center flex-shrink-0 mt-auto">
+                            <span>View full case study</span>
+                            <motion.span 
+                              className="ml-2"
+                              animate={{ x: [0, 4, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              →
+                            </motion.span>
+                          </div>
+
+                          {/* Floating Particles */}
+                          <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse" />
+                          <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse delay-300" />
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    
+                    <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto bg-card/95 border-border/50 text-foreground mx-4 sm:mx-auto">
+                      <DialogTitle className="sr-only">
+                        {study.title} - Case Study Details
+                      </DialogTitle>
+                      <div className="responsive-card space-y-6 lg:space-y-8">
+                        <div className="flex items-start responsive-gap-base">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-muted/50 to-secondary/50 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h2 className="responsive-text-2xl font-bold text-foreground mb-2">
+                              {study.title}
+                            </h2>
+                            <p className="text-muted-foreground mb-3 lg:mb-4 leading-relaxed responsive-text-base">
+                              {study.subtitle}
+                            </p>
+                            <div className="flex flex-wrap responsive-gap-sm">
+                              {study.tags.map((tag) => (
+                                <Badge 
+                                  key={tag} 
+                                  className="bg-card/60 text-muted-foreground border-border/50 responsive-text-sm"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="grid gap-6 lg:gap-8">
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-primary mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                              The Challenge
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed pl-5 responsive-text-base">
+                              {study.challenge}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-accent mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-accent rounded-full mr-3"></div>
+                              Our Solution
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed pl-5 responsive-text-base">
+                              {study.solution}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-primary mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                              The Impact
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed mb-4 lg:mb-6 pl-5 responsive-text-base">
+                              {study.impact}
+                            </p>
+                            
+                            <div className="responsive-grid-3 responsive-gap-base pl-5">
+                              {study.metrics.map((metric, index) => (
+                                <div key={index} className="text-center responsive-card bg-card/40 border border-border/50 rounded-xl backdrop-blur-sm">
+                                  <div className="responsive-text-xl sm:responsive-text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text mb-1">
+                                    {metric.value}
+                                  </div>
+                                  <div className="responsive-text-sm text-muted-foreground">
+                                    {metric.label}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="hidden lg:flex lg:flex-col lg:space-y-8">
+            {/* Column 3: Case 3 + Case 6 */}
+            {[2, 5].map((index) => {
+              const study = caseStudies[index];
+              const Icon = study.icon;
+              return (
+                <motion.div
+                  key={study.id}
+                  variants={itemVariants}
+                  whileHover={{ 
+                    scale: 1.02,
+                    transition: { duration: 0.3, ease: "easeOut" }
+                  }}
+                  className="group h-full"
+                >
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden cursor-pointer touch-target min-h-[350px] sm:min-h-[400px] flex flex-col">
+                        {/* Hover Glow Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        
+                        {/* Animated Border Gradient on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm rounded-xl lg:rounded-2xl" />
+                        
+                        <div className="relative z-10 h-full flex flex-col">
+                          {/* Header with Icon */}
+                          <div className="flex items-start mb-3 lg:mb-4">
+                            <motion.div 
+                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 mr-3 flex-shrink-0"
+                              whileHover={{ 
+                                rotate: 5,
+                                transition: { duration: 0.3, ease: "easeOut" }
+                              }}
+                            >
+                              <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </motion.div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300 leading-tight">
+                                {study.title}
+                              </h3>
+                            </div>
+                          </div>
+                          
+                          {/* Subtitle */}
+                          <p className="text-muted-foreground responsive-text-sm mb-3 lg:mb-4 leading-relaxed font-light line-clamp-3 flex-shrink-0">
+                            {study.subtitle}
+                          </p>
+
+                          {/* Tags */}
+                          <div className="flex flex-wrap responsive-gap-sm mb-3 lg:mb-4 flex-shrink-0">
+                            {study.tags.map((tag) => (
+                              <Badge 
+                                key={tag} 
+                                className="responsive-text-sm bg-card/60 text-muted-foreground border-border/50 hover:bg-primary/20 hover:text-primary hover:border-primary/50 transition-all duration-300"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+
+                          {/* Bullet Points */}
+                          <div className="space-y-1.5 sm:space-y-2 mb-4 lg:mb-6 flex-grow">
+                            {study.bullets.map((bullet, bulletIndex) => (
+                              <div key={bulletIndex} className="flex items-start responsive-text-sm">
+                                <div className="w-1.5 h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mr-2 sm:mr-3 mt-1.5 flex-shrink-0 group-hover:shadow-sm group-hover:shadow-primary/50 transition-all duration-300" />
+                                <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300 leading-relaxed">
+                                  {bullet}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* CTA */}
+                          <div className="text-primary responsive-text-sm font-medium group-hover:text-accent transition-colors duration-300 flex items-center flex-shrink-0 mt-auto">
+                            <span>View full case study</span>
+                            <motion.span 
+                              className="ml-2"
+                              animate={{ x: [0, 4, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              →
+                            </motion.span>
+                          </div>
+
+                          {/* Floating Particles */}
+                          <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse" />
+                          <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse delay-300" />
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    
+                    <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto bg-card/95 border-border/50 text-foreground mx-4 sm:mx-auto">
+                      <DialogTitle className="sr-only">
+                        {study.title} - Case Study Details
+                      </DialogTitle>
+                      <div className="responsive-card space-y-6 lg:space-y-8">
+                        <div className="flex items-start responsive-gap-base">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-muted/50 to-secondary/50 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h2 className="responsive-text-2xl font-bold text-foreground mb-2">
+                              {study.title}
+                            </h2>
+                            <p className="text-muted-foreground mb-3 lg:mb-4 leading-relaxed responsive-text-base">
+                              {study.subtitle}
+                            </p>
+                            <div className="flex flex-wrap responsive-gap-sm">
+                              {study.tags.map((tag) => (
+                                <Badge 
+                                  key={tag} 
+                                  className="bg-card/60 text-muted-foreground border-border/50 responsive-text-sm"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="grid gap-6 lg:gap-8">
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-primary mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                              The Challenge
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed pl-5 responsive-text-base">
+                              {study.challenge}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-accent mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-accent rounded-full mr-3"></div>
+                              Our Solution
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed pl-5 responsive-text-base">
+                              {study.solution}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-primary mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                              The Impact
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed mb-4 lg:mb-6 pl-5 responsive-text-base">
+                              {study.impact}
+                            </p>
+                            
+                            <div className="responsive-grid-3 responsive-gap-base pl-5">
+                              {study.metrics.map((metric, index) => (
+                                <div key={index} className="text-center responsive-card bg-card/40 border border-border/50 rounded-xl backdrop-blur-sm">
+                                  <div className="responsive-text-xl sm:responsive-text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text mb-1">
+                                    {metric.value}
+                                  </div>
+                                  <div className="responsive-text-sm text-muted-foreground">
+                                    {metric.label}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Mobile/Tablet 2-column layout - Keep original structure */}
+          <div className="lg:hidden contents">
+            {caseStudies.map((study, index) => {
+              const Icon = study.icon;
+              return (
+                <motion.div
+                  key={study.id}
+                  variants={itemVariants}
+                  whileHover={{ 
+                    scale: 1.02,
+                    transition: { duration: 0.3, ease: "easeOut" }
+                  }}
+                  className="group h-full"
+                >
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden cursor-pointer touch-target min-h-[350px] sm:min-h-[400px] flex flex-col">
+                        {/* Hover Glow Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        
+                        {/* Animated Border Gradient on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm rounded-xl lg:rounded-2xl" />
+                        
+                        <div className="relative z-10 h-full flex flex-col">
+                          {/* Header with Icon */}
+                          <div className="flex items-start mb-3 lg:mb-4">
+                            <motion.div 
+                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 mr-3 flex-shrink-0"
+                              whileHover={{ 
+                                rotate: 5,
+                                transition: { duration: 0.3, ease: "easeOut" }
+                              }}
+                            >
+                              <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </motion.div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300 leading-tight">
+                                {study.title}
+                              </h3>
+                            </div>
+                          </div>
+                          
+                          {/* Subtitle */}
+                          <p className="text-muted-foreground responsive-text-sm mb-3 lg:mb-4 leading-relaxed font-light line-clamp-3 flex-shrink-0">
+                            {study.subtitle}
+                          </p>
+
+                          {/* Tags */}
+                          <div className="flex flex-wrap responsive-gap-sm mb-3 lg:mb-4 flex-shrink-0">
+                            {study.tags.map((tag) => (
+                              <Badge 
+                                key={tag} 
+                                className="responsive-text-sm bg-card/60 text-muted-foreground border-border/50 hover:bg-primary/20 hover:text-primary hover:border-primary/50 transition-all duration-300"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+
+                          {/* Bullet Points */}
+                          <div className="space-y-1.5 sm:space-y-2 mb-4 lg:mb-6 flex-grow">
+                            {study.bullets.map((bullet, bulletIndex) => (
+                              <div key={bulletIndex} className="flex items-start responsive-text-sm">
+                                <div className="w-1.5 h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mr-2 sm:mr-3 mt-1.5 flex-shrink-0 group-hover:shadow-sm group-hover:shadow-primary/50 transition-all duration-300" />
+                                <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300 leading-relaxed">
+                                  {bullet}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* CTA */}
+                          <div className="text-primary responsive-text-sm font-medium group-hover:text-accent transition-colors duration-300 flex items-center flex-shrink-0 mt-auto">
+                            <span>View full case study</span>
+                            <motion.span 
+                              className="ml-2"
+                              animate={{ x: [0, 4, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              →
+                            </motion.span>
+                          </div>
+
+                          {/* Floating Particles */}
+                          <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse" />
+                          <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse delay-300" />
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    
+                    <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto bg-card/95 border-border/50 text-foreground mx-4 sm:mx-auto">
+                      <DialogTitle className="sr-only">
+                        {study.title} - Case Study Details
+                      </DialogTitle>
+                      <div className="responsive-card space-y-6 lg:space-y-8">
+                        <div className="flex items-start responsive-gap-base">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-muted/50 to-secondary/50 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h2 className="responsive-text-2xl font-bold text-foreground mb-2">
+                              {study.title}
+                            </h2>
+                            <p className="text-muted-foreground mb-3 lg:mb-4 leading-relaxed responsive-text-base">
+                              {study.subtitle}
+                            </p>
+                            <div className="flex flex-wrap responsive-gap-sm">
+                              {study.tags.map((tag) => (
+                                <Badge 
+                                  key={tag} 
+                                  className="bg-card/60 text-muted-foreground border-border/50 responsive-text-sm"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="grid gap-6 lg:gap-8">
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-primary mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                              The Challenge
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed pl-5 responsive-text-base">
+                              {study.challenge}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-accent mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-accent rounded-full mr-3"></div>
+                              Our Solution
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed pl-5 responsive-text-base">
+                              {study.solution}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="responsive-text-lg font-semibold text-primary mb-2 lg:mb-3 flex items-center">
+                              <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                              The Impact
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed mb-4 lg:mb-6 pl-5 responsive-text-base">
+                              {study.impact}
+                            </p>
+                            
+                            <div className="responsive-grid-3 responsive-gap-base pl-5">
+                              {study.metrics.map((metric, index) => (
+                                <div key={index} className="text-center responsive-card bg-card/40 border border-border/50 rounded-xl backdrop-blur-sm">
+                                  <div className="responsive-text-xl sm:responsive-text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text mb-1">
+                                    {metric.value}
+                                  </div>
+                                  <div className="responsive-text-sm text-muted-foreground">
+                                    {metric.label}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Decorative Elements */}
+      <div className="absolute top-1/2 left-0 w-px h-32 bg-gradient-to-b from-transparent via-primary/50 to-transparent hidden lg:block" />
+      <div className="absolute top-1/2 right-0 w-px h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent hidden lg:block" />
     </section>
   );
 }

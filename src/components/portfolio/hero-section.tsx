@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
+import { openCalendlyPopup } from '@/lib/calendly';
 
 export const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
@@ -19,8 +20,12 @@ export const HeroSection = () => {
     }
   };
 
+  const handleBookCall = () => {
+    openCalendlyPopup();
+  };
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background mobile-safe-area">
       {/* Video Background */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -33,7 +38,7 @@ export const HeroSection = () => {
           muted
           loop
           playsInline
-          className="h-full w-full object-cover opacity-30 [mask-image:radial-gradient(ellipse_at_center,white_40%,transparent_70%)]"
+          className="h-full w-full object-cover opacity-20 sm:opacity-30 [mask-image:radial-gradient(ellipse_at_center,white_40%,transparent_70%)]"
         >
           <source
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/94fd3199-4d32-48fc-865e-b29a5a13ccb2/generated_videos/professional-abstract-ai-and-technology--f174aa81-20250711224003.mp4"
@@ -44,7 +49,7 @@ export const HeroSection = () => {
 
       {/* Neural Mesh Background Overlay */}
       <div className="absolute inset-0 z-5">
-        <div className="absolute inset-0 opacity-15">
+        <div className="absolute inset-0 opacity-10 sm:opacity-15">
           <svg
             className="w-full h-full"
             viewBox="0 0 1000 1000"
@@ -59,7 +64,7 @@ export const HeroSection = () => {
             </defs>
             
             {/* Neural Network Pattern */}
-            {mounted && Array.from({ length: 30 }).map((_, i) => (
+            {mounted && Array.from({ length: 20 }).map((_, i) => (
               <g key={i}>
                 <circle
                   cx={Math.random() * 1000}
@@ -100,7 +105,7 @@ export const HeroSection = () => {
 
       {/* Floating Elements */}
       <div className="absolute inset-0 pointer-events-none z-5">
-        {mounted && Array.from({ length: 8 }).map((_, i) => (
+        {mounted && Array.from({ length: 6 }).map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-primary rounded-full"
@@ -121,42 +126,47 @@ export const HeroSection = () => {
         ))}
       </div>
 
-      {/* Main Content - Two Column Layout */}
-      <div className="relative z-10 container mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 items-end min-h-[80vh]">
+      {/* Main Content */}
+      <div className="relative z-10 container-responsive max-w-8xl">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center min-h-[80vh] responsive-py-lg">
           
           {/* Left Column - Text Content */}
           <div 
-            className={`transform transition-all duration-1000 ${
+            className={`transform transition-all duration-1000 order-2 lg:order-1 text-center lg:text-left ${
               mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
             }`}
           >
             {/* Main Headline */}
             <motion.h1 
-              className="text-4xl md:text-6xl lg:text-7xl font-light mb-6 leading-tight tracking-tight text-left"
+              className="responsive-text-6xl font-light mb-4 lg:mb-6 leading-tight tracking-tight"
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.7 }}
+              transition={{ duration: 1, delay: 0.5 }}
             >
-              <span className="block bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-gradient bg-300% font-extralight">
-                Turning strategy
-              </span>
-              <span className="block text-foreground font-light mt-2">
-                into impact
-              </span>
-              <span className="block bg-gradient-to-r from-secondary via-primary to-secondary bg-clip-text text-transparent animate-gradient bg-300% font-light">
-                with AI
+              <span className="block text-foreground font-light">
+                Real <span className="text-primary font-medium">AI transformation</span> doesn't live in <span className="text-accent font-medium">strategy</span> decks — it lives in <span className="text-primary font-medium">execution</span>.
               </span>
             </motion.h1>
 
-            {/* Subtext */}
+            {/* Subheader */}
             <motion.div 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed mb-8 text-left">
-                Elevating businesses through AI strategy, intelligent automation, and measurable transformation.
+              <p className="responsive-text-xl text-muted-foreground font-light leading-relaxed mb-4 lg:mb-6">
+                I lead where most stop: at the intersection of <span className="text-accent font-medium">vision</span> and <span className="text-primary font-medium">delivery</span>.
+              </p>
+            </motion.div>
+
+            {/* Muted tagline */}
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.0 }}
+            >
+              <p className="responsive-text-sm text-muted-foreground/70 font-light mb-6 lg:mb-8">
+                Engineer by training. Strategist by design. Transformer by impact.
               </p>
             </motion.div>
 
@@ -164,17 +174,17 @@ export const HeroSection = () => {
             <motion.div 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1.3 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
             >
-              <div className="flex flex-col sm:flex-row gap-4 justify-start items-start">
+              <div className="flex flex-col sm:flex-row responsive-gap-base justify-center lg:justify-start items-center lg:items-start">
                 <Button
                   size="lg"
-                  className="relative group bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-primary-foreground px-8 py-4 text-lg font-medium rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-primary/25"
+                  className="responsive-button relative group bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-primary-foreground font-medium rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-primary/25 w-full sm:w-auto"
                   onClick={() => scrollToSection('portfolio')}
                 >
-                  <span className="relative z-10 flex items-center gap-2">
-                    View Portfolio
-                    <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+                  <span className="relative z-10 flex items-center justify-center responsive-gap-sm">
+                    See My Work
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform duration-300" />
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
                 </Button>
@@ -182,12 +192,12 @@ export const HeroSection = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="relative group border-2 border-secondary text-secondary hover:text-secondary-foreground px-8 py-4 text-lg font-medium rounded-full transition-all duration-300 transform hover:scale-105 bg-transparent hover:bg-secondary shadow-lg hover:shadow-secondary/25"
-                  onClick={() => window.open('https://calendly.com/hesham-badr-neuronovate/30min', '_blank')}
+                  className="responsive-button relative group border-2 border-secondary text-secondary hover:text-secondary-foreground font-medium rounded-full transition-all duration-300 transform hover:scale-105 bg-transparent hover:bg-secondary shadow-lg hover:shadow-secondary/25 w-full sm:w-auto"
+                  onClick={handleBookCall}
                 >
-                  <span className="relative z-10 flex items-center gap-2">
-                    Book a Call
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <span className="relative z-10 flex items-center justify-center responsive-gap-sm">
+                    Book Strategy Call
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
                 </Button>
@@ -199,15 +209,18 @@ export const HeroSection = () => {
           <motion.div 
             initial={{ y: 30, opacity: 0, x: 30 }}
             animate={{ y: 0, opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 1.5 }}
-            className="flex justify-center lg:justify-end items-end"
+            transition={{ duration: 1, delay: 1.3 }}
+            className="flex justify-center lg:justify-end items-center lg:items-end order-1 lg:order-2 mt-8 lg:mt-0"
           >
-            <div className="relative max-w-md w-full flex items-end justify-end">
+            <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex items-center justify-center lg:justify-end">
               <img 
                 src="https://clever-pika-899e4f.netlify.app/mypictransparent.png" 
                 alt="Hesham Badr - AI & Digital Transformation Strategist"
-                className="w-full h-full object-cover"
-                style={{ transform: "scale(0.48)", transformOrigin: "bottom right" }}
+                className="responsive-image-contain w-full h-auto max-h-[60vh] sm:max-h-[70vh] lg:max-h-none"
+                style={{ 
+                  transform: "scale(0.6) translateY(20px)", 
+                  transformOrigin: "center bottom" 
+                }}
               />
             </div>
           </motion.div>
@@ -216,7 +229,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Bottom Gradient Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-20 lg:h-32 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
 
       <style jsx>{`
         @keyframes gradient {

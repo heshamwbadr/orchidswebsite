@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Check, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -114,265 +114,263 @@ export const CTASection = () => {
   return (
     <section 
       style={{ backgroundColor: "#0A0A0B" }}
-      className="relative py-24 overflow-hidden"
+      className="relative responsive-py-lg mobile-safe-area overflow-hidden"
     >
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-yellow-500/5" />
       
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          {/* Main heading */}
+      <div className="container-responsive max-w-7xl relative z-10">
+        {/* Main heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12 lg:mb-16"
+        >
+          <h2 className="responsive-text-4xl lg:responsive-text-5xl font-light text-white mb-4 lg:mb-6">
+            Just fill in the form, and we'll take it from there.
+          </h2>
+        </motion.div>
+
+        {/* Two-column layout - becomes single column on mobile */}
+        <div className="grid lg:grid-cols-2 responsive-gap-lg items-start">
+          {/* Left Column - Contact Form */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="order-2 lg:order-1"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white mb-6">
-              Just fill in the form, and we'll take it from there.
-            </h2>
+            <div 
+              className="responsive-card rounded-2xl border backdrop-blur-sm"
+              style={{ 
+                backgroundColor: "rgba(26, 26, 26, 0.8)", 
+                borderColor: "#262626" 
+              }}
+            >
+              {!isSubmitted ? (
+                <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
+                  {/* Name Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-white font-light responsive-text-base">
+                      Full Name *
+                    </Label>
+                    <Input
+                      id="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      className="responsive-button bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
+                      style={{ backgroundColor: "#1A1A1A" }}
+                      placeholder="Enter your full name"
+                    />
+                    {errors.name && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-red-400 responsive-text-sm"
+                      >
+                        {errors.name}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  {/* Email Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-white font-light responsive-text-base">
+                      Email Address *
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      className="responsive-button bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
+                      style={{ backgroundColor: "#1A1A1A" }}
+                      placeholder="your.email@company.com"
+                    />
+                    {errors.email && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-red-400 responsive-text-sm"
+                      >
+                        {errors.email}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  {/* Company Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="company" className="text-white font-light responsive-text-base">
+                      Company *
+                    </Label>
+                    <Input
+                      id="company"
+                      type="text"
+                      value={formData.company}
+                      onChange={(e) => handleInputChange("company", e.target.value)}
+                      className="responsive-button bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
+                      style={{ backgroundColor: "#1A1A1A" }}
+                      placeholder="Your company name"
+                    />
+                    {errors.company && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-red-400 responsive-text-sm"
+                      >
+                        {errors.company}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  {/* Message Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-white font-light responsive-text-base">
+                      Message *
+                    </Label>
+                    <Textarea
+                      id="message"
+                      value={formData.message}
+                      onChange={(e) => handleInputChange("message", e.target.value)}
+                      className="min-h-[100px] sm:min-h-[120px] bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors resize-none responsive-text-base"
+                      style={{ backgroundColor: "#1A1A1A" }}
+                      placeholder="Tell us about your challenge, timeline, and what you're hoping to achieve..."
+                    />
+                    {errors.message && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-red-400 responsive-text-sm"
+                      >
+                        {errors.message}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  {/* Submit Button */}
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="responsive-button w-full responsive-text-lg font-light bg-gradient-to-r from-secondary to-primary hover:from-secondary/80 hover:to-primary/80 text-primary-foreground transition-all duration-300 hover:shadow-lg relative group overflow-hidden border-none touch-target"
+                  >
+                    {isSubmitting ? (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex items-center responsive-gap-sm relative z-10"
+                      >
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                        <span>Sending...</span>
+                      </motion.div>
+                    ) : (
+                      <div className="flex items-center responsive-gap-sm relative z-10">
+                        <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span>Send Message</span>
+                      </div>
+                    )}
+                  </Button>
+                </form>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center responsive-py-lg"
+                >
+                  <div 
+                    className="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+                    style={{ backgroundColor: "#10B981" }}
+                  >
+                    <Check className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                  </div>
+                  <h3 className="responsive-text-2xl font-light text-white mb-2">
+                    Message Sent!
+                  </h3>
+                  <p className="responsive-text-base" style={{ color: "#A1A1AA" }}>
+                    Thank you for reaching out. We'll get back to you within 24 hours.
+                  </p>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
 
-          {/* Two-column layout */}
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            {/* Left Column - Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="order-2 lg:order-1"
-            >
-              <div 
-                className="p-8 rounded-2xl border backdrop-blur-sm"
-                style={{ 
-                  backgroundColor: "rgba(26, 26, 26, 0.8)", 
-                  borderColor: "#262626" 
-                }}
-              >
-                {!isSubmitted ? (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Name Field */}
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-white font-light">
-                        Full Name *
-                      </Label>
-                      <Input
-                        id="name"
-                        type="text"
-                        value={formData.name}
-                        onChange={(e) => handleInputChange("name", e.target.value)}
-                        className="h-12 bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
-                        style={{ backgroundColor: "#1A1A1A" }}
-                        placeholder="Enter your full name"
-                      />
-                      {errors.name && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="text-red-400 text-sm"
-                        >
-                          {errors.name}
-                        </motion.p>
-                      )}
-                    </div>
-
-                    {/* Email Field */}
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-white font-light">
-                        Email Address *
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange("email", e.target.value)}
-                        className="h-12 bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
-                        style={{ backgroundColor: "#1A1A1A" }}
-                        placeholder="your.email@company.com"
-                      />
-                      {errors.email && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="text-red-400 text-sm"
-                        >
-                          {errors.email}
-                        </motion.p>
-                      )}
-                    </div>
-
-                    {/* Company Field */}
-                    <div className="space-y-2">
-                      <Label htmlFor="company" className="text-white font-light">
-                        Company *
-                      </Label>
-                      <Input
-                        id="company"
-                        type="text"
-                        value={formData.company}
-                        onChange={(e) => handleInputChange("company", e.target.value)}
-                        className="h-12 bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
-                        style={{ backgroundColor: "#1A1A1A" }}
-                        placeholder="Your company name"
-                      />
-                      {errors.company && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="text-red-400 text-sm"
-                        >
-                          {errors.company}
-                        </motion.p>
-                      )}
-                    </div>
-
-                    {/* Message Field */}
-                    <div className="space-y-2">
-                      <Label htmlFor="message" className="text-white font-light">
-                        Message *
-                      </Label>
-                      <Textarea
-                        id="message"
-                        value={formData.message}
-                        onChange={(e) => handleInputChange("message", e.target.value)}
-                        className="min-h-[120px] bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors resize-none"
-                        style={{ backgroundColor: "#1A1A1A" }}
-                        placeholder="Tell us about your challenge, timeline, and what you're hoping to achieve..."
-                      />
-                      {errors.message && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="text-red-400 text-sm"
-                        >
-                          {errors.message}
-                        </motion.p>
-                      )}
-                    </div>
-
-                    {/* Submit Button */}
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full h-14 text-lg font-light bg-gradient-to-r from-secondary to-primary hover:from-secondary/80 hover:to-primary/80 text-primary-foreground transition-all duration-300 hover:shadow-lg relative group overflow-hidden border-none"
-                    >
-                      {isSubmitting ? (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          className="flex items-center space-x-2 relative z-10"
-                        >
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Sending...</span>
-                        </motion.div>
-                      ) : (
-                        <div className="flex items-center space-x-2 relative z-10">
-                          <Send className="w-5 h-5" />
-                          <span>Send Message</span>
-                        </div>
-                      )}
-                    </Button>
-                  </form>
-                ) : (
+          {/* Right Column - Content + Photo */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="order-1 lg:order-2 flex flex-col lg:flex-row responsive-gap-lg h-full"
+          >
+            {/* Left side of RHS - Process Steps */}
+            <div className="flex-1">
+              <h3 className="responsive-text-xl font-light text-white mb-4 lg:mb-6">
+                Here's what happens next:
+              </h3>
+              <div className="space-y-3 lg:space-y-4">
+                {processSteps.map((step, index) => (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-8"
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    whileHover={{ x: 10 }}
+                    className="flex items-start responsive-gap-sm group cursor-default"
                   >
                     <div 
-                      className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+                      className="w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform"
                       style={{ backgroundColor: "#10B981" }}
                     >
-                      <Check className="w-8 h-8 text-white" />
+                      <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" />
                     </div>
-                    <h3 className="text-2xl font-light text-white mb-2">
-                      Message Sent!
-                    </h3>
-                    <p style={{ color: "#A1A1AA" }}>
-                      Thank you for reaching out. We'll get back to you within 24 hours.
-                    </p>
+                    <div>
+                      <h4 className="responsive-text-base font-medium text-white mb-1 group-hover:text-yellow-500 transition-colors">
+                        {step.title}
+                      </h4>
+                      <p className="responsive-text-sm font-light" style={{ color: "#A1A1AA" }}>
+                        {step.description}
+                      </p>
+                    </div>
                   </motion.div>
-                )}
+                ))}
               </div>
-            </motion.div>
+            </div>
 
-            {/* Right Column - Content + Photo */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="order-1 lg:order-2 flex gap-8 h-full"
-            >
-              {/* Left side of RHS - Process Steps */}
-              <div className="flex-1">
-                <h3 className="text-xl font-light text-white mb-6">
-                  Here's what happens next:
-                </h3>
-                <div className="space-y-4">
-                  {processSteps.map((step, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      whileHover={{ x: 10 }}
-                      className="flex items-start space-x-3 group cursor-default"
-                    >
-                      <div 
-                        className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform"
-                        style={{ backgroundColor: "#10B981" }}
-                      >
-                        <Check className="w-3 h-3 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium text-white mb-1 group-hover:text-yellow-500 transition-colors">
-                          {step.title}
-                        </h4>
-                        <p className="text-sm font-light" style={{ color: "#A1A1AA" }}>
-                          {step.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+            {/* Right side of RHS - Photo + Quote */}
+            <div className="flex-shrink-0 w-full lg:w-80 flex flex-col items-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="flex items-center justify-center"
+              >
+                <img
+                  src="https://clever-pika-899e4f.netlify.app/mypictransparent.png"
+                  alt="Professional headshot"
+                  className="responsive-image-contain w-full h-auto max-w-full"
+                  style={{ transform: "scale(0.7) sm:scale(0.8)" }}
+                />
+              </motion.div>
 
-              {/* Right side of RHS - Photo + Quote */}
-              <div className="flex-shrink-0 w-80 flex flex-col items-center">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                  className="flex items-center justify-center"
-                >
-                  <img
-                    src="https://clever-pika-899e4f.netlify.app/mypictransparent.png"
-                    alt="Professional headshot"
-                    className="w-full h-auto max-w-full object-contain"
-                    style={{ transform: "scale(0.8)" }}
-                  />
-                </motion.div>
-
-                {/* Quote section under the photo */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.8 }}
-                  className="mt-6 text-center"
-                >
-                  <blockquote className="text-base italic font-light" style={{ color: "#A1A1AA" }}>
-                    "No fluff. No generic decks. Just insight, clarity, and a practical next step forward."
-                  </blockquote>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
+              {/* Quote section under the photo */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="mt-4 lg:mt-6 text-center"
+              >
+                <blockquote className="responsive-text-base italic font-light" style={{ color: "#A1A1AA" }}>
+                  "No fluff. No generic decks. Just insight, clarity, and a practical next step forward."
+                </blockquote>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

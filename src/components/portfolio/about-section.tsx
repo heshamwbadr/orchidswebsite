@@ -197,24 +197,28 @@ export const AboutSection = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-slate-800/20 to-transparent rounded-full" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl hidden lg:block" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl hidden lg:block" />
+        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-secondary/10 rounded-full blur-3xl hidden lg:block" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-muted/20 to-transparent rounded-full hidden lg:block" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 py-16">
+      <div className="relative z-10 container-responsive pt-8 pb-12 lg:pt-12 lg:pb-16">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12 lg:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-light text-white mb-4">
-            <span className="text-blue-400 border-b-2 border-blue-400">Hesham Badr</span>
-          </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+          <div className="flex justify-center mb-4">
+            <img 
+              src="https://clever-pika-899e4f.netlify.app/signaturetransparent1.png" 
+              alt="Hesham Badr Signature"
+              className="h-12 sm:h-16 lg:h-20 xl:h-24 w-auto object-contain"
+            />
+          </div>
+          <p className="responsive-text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Driving transformation through strategic insight, innovative solutions, and exceptional leadership across global markets.
           </p>
         </motion.div>
@@ -224,23 +228,23 @@ export const AboutSection = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid lg:grid-cols-3 gap-8"
+          className="grid lg:grid-cols-3 responsive-gap-lg"
         >
           {/* Left Column - Interactive Stacked Cards */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6 lg:space-y-8">
             {/* Enhanced Section Title */}
             <motion.div
               variants={itemVariants}
-              className="flex items-center space-x-3 mb-6"
+              className="flex items-center responsive-gap-sm mb-4 lg:mb-6"
             >
-              <Briefcase className="w-8 h-8 text-blue-400" />
-              <h3 className="text-3xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg">
+              <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+              <h3 className="responsive-text-3xl font-extrabold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-lg">
                 Core Service Pillars
               </h3>
             </motion.div>
 
             {/* Stacked Cards Layout */}
-            <div className="space-y-6">
+            <div className="space-y-4 lg:space-y-6">
               {competencyPillars.map((pillar, index) => {
                 const isExpanded = expandedCard === index;
                 const Icon = pillar.icon;
@@ -256,7 +260,7 @@ export const AboutSection = () => {
                       ease: "easeOut"
                     }}
                     whileHover={{ 
-                      scale: 1.02,
+                      scale: 1.01,
                       transition: { duration: 0.3 }
                     }}
                     className="group relative"
@@ -265,18 +269,18 @@ export const AboutSection = () => {
                       variants={cardVariants}
                       animate={isExpanded ? "expanded" : "collapsed"}
                       className={`
-                        relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/60 
-                        backdrop-blur-xl border border-slate-700/50 rounded-2xl overflow-hidden
-                        shadow-2xl hover:shadow-cyan-500/10 transition-all duration-500
-                        ${isExpanded ? 'border-cyan-400/60 shadow-cyan-400/20 ring-1 ring-cyan-400/20' : 'hover:border-cyan-400/50'}
+                        relative bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 
+                        backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl overflow-hidden
+                        shadow-2xl hover:shadow-primary/10 transition-all duration-500
+                        ${isExpanded ? 'border-primary/60 shadow-primary/20 ring-1 ring-primary/20' : 'hover:border-primary/50'}
                       `}
                     >
                       {/* Gradient Glow Background */}
                       <div className={`
                         absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500
-                        ${index === 0 ? 'from-blue-500/5 via-purple-500/5 to-teal-500/5' : ''}
-                        ${index === 1 ? 'from-purple-500/5 via-teal-500/5 to-blue-500/5' : ''}
-                        ${index === 2 ? 'from-teal-500/5 via-blue-500/5 to-purple-500/5' : ''}
+                        ${index === 0 ? 'from-primary/5 via-accent/5 to-secondary/5' : ''}
+                        ${index === 1 ? 'from-accent/5 via-secondary/5 to-primary/5' : ''}
+                        ${index === 2 ? 'from-secondary/5 via-primary/5 to-accent/5' : ''}
                         ${isExpanded ? 'opacity-100' : 'group-hover:opacity-100'}
                       `} />
 
@@ -285,35 +289,35 @@ export const AboutSection = () => {
                         onClick={() => setExpandedCard(isExpanded ? null : index)}
                         whileHover={{ backgroundColor: "rgba(71, 85, 105, 0.1)" }}
                         whileTap={{ scale: 0.99 }}
-                        className="relative z-10 p-8 cursor-pointer"
+                        className="relative z-10 responsive-card cursor-pointer touch-target"
                       >
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-6">
+                          <div className="flex items-center responsive-gap-base min-w-0 flex-1">
                             <motion.div 
                               whileHover={{ scale: 1.1 }}
                               transition={{ duration: 0.3, ease: "easeOut" }}
                               className={`
-                                p-4 rounded-xl transition-all duration-500
+                                p-2 sm:p-3 lg:p-4 rounded-lg lg:rounded-xl transition-all duration-500 flex-shrink-0
                                 ${isExpanded 
-                                  ? 'bg-gradient-to-br from-cyan-500/30 to-blue-500/30 shadow-lg shadow-cyan-400/30' 
-                                  : 'bg-gradient-to-br from-slate-700/50 to-slate-600/50 group-hover:from-cyan-500/20 group-hover:to-blue-500/20 group-hover:shadow-lg group-hover:shadow-cyan-500/20'
+                                  ? 'bg-gradient-to-br from-primary/30 to-accent/30 shadow-lg shadow-primary/30' 
+                                  : 'bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 group-hover:shadow-lg group-hover:shadow-primary/20'
                                 }
                               `}
                             >
                               <Icon className={`
-                                w-8 h-8 transition-all duration-500
-                                ${isExpanded ? 'text-cyan-300' : 'text-slate-400 group-hover:text-cyan-400'}
+                                w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 transition-all duration-500
+                                ${isExpanded ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}
                               `} />
                             </motion.div>
 
-                            <div>
+                            <div className="min-w-0 flex-1">
                               <h4 className={`
-                                text-xl font-semibold mb-2 transition-colors duration-300
-                                ${isExpanded ? 'text-cyan-400' : 'text-white group-hover:text-cyan-400'}
+                                responsive-text-lg lg:responsive-text-xl font-semibold mb-1 sm:mb-2 transition-colors duration-300 leading-tight
+                                ${isExpanded ? 'text-primary' : 'text-foreground group-hover:text-primary'}
                               `}>
                                 {pillar.title}
                               </h4>
-                              <p className="text-slate-400 text-sm leading-relaxed max-w-md">
+                              <p className="responsive-text-sm text-muted-foreground leading-relaxed font-light line-clamp-2">
                                 {pillar.subtitle}
                               </p>
                             </div>
@@ -323,13 +327,13 @@ export const AboutSection = () => {
                             animate={{ rotate: isExpanded ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
                             className={`
-                              p-2 rounded-lg transition-colors duration-300
-                              ${isExpanded ? 'bg-cyan-500/20' : 'group-hover:bg-slate-700/50'}
+                              p-1.5 sm:p-2 rounded-lg transition-colors duration-300 flex-shrink-0 ml-2
+                              ${isExpanded ? 'bg-primary/20' : 'group-hover:bg-muted/50'}
                             `}
                           >
                             <ChevronDown className={`
-                              w-5 h-5 transition-colors duration-300
-                              ${isExpanded ? 'text-cyan-400' : 'text-slate-400 group-hover:text-cyan-400'}
+                              w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-300
+                              ${isExpanded ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}
                             `} />
                           </motion.div>
                         </div>
@@ -348,9 +352,9 @@ export const AboutSection = () => {
                             }}
                             className="overflow-hidden"
                           >
-                            <div className="px-8 pb-8">
-                              <div className="border-t border-slate-700/50 pt-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="responsive-card pb-4 sm:pb-6 lg:pb-8">
+                              <div className="border-t border-border/50 pt-4 lg:pt-6">
+                                <div className="responsive-grid-2 responsive-gap-sm">
                                   {pillar.competencies.map((competency, compIndex) => (
                                     <motion.div
                                       key={competency}
@@ -360,14 +364,14 @@ export const AboutSection = () => {
                                       animate="visible"
                                       exit="exit"
                                       whileHover={{ 
-                                        scale: 1.05,
-                                        x: 4
+                                        scale: 1.02,
+                                        x: 2
                                       }}
                                       className="group/pill"
                                     >
-                                      <div className="flex items-center p-3 bg-slate-800/40 backdrop-blur-sm border border-slate-700/40 rounded-xl hover:bg-cyan-500/10 hover:border-cyan-400/50 transition-all duration-300 cursor-default">
-                                        <div className="w-2 h-2 bg-cyan-500/60 rounded-full mr-3 group-hover/pill:bg-cyan-400 group-hover/pill:shadow-sm group-hover/pill:shadow-cyan-400/50 transition-all duration-300" />
-                                        <span className="text-sm text-slate-300 group-hover/pill:text-white transition-colors duration-300">
+                                      <div className="responsive-card flex items-center bg-card/40 backdrop-blur-sm border border-border/40 rounded-lg lg:rounded-xl hover:bg-primary/10 hover:border-primary/50 transition-all duration-300 cursor-default touch-target">
+                                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary/60 rounded-full mr-2 sm:mr-3 group-hover/pill:bg-primary group-hover/pill:shadow-sm group-hover/pill:shadow-primary/50 transition-all duration-300 flex-shrink-0" />
+                                        <span className="responsive-text-sm text-muted-foreground group-hover/pill:text-foreground transition-colors duration-300 leading-relaxed">
                                           {competency}
                                         </span>
                                       </div>
@@ -387,14 +391,14 @@ export const AboutSection = () => {
           </div>
 
           {/* Right Column - Impact Metrics */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-4 lg:space-y-6">
             {/* Enhanced Section Title */}
             <motion.div
               variants={itemVariants}
-              className="flex items-center space-x-3 mb-6"
+              className="flex items-center responsive-gap-sm mb-4 lg:mb-6"
             >
-              <BarChart3 className="w-8 h-8 text-purple-400" />
-              <h3 className="text-3xl font-extrabold bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg">
+              <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-accent" />
+              <h3 className="responsive-text-3xl font-extrabold bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent drop-shadow-lg">
                 Impact Metrics
               </h3>
             </motion.div>
@@ -402,7 +406,7 @@ export const AboutSection = () => {
             {/* Three-Column Metrics Grid */}
             <motion.div 
               variants={containerVariants} 
-              className="grid grid-cols-3 gap-3"
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 responsive-gap-sm"
             >
               {impactMetrics.map((metric, index) => (
                 <motion.div
@@ -413,21 +417,21 @@ export const AboutSection = () => {
                     transition: { duration: 0.3, ease: "easeOut" }
                   }}
                   onClick={() => setExpandedMetric(expandedMetric === index ? null : index)}
-                  className="group relative bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 rounded-lg p-3 hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-500 cursor-pointer"
+                  className="group relative bg-card/40 backdrop-blur-xl border border-border/50 rounded-lg responsive-card hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20 transition-all duration-500 cursor-pointer touch-target"
                 >
-                  <div className="text-center space-y-2">
-                    <div className="space-y-1">
+                  <div className="text-center space-y-1 sm:space-y-2">
+                    <div className="space-y-0.5 sm:space-y-1">
                       <div className="flex items-baseline justify-center space-x-0.5">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent group-hover:from-blue-300 group-hover:via-cyan-300 group-hover:to-purple-300 transition-all duration-500">
+                        <span className="responsive-text-lg lg:responsive-text-xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent group-hover:from-primary group-hover:via-accent group-hover:to-primary transition-all duration-500">
                           {metric.value}
                         </span>
                         {metric.unit && (
-                          <span className="text-blue-400 font-bold text-lg group-hover:text-blue-300 transition-colors duration-500">
+                          <span className="text-primary font-bold responsive-text-sm lg:responsive-text-base group-hover:text-accent transition-colors duration-500">
                             {metric.unit}
                           </span>
                         )}
                       </div>
-                      <p className="text-xs font-medium text-slate-300 leading-tight px-1">
+                      <p className="responsive-text-sm leading-tight px-0.5 sm:px-1 font-medium text-muted-foreground">
                         {metric.label}
                       </p>
                     </div>
@@ -443,8 +447,8 @@ export const AboutSection = () => {
                         transition={{ duration: 0.3, ease: "easeOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="border-t border-slate-700/50 pt-2">
-                          <p className="text-xs text-slate-400 text-center leading-relaxed">
+                        <div className="border-t border-border/50 pt-1.5 sm:pt-2">
+                          <p className="responsive-text-sm text-muted-foreground text-center leading-relaxed">
                             {metric.description}
                           </p>
                         </div>

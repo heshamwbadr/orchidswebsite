@@ -2,169 +2,158 @@
 
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'motion/react';
+
+const navigationItems = [
+  { name: 'Home', href: '#home' },
+  { name: 'About', href: '#about' },
+  { name: 'Services', href: '#services' },
+  { name: 'Portfolio', href: '#case-studies' },
+  { name: 'Testimonials', href: '#testimonials' },
+  { name: 'Contact', href: '#contact' },
+];
 
 export const Navigation = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('about');
-
-  const navigationLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Case Studies', href: '#case-studies' },
-    { name: 'Testimonials', href: '#testimonials' },
-    { name: 'Contact', href: '#cta' },
-  ];
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    const handleSectionChange = () => {
-      const sections = ['about', 'services', 'case-studies', 'testimonials', 'cta'];
-      const scrollPosition = window.scrollY + 100;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('scroll', handleSectionChange);
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('scroll', handleSectionChange);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-    setIsMobileMenuOpen(false);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsOpen(false);
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  const handleNavClick = (href: string) => {
+    setIsOpen(false);
+    if (href === '#home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const element = document.getElementById(href.replace('#', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const openCalendly = () => {
+    window.open('https://calendly.com/hesham-badr/30min', '_blank');
   };
 
   return (
-    <>
-      <nav 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-background/95 backdrop-blur-md border-b border-border/50' 
-            : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <h1 className="text-xl font-light text-foreground tracking-wide">
-                Hesham Badr
-              </h1>
-            </div>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/80 backdrop-blur-md border-b border-border/50' : 'bg-transparent'}`}>
+      <div className="container-responsive max-w-7xl">
+        <div className="flex items-center justify-between h-16 sm:h-18 lg:h-20">
+          {/* Logo - Left Side */}
+          <button
+            onClick={scrollToTop}
+            className="flex items-center space-x-2 hover:opacity-80 transition-opacity duration-300 touch-target p-2 -ml-2"
+          >
+            <img 
+              src="https://clever-pika-899e4f.netlify.app/signaturetransparent1.png" 
+              alt="Hesham Badr Signature"
+              className="h-10 sm:h-12 lg:h-14 xl:h-16 w-auto object-contain"
+            />
+          </button>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              {navigationLinks.map((link) => (
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden lg:flex items-center justify-center flex-1">
+            <div className="flex items-center space-x-8 xl:space-x-10">
+              {navigationItems.map((item) => (
                 <button
-                  key={link.name}
-                  onClick={() => scrollToSection(link.href)}
-                  className={`font-light text-sm tracking-wide transition-all duration-200 hover:text-primary relative ${
-                    activeSection === link.href.slice(1)
-                      ? 'text-primary'
-                      : 'text-muted-foreground'
+                  key={item.name}
+                  onClick={() => handleNavClick(item.href)}
+                  className={`relative responsive-text-base font-medium transition-colors duration-300 touch-target px-3 py-2 group ${
+                    item.name === 'Contact' 
+                      ? 'text-primary hover:text-primary/80' 
+                      : 'text-muted-foreground hover:text-primary'
                   }`}
                 >
-                  {link.name}
-                  {activeSection === link.href.slice(1) && (
-                    <div className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-primary to-secondary"></div>
-                  )}
+                  {item.name}
+                  {/* Subtle underline animation */}
+                  <span className={`absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full ${
+                    item.name === 'Contact' 
+                      ? 'bg-primary' 
+                      : 'bg-primary'
+                  }`}></span>
                 </button>
               ))}
             </div>
-
-            {/* CTA Button */}
-            <div className="hidden md:block">
-              <Button
-                className="relative font-light text-sm px-6 py-2 bg-gradient-to-r from-secondary to-primary text-primary-foreground border-0 shadow-lg hover:shadow-xl hover:shadow-secondary/25 transition-all duration-300 hover:scale-105 group"
-              >
-                <span className="relative z-10">Book a Call</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-300"></div>
-              </Button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                onClick={toggleMobileMenu}
-                className="text-foreground hover:text-primary transition-colors duration-200 p-2"
-              >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
           </div>
+
+          {/* Desktop CTA Button - Right Side */}
+          <div className="hidden lg:flex">
+            <button
+              onClick={openCalendly}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-2.5 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              Book a Call
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden p-2 rounded-lg hover:bg-muted/10 transition-colors duration-300 touch-target"
+          >
+            {isOpen ? (
+              <X className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
+            ) : (
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
+            )}
+          </button>
         </div>
 
-        {/* Mobile Menu */}
-        <div 
-          className={`md:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border/50 transition-all duration-300 ${
-            isMobileMenuOpen 
-              ? 'opacity-100 translate-y-0' 
-              : 'opacity-0 -translate-y-4 pointer-events-none'
-          }`}
-        >
-          <div className="px-4 py-6 space-y-4">
-            {navigationLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => scrollToSection(link.href)}
-                className={`block w-full text-left font-light text-base tracking-wide py-3 px-2 transition-all duration-200 hover:text-primary hover:pl-4 ${
-                  activeSection === link.href.slice(1)
-                    ? 'text-primary border-l-2 border-primary pl-4'
-                    : 'text-muted-foreground'
-                }`}
-              >
-                {link.name}
-              </button>
-            ))}
-            
-            {/* Mobile CTA Button */}
-            <div className="pt-4">
-              <Button
-                className="w-full font-light text-sm py-3 bg-gradient-to-r from-secondary to-primary text-primary-foreground border-0 shadow-lg hover:shadow-xl hover:shadow-secondary/25 transition-all duration-300 group"
-              >
-                <span className="relative z-10">Book a Call</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-300"></div>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-background/50 backdrop-blur-sm z-40 md:hidden"
-          onClick={toggleMobileMenu}
-        />
-      )}
-    </>
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="lg:hidden border-t border-border/50 bg-background/95 backdrop-blur-md"
+            >
+              <div className="responsive-py-sm responsive-px-sm space-y-2">
+                {navigationItems.map((item) => (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavClick(item.href)}
+                    className={`relative block w-full text-left responsive-px-sm responsive-py-sm responsive-text-base font-medium transition-colors duration-300 rounded-lg touch-target group ${
+                      item.name === 'Contact' 
+                        ? 'text-primary hover:text-primary/80 hover:bg-primary/5' 
+                        : 'text-muted-foreground hover:text-primary hover:bg-muted/10'
+                    }`}
+                  >
+                    {item.name}
+                    {/* Mobile underline animation */}
+                    <span className={`absolute bottom-1 left-4 h-0.5 w-0 transition-all duration-300 group-hover:w-8 ${
+                      item.name === 'Contact' 
+                        ? 'bg-primary' 
+                        : 'bg-primary'
+                    }`}></span>
+                  </button>
+                ))}
+                <div className="pt-4 border-t border-border/50 mt-4">
+                  <button
+                    onClick={openCalendly}
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+                  >
+                    Book a Call
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </nav>
   );
 };

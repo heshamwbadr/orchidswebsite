@@ -8,63 +8,63 @@ import { Button } from "@/components/ui/button";
 const testimonials = [
   {
     id: 1,
-    quote: "Their strategic insights transformed our digital infrastructure completely. We saw a 340% increase in operational efficiency within the first quarter.",
-    name: "Sarah Chen",
-    title: "Chief Technology Officer",
-    company: "TechVision Corp",
-    industry: "Enterprise Software",
+    quote: "Hesham's charisma, communication style, and inclusive leadership made everyone feel empowered. His strategic thinking and workshop facilitation were both engaging and results-driven.",
+    name: "Preeti Rawat",
+    title: "Senior Product Manager",
+    company: "Westpac",
+    industry: "Banking & Finance",
     rating: 5,
-    metric: "340% efficiency gain"
+    metric: "Inclusive Leadership"
   },
   {
     id: 2,
-    quote: "The consulting team delivered exceptional results. Our cloud migration project finished 2 months ahead of schedule and under budget.",
-    name: "Michael Rodriguez",
-    title: "VP of Engineering",
-    company: "DataFlow Systems",
-    industry: "Financial Services",
+    quote: "Blends strategic thinking with operational excellence. Sees the big picture while delivering outcomes with detail and discipline — an invaluable asset to any transformation effort.",
+    name: "Janine Modaro",
+    title: "Leadership Consultant | GM",
+    company: "Westpac",
+    industry: "Banking & Finance",
     rating: 5,
-    metric: "2 months early delivery"
+    metric: "Strategic Excellence"
   },
   {
     id: 3,
-    quote: "Outstanding expertise in AI implementation. We reduced processing time by 85% and improved customer satisfaction scores significantly.",
-    name: "Dr. Emily Watson",
-    title: "Chief Executive Officer",
-    company: "InnovateLab",
-    industry: "Healthcare Technology",
+    quote: "Hesham's natural curiosity and innovative mindset helped our entire team step into a completely new learning journey. He brought insight, leadership, and an infectious energy to every session.",
+    name: "Angela Bradley",
+    title: "Non-Executive Director",
+    company: "GAICD",
+    industry: "Corporate Governance",
     rating: 5,
-    metric: "85% time reduction"
+    metric: "Innovation Catalyst"
   },
   {
     id: 4,
-    quote: "Their cybersecurity framework protected us from multiple threats. A truly comprehensive solution that exceeded our expectations.",
-    name: "James Thompson",
-    title: "Chief Information Officer",
-    company: "SecureBank",
+    quote: "Planted seeds of positive transformation and challenged assumptions. Created space, inspired new thinking, and brought strategic clarity that made a lasting impact.",
+    name: "Michael Amsoms",
+    title: "Senior Change Manager",
+    company: "Westpac",
     industry: "Banking & Finance",
     rating: 5,
-    metric: "Zero security incidents"
+    metric: "Transformation Impact"
   },
   {
     id: 5,
-    quote: "Phenomenal business transformation results. Our digital adoption increased by 250% and revenue grew by 180% year-over-year.",
-    name: "Lisa Park",
-    title: "Chief Operating Officer",
-    company: "GlobalTech Solutions",
-    industry: "Manufacturing",
+    quote: "Hesham brings clarity to complexity like few can. His insights shaped strategic decisions and delivered real impact while managing a multimillion-dollar portfolio at Westpac. Driven, bright, and collaborative — highly recommended.",
+    name: "LD Posada",
+    title: "Senior Finance Partner",
+    company: "Chartered Accountant",
+    industry: "Financial Services",
     rating: 5,
-    metric: "180% revenue growth"
+    metric: "Strategic Decision Impact"
   },
   {
     id: 6,
-    quote: "The most professional consulting experience we've had. Their team delivered a scalable architecture that supports our rapid growth.",
-    name: "Robert Kim",
-    title: "Chief Technology Officer",
-    company: "ScaleUp Dynamics",
-    industry: "E-commerce",
+    quote: "Hesham consistently demonstrated a natural ability to break down complex problems and articulate clear, data-backed recommendations for executive decision-making. What stood out most was his ability to influence collaboratively, guiding stakeholders through ambiguity and aligning diverse views without friction.",
+    name: "Waleed Zafar",
+    title: "Strategy & Design Lead",
+    company: "Westpac",
+    industry: "Banking & Finance",
     rating: 5,
-    metric: "5x scalability improvement"
+    metric: "Executive Advisory"
   }
 ];
 
@@ -74,8 +74,8 @@ export const Testimonials = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const cardWidth = 384; // w-96 = 384px
-  const gap = 24; // gap-6 = 24px
+  const cardWidth = 320; // Reduced for better mobile fit
+  const gap = 16; // Reduced gap for mobile
 
   // Duplicate testimonials for seamless loop
   const duplicatedTestimonials = [...testimonials, ...testimonials];
@@ -121,7 +121,7 @@ export const Testimonials = () => {
   };
 
   return (
-    <section className="py-24 px-6 relative overflow-hidden">
+    <section className="responsive-py-lg mobile-safe-area relative overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/5 to-background"></div>
       
@@ -129,13 +129,13 @@ export const Testimonials = () => {
       <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="container-responsive max-w-7xl relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent">
+        <div className="text-center mb-12 lg:mb-16">
+          <h2 className="responsive-text-5xl font-bold mb-4 lg:mb-6 bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent">
             What Clients Say
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="responsive-text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Trusted by industry leaders across sectors. See how we've transformed businesses worldwide.
           </p>
         </div>
@@ -148,7 +148,7 @@ export const Testimonials = () => {
             onMouseLeave={handleMouseLeave}
           >
             <div 
-              className={`flex gap-6 w-fit transition-transform duration-300 ease-in-out ${
+              className={`flex responsive-gap-base w-fit transition-transform duration-300 ease-in-out ${
                 isPaused ? '[animation-play-state:paused]' : ''
               }`}
               style={{
@@ -157,31 +157,31 @@ export const Testimonials = () => {
               }}
             >
               {duplicatedTestimonials.map((testimonial, index) => (
-                <div key={`${testimonial.id}-${index}`} className="flex-shrink-0 w-96">
-                  <Card className="relative border border-border/50 bg-card/50 backdrop-blur-sm p-6 text-left group hover:border-primary/30 transition-all duration-500 h-full">
+                <div key={`${testimonial.id}-${index}`} className="flex-shrink-0 w-80 lg:w-96">
+                  <Card className="relative border border-border/50 bg-card/50 backdrop-blur-sm responsive-card text-left group hover:border-primary/30 transition-all duration-500 h-full">
                     {/* Glow effect */}
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
                     <div className="relative z-10 h-full flex flex-col">
                       {/* Stars */}
-                      <div className="flex mb-4">
+                      <div className="flex mb-3 lg:mb-4">
                         {[...Array(testimonial.rating)].map((_, i) => (
                           <Star 
                             key={i} 
-                            className="w-4 h-4 text-primary fill-primary mr-0.5" 
+                            className="w-3 h-3 sm:w-4 sm:h-4 text-primary fill-primary mr-0.5" 
                           />
                         ))}
                       </div>
 
                       {/* Quote */}
-                      <blockquote className="text-base text-foreground mb-6 leading-relaxed font-medium flex-grow">
+                      <blockquote className="responsive-text-base text-foreground mb-4 lg:mb-6 leading-relaxed font-medium flex-grow">
                         "{testimonial.quote}"
                       </blockquote>
 
                       {/* Metric */}
-                      <div className="mb-4">
-                        <div className="inline-block px-3 py-1 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full border border-primary/30">
-                          <span className="text-primary font-semibold text-sm">
+                      <div className="mb-3 lg:mb-4">
+                        <div className="inline-block responsive-px-sm responsive-py-sm bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full border border-primary/30">
+                          <span className="text-primary font-semibold responsive-text-sm">
                             {testimonial.metric}
                           </span>
                         </div>
@@ -190,20 +190,20 @@ export const Testimonials = () => {
                       {/* Client info */}
                       <div className="flex items-center">
                         {/* Avatar placeholder */}
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-muted to-muted-foreground/20 border-2 border-primary/30 flex items-center justify-center mr-3 group-hover:border-primary/50 transition-colors duration-300">
-                          <User className="w-6 h-6 text-muted-foreground" />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-muted to-muted-foreground/20 border-2 border-primary/30 flex items-center justify-center mr-3 group-hover:border-primary/50 transition-colors duration-300">
+                          <User className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
                         </div>
                         
                         <div>
-                          <h4 className="text-base font-semibold text-foreground mb-0.5">
+                          <h4 className="responsive-text-base font-semibold text-foreground mb-0.5">
                             {testimonial.name}
                           </h4>
-                          <p className="text-primary font-medium text-sm mb-1">
+                          <p className="text-primary font-medium responsive-text-sm mb-1">
                             {testimonial.title}
                           </p>
                           <div className="flex items-center text-muted-foreground">
                             <Building2 className="w-3 h-3 mr-1" />
-                            <span className="text-xs">
+                            <span className="responsive-text-sm">
                               {testimonial.company} • {testimonial.industry}
                             </span>
                           </div>
@@ -216,24 +216,24 @@ export const Testimonials = () => {
             </div>
 
             {/* Fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent pointer-events-none z-10"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent pointer-events-none z-10"></div>
+            <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-20 bg-gradient-to-r from-background to-transparent pointer-events-none z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-20 bg-gradient-to-l from-background to-transparent pointer-events-none z-10"></div>
           </div>
 
           {/* Manual scroll controls */}
-          <div className="flex justify-center items-center mt-8 gap-4">
+          <div className="flex flex-col sm:flex-row justify-center items-center mt-6 lg:mt-8 responsive-gap-base">
             <Button
               variant="outline"
               size="sm"
               onClick={scrollLeft}
               disabled={!canScrollLeft}
-              className="flex items-center gap-2 disabled:opacity-50"
+              className="responsive-button flex items-center responsive-gap-sm disabled:opacity-50 order-2 sm:order-1"
             >
               <ChevronLeft className="w-4 h-4" />
-              Previous
+              <span className="hidden sm:inline">Previous</span>
             </Button>
 
-            <div className={`text-sm text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center space-x-2 ${isPaused ? 'opacity-60' : ''}`}>
+            <div className={`responsive-text-sm text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center responsive-gap-sm order-1 sm:order-2 ${isPaused ? 'opacity-60' : ''}`}>
               <div className={`w-2 h-2 rounded-full ${isPaused ? 'bg-muted-foreground/50' : 'bg-primary animate-pulse'}`}></div>
               <span>{isPaused ? 'Paused - Hover to pause' : 'Auto-scrolling'}</span>
             </div>
@@ -243,9 +243,9 @@ export const Testimonials = () => {
               size="sm"
               onClick={scrollRight}
               disabled={!canScrollRight}
-              className="flex items-center gap-2 disabled:opacity-50"
+              className="responsive-button flex items-center responsive-gap-sm disabled:opacity-50 order-3"
             >
-              Next
+              <span className="hidden sm:inline">Next</span>
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>
@@ -255,7 +255,7 @@ export const Testimonials = () => {
         <div className="md:hidden">
           <div 
             ref={scrollContainerRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide pb-6"
+            className="flex responsive-gap-base overflow-x-auto scrollbar-hide pb-4 lg:pb-6"
             style={{
               scrollSnapType: 'x mandatory',
               scrollBehavior: 'smooth'
@@ -263,31 +263,31 @@ export const Testimonials = () => {
             onScroll={handleScroll}
           >
             {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="flex-shrink-0 w-80 scroll-snap-align-start">
-                <Card className="relative border border-border/50 bg-card/50 backdrop-blur-sm p-6 text-left group hover:border-primary/30 transition-all duration-500 h-full">
+              <div key={testimonial.id} className="flex-shrink-0 w-72 sm:w-80 scroll-snap-align-start">
+                <Card className="relative border border-border/50 bg-card/50 backdrop-blur-sm responsive-card text-left group hover:border-primary/30 transition-all duration-500 h-full">
                   {/* Glow effect */}
                   <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
                   <div className="relative z-10 h-full flex flex-col">
                     {/* Stars */}
-                    <div className="flex mb-4">
+                    <div className="flex mb-3 lg:mb-4">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star 
                           key={i} 
-                          className="w-4 h-4 text-primary fill-primary mr-0.5" 
+                          className="w-3 h-3 sm:w-4 sm:h-4 text-primary fill-primary mr-0.5" 
                         />
                       ))}
                     </div>
 
                     {/* Quote */}
-                    <blockquote className="text-base text-foreground mb-6 leading-relaxed font-medium flex-grow">
+                    <blockquote className="responsive-text-base text-foreground mb-4 lg:mb-6 leading-relaxed font-medium flex-grow">
                       "{testimonial.quote}"
                     </blockquote>
 
                     {/* Metric */}
-                    <div className="mb-4">
-                      <div className="inline-block px-3 py-1 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full border border-primary/30">
-                        <span className="text-primary font-semibold text-sm">
+                    <div className="mb-3 lg:mb-4">
+                      <div className="inline-block responsive-px-sm responsive-py-sm bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full border border-primary/30">
+                        <span className="text-primary font-semibold responsive-text-sm">
                           {testimonial.metric}
                         </span>
                       </div>
@@ -296,20 +296,20 @@ export const Testimonials = () => {
                     {/* Client info */}
                     <div className="flex items-center">
                       {/* Avatar placeholder */}
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-muted to-muted-foreground/20 border-2 border-primary/30 flex items-center justify-center mr-3 group-hover:border-primary/50 transition-colors duration-300">
-                        <User className="w-6 h-6 text-muted-foreground" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-muted to-muted-foreground/20 border-2 border-primary/30 flex items-center justify-center mr-3 group-hover:border-primary/50 transition-colors duration-300">
+                        <User className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
                       </div>
                       
                       <div>
-                        <h4 className="text-base font-semibold text-foreground mb-0.5">
+                        <h4 className="responsive-text-base font-semibold text-foreground mb-0.5">
                           {testimonial.name}
                         </h4>
-                        <p className="text-primary font-medium text-sm mb-1">
+                        <p className="text-primary font-medium responsive-text-sm mb-1">
                           {testimonial.title}
                         </p>
                         <div className="flex items-center text-muted-foreground">
                           <Building2 className="w-3 h-3 mr-1" />
-                          <span className="text-xs">
+                          <span className="responsive-text-sm">
                             {testimonial.company} • {testimonial.industry}
                           </span>
                         </div>
@@ -322,8 +322,8 @@ export const Testimonials = () => {
           </div>
 
           {/* Mobile scroll indicator */}
-          <div className="flex justify-center mt-6">
-            <div className="text-sm text-muted-foreground flex items-center space-x-2">
+          <div className="flex justify-center mt-4 lg:mt-6">
+            <div className="responsive-text-sm text-muted-foreground flex items-center responsive-gap-sm">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
               <span>Swipe to scroll</span>
             </div>

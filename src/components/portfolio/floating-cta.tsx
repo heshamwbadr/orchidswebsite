@@ -3,14 +3,15 @@
 import React from 'react';
 import { Phone } from 'lucide-react';
 import { motion } from 'motion/react';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 export const FloatingCallToAction = () => {
   const handleCallClick = () => {
-    window.open('https://calendly.com/hesham-badr-neuronovate/30min', '_blank');
+    openCalendlyPopup();
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">
       {/* Pulse rings */}
       <div className="absolute inset-0">
         {[...Array(3)].map((_, i) => (
@@ -35,7 +36,7 @@ export const FloatingCallToAction = () => {
       {/* Main button */}
       <motion.button
         onClick={handleCallClick}
-        className="relative w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary"
+        className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target"
         whileHover={{
           scale: 1.1,
           boxShadow: '0 8px 25px rgba(0, 122, 255, 0.4), 0 4px 15px rgba(255, 215, 0, 0.2)',
@@ -55,15 +56,16 @@ export const FloatingCallToAction = () => {
             ease: "easeOut",
           },
         }}
-        aria-label="Schedule a call - Opens Calendly in new tab"
+        aria-label="Schedule a call - Opens Calendly popup"
         title="Schedule a 30-minute consultation"
       >
         <motion.div
           whileHover={{ rotate: 15 }}
           transition={{ duration: 0.2 }}
+          className="flex items-center justify-center h-full"
         >
           <Phone 
-            className="w-6 h-6 md:w-8 md:h-8 text-white mx-auto" 
+            className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" 
             strokeWidth={2}
           />
         </motion.div>

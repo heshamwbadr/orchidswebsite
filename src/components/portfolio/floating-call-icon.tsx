@@ -2,16 +2,17 @@
 
 import { Phone } from 'lucide-react';
 import { motion } from 'motion/react';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 export const FloatingCallButton = () => {
   const handleClick = () => {
-    window.open('https://calendly.com/hesham-badr-neuronovate/30min', '_blank');
+    openCalendlyPopup();
   };
 
   return (
     <motion.button
       onClick={handleClick}
-      className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl focus:outline-none focus:ring-4 focus:ring-primary/30 focus:ring-offset-2 focus:ring-offset-background bg-gradient-to-r from-secondary to-primary"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full shadow-2xl focus:outline-none focus:ring-4 focus:ring-primary/30 focus:ring-offset-2 focus:ring-offset-background bg-gradient-to-r from-secondary to-primary touch-target mobile-safe-area"
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ 
         scale: 1, 
@@ -37,7 +38,7 @@ export const FloatingCallButton = () => {
           ease: "easeInOut",
         }
       }}
-      aria-label="Book a Call"
+      aria-label="Book a Call - Opens Calendly popup"
       role="button"
     >
       <motion.div
@@ -52,12 +53,12 @@ export const FloatingCallButton = () => {
         }}
       >
         <Phone 
-          className="w-6 h-6 text-white drop-shadow-md" 
+          className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white drop-shadow-md" 
           strokeWidth={2}
         />
       </motion.div>
       
-      {/* Pulse rings */}
+      {/* Pulse rings - optimized for mobile */}
       <motion.div
         className="absolute inset-0 rounded-full border-2"
         style={{ borderColor: '#007AFF' }}
