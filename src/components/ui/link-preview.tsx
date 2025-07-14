@@ -8,7 +8,7 @@ import {
   motion,
   useMotionValue,
   useSpring,
-} from "motion/react";
+} from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -78,12 +78,7 @@ export const LinkPreview = ({
     <>
       {isMounted ? (
         <div className="hidden">
-          <img
-            src={src}
-            width={width}
-            height={height}
-            alt="hidden image"
-          />
+          <img src={src} width={width} height={height} alt="hidden image" />
         </div>
       ) : null}
 

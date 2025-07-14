@@ -39,7 +39,7 @@ const Background = () => {
         "bg-[radial-gradient(circle_at_0.5px_0.5px,rgba(0,0,0,0.2)_0.5px,transparent_0)]",
         "dark:bg-[radial-gradient(circle_at_0.5px_0.5px,rgba(255,255,255,0.2)_0.5px,transparent_0)]",
         "bg-repeat",
-        "[background-size:8px_8px]"
+        "[background-size:8px_8px]",
       )}
     />
   );

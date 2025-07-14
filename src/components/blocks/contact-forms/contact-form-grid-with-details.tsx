@@ -4,7 +4,7 @@ import { IconMailFilled } from "@tabler/icons-react";
 import { useId } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 export function ContactFormGridWithDetails() {
   return (
@@ -122,7 +122,7 @@ const Pin = ({ className }: { className?: string }) => {
       style={{ transform: "translateZ(1px)" }}
       className={cn(
         "pointer-events-none absolute z-[60] flex h-40 w-96 items-center justify-center opacity-100 transition duration-500",
-        className
+        className,
       )}
     >
       <div className="h-full w-full">
@@ -191,13 +191,13 @@ export const FeatureIconContainer = ({
     <div
       className={cn(
         "relative h-14 w-14 rounded-md bg-gradient-to-b from-gray-50 to-neutral-200 p-[4px] dark:from-neutral-800 dark:to-neutral-950",
-        className
+        className,
       )}
     >
       <div
         className={cn(
           "relative z-20 h-full w-full rounded-[5px] bg-gray-50 dark:bg-neutral-800",
-          className
+          className,
         )}
       >
         {children}

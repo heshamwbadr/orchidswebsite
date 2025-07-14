@@ -96,7 +96,7 @@ export const Card = ({
     <div
       className={cn(
         "p-4 md:p-8 rounded-xl min-h-[230px] h-full max-w-md md:max-w-lg mx-4 bg-gray-50  dark:bg-neutral-900 shadow-[2px_4px_16px_0px_rgba(248,248,248,0.06)_inset] group",
-        className
+        className,
       )}
     >
       {children}
@@ -115,7 +115,7 @@ export const Quote = ({
     <h3
       className={cn(
         "text-sm md:text-base font-semibold dark:text-white text-black py-2",
-        className
+        className,
       )}
     >
       {children}
@@ -134,7 +134,7 @@ export const QuoteDescription = ({
     <p
       className={cn(
         "text-xs md:text-sm font-normal dark:text-neutral-400 text-neutral-600 max-w-sm",
-        className
+        className,
       )}
     >
       {children}

@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { TrendingUp, Brain, Users, BookOpen } from 'lucide-react'
-import { motion } from 'motion/react'
+import { TrendingUp, Brain, Users, BookOpen } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function SideBySideWithDetails() {
   return (
@@ -9,7 +9,7 @@ export default function SideBySideWithDetails() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
           <div className="max-w-xl lg:max-w-lg">
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -17,15 +17,16 @@ export default function SideBySideWithDetails() {
             >
               Strategic Insights Weekly
             </motion.h2>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="mt-4 text-lg text-muted-foreground font-[var(--font-body)]"
             >
-              Get exclusive AI and digital transformation insights delivered to your inbox. Join 2,500+ executives staying ahead of the curve.
+              Get exclusive AI and digital transformation insights delivered to
+              your inbox. Join 2,500+ executives staying ahead of the curve.
             </motion.p>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -52,21 +53,27 @@ export default function SideBySideWithDetails() {
             </motion.div>
           </div>
           <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-col items-start"
             >
               <div className="rounded-md bg-white/5 p-2 ring-1 ring-border">
-                <TrendingUp aria-hidden="true" className="size-6 text-primary" />
+                <TrendingUp
+                  aria-hidden="true"
+                  className="size-6 text-primary"
+                />
               </div>
-              <dt className="mt-4 text-base font-semibold text-foreground font-[var(--font-display)]">Weekly strategic frameworks</dt>
+              <dt className="mt-4 text-base font-semibold text-foreground font-[var(--font-display)]">
+                Weekly strategic frameworks
+              </dt>
               <dd className="mt-2 text-base/7 text-muted-foreground font-[var(--font-body)]">
-                Actionable frameworks and methodologies for driving digital transformation in your organization.
+                Actionable frameworks and methodologies for driving digital
+                transformation in your organization.
               </dd>
             </motion.div>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -75,12 +82,15 @@ export default function SideBySideWithDetails() {
               <div className="rounded-md bg-white/5 p-2 ring-1 ring-border">
                 <Brain aria-hidden="true" className="size-6 text-primary" />
               </div>
-              <dt className="mt-4 text-base font-semibold text-foreground font-[var(--font-display)]">AI implementation case studies</dt>
+              <dt className="mt-4 text-base font-semibold text-foreground font-[var(--font-display)]">
+                AI implementation case studies
+              </dt>
               <dd className="mt-2 text-base/7 text-muted-foreground font-[var(--font-body)]">
-                Real-world AI success stories and implementation strategies from leading enterprises.
+                Real-world AI success stories and implementation strategies from
+                leading enterprises.
               </dd>
             </motion.div>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
@@ -89,12 +99,15 @@ export default function SideBySideWithDetails() {
               <div className="rounded-md bg-white/5 p-2 ring-1 ring-border">
                 <BookOpen aria-hidden="true" className="size-6 text-primary" />
               </div>
-              <dt className="mt-4 text-base font-semibold text-foreground font-[var(--font-display)]">Industry transformation trends</dt>
+              <dt className="mt-4 text-base font-semibold text-foreground font-[var(--font-display)]">
+                Industry transformation trends
+              </dt>
               <dd className="mt-2 text-base/7 text-muted-foreground font-[var(--font-body)]">
-                Stay ahead with emerging trends and disruptive technologies shaping industries.
+                Stay ahead with emerging trends and disruptive technologies
+                shaping industries.
               </dd>
             </motion.div>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -103,23 +116,29 @@ export default function SideBySideWithDetails() {
               <div className="rounded-md bg-white/5 p-2 ring-1 ring-border">
                 <Users aria-hidden="true" className="size-6 text-primary" />
               </div>
-              <dt className="mt-4 text-base font-semibold text-foreground font-[var(--font-display)]">Executive interviews and insights</dt>
+              <dt className="mt-4 text-base font-semibold text-foreground font-[var(--font-display)]">
+                Executive interviews and insights
+              </dt>
               <dd className="mt-2 text-base/7 text-muted-foreground font-[var(--font-body)]">
-                Exclusive conversations with industry leaders and transformation experts.
+                Exclusive conversations with industry leaders and transformation
+                experts.
               </dd>
             </motion.div>
           </dl>
         </div>
       </div>
-      <div aria-hidden="true" className="absolute top-0 left-1/2 -z-10 -translate-x-1/2 blur-3xl xl:-top-6">
+      <div
+        aria-hidden="true"
+        className="absolute top-0 left-1/2 -z-10 -translate-x-1/2 blur-3xl xl:-top-6"
+      >
         <div
           style={{
             clipPath:
-              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
           }}
           className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-primary/30 to-accent/20 opacity-20"
         />
       </div>
     </div>
-  )
+  );
 }

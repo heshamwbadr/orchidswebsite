@@ -35,7 +35,7 @@ const Background = () => {
   return (
     <div
       className={cn(
-        "pointer-events-none absolute inset-0 z-0 h-full w-full overflow-hidden [mask-image:linear-gradient(to_bottom,white,transparent,white)]"
+        "pointer-events-none absolute inset-0 z-0 h-full w-full overflow-hidden [mask-image:linear-gradient(to_bottom,white,transparent,white)]",
       )}
     >
       <svg

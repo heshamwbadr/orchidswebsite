@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const GlowingStarsBackgroundCard = ({
@@ -23,7 +23,7 @@ export const GlowingStarsBackgroundCard = ({
       }}
       className={cn(
         "bg-[linear-gradient(110deg,#333_0.6%,#222)] p-4 max-w-md max-h-[20rem] h-full w-full rounded-xl border border-[#eaeaea] dark:border-neutral-600",
-        className
+        className,
       )}
     >
       <div className="flex justify-center items-center">
@@ -73,7 +73,7 @@ export const Illustration = ({ mouseEnter }: { mouseEnter: boolean }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       highlightedStars.current = Array.from({ length: 5 }, () =>
-        Math.floor(Math.random() * stars)
+        Math.floor(Math.random() * stars),
       );
       setGlowingStars([...highlightedStars.current]);
     }, 3000);

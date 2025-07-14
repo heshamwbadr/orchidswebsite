@@ -62,7 +62,7 @@ const Rectangles = ({
     <div
       className={cn(
         "pointer-events-none absolute inset-0 z-0 h-full w-full overflow-hidden",
-        className
+        className,
       )}
       {...props}
     >

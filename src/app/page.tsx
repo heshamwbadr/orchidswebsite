@@ -14,31 +14,31 @@ export default function Home() {
     <main className="min-h-screen bg-background text-foreground">
       <Navigation />
       <HeroSection />
-      
+
       <section id="services" className="hidden">
         <ServicesSection />
       </section>
-      
+
       <section id="about" className="-mt-12 lg:-mt-16">
         <AboutSection />
       </section>
-      
+
       <section id="trust">
         <WhyMeSection />
       </section>
-      
+
       <section id="case-studies">
         <CaseStudiesSection />
       </section>
-      
+
       <section id="testimonials">
         <Testimonials />
       </section>
-      
+
       <section id="contact">
         <CTASection />
       </section>
-      
+
       <Footer />
       <FloatingCallButton />
     </main>

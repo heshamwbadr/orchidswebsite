@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import createGlobe from "cobe";
 import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { IconBrandYoutubeFilled } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -97,7 +97,7 @@ const FeatureDescription = ({ children }: { children?: React.ReactNode }) => {
       className={cn(
         "mx-auto max-w-4xl text-left text-sm md:text-base",
         "text-center font-normal text-neutral-500 dark:text-neutral-300",
-        "mx-0 my-2 max-w-sm text-left md:text-sm"
+        "mx-0 my-2 max-w-sm text-left md:text-sm",
       )}
     >
       {children}

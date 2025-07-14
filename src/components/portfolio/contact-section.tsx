@@ -1,14 +1,21 @@
 "use client";
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Mail, Send, CheckCircle, User, MessageSquare, Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { openCalendlyPopup } from '@/lib/calendly';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Mail,
+  Send,
+  CheckCircle,
+  User,
+  MessageSquare,
+  Calendar,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { openCalendlyPopup } from "@/lib/calendly";
 
 interface FormData {
   name: string;
@@ -25,59 +32,59 @@ interface FormErrors {
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    company: '',
-    message: ''
+    name: "",
+    email: "",
+    company: "",
+    message: "",
   });
-  
+
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    
+
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = "Name is required";
     }
-    
+
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = "Please enter a valid email address";
     }
-    
+
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
+      newErrors.message = "Message is required";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
       setIsSuccess(true);
-      setFormData({ name: '', email: '', company: '', message: '' });
-      
+      setFormData({ name: "", email: "", company: "", message: "" });
+
       // Reset success state after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
     }, 2000);
   };
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field as keyof FormErrors]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
@@ -115,9 +122,11 @@ export const ContactSection = () => {
               Ready to Start?
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground mb-4 lg:mb-6 leading-relaxed">
-              Schedule a free 30-minute consultation to discuss your project and explore how we can work together to transform your business with AI.
+              Schedule a free 30-minute consultation to discuss your project and
+              explore how we can work together to transform your business with
+              AI.
             </p>
-            <Button 
+            <Button
               size="lg"
               className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-semibold px-6 sm:px-8 py-3 text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto touch-target"
               onClick={handleScheduleConsultation}
@@ -131,7 +140,8 @@ export const ContactSection = () => {
             Let's Connect
           </h3>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Or send me a message using the form below and I'll get back to you within 24 hours.
+            Or send me a message using the form below and I'll get back to you
+            within 24 hours.
           </p>
         </motion.div>
 
@@ -146,9 +156,12 @@ export const ContactSection = () => {
             <Card className="p-4 sm:p-6 lg:p-8 bg-card/50 backdrop-blur-sm border-border/50 shadow-2xl">
               <CardContent className="p-0">
                 <div className="mb-6 lg:mb-8">
-                  <h3 className="text-xl sm:text-2xl font-semibold mb-2 lg:mb-3">Send a Message</h3>
+                  <h3 className="text-xl sm:text-2xl font-semibold mb-2 lg:mb-3">
+                    Send a Message
+                  </h3>
                   <p className="text-muted-foreground text-sm sm:text-base">
-                    Fill out the form below and I'll get back to you within 24 hours.
+                    Fill out the form below and I'll get back to you within 24
+                    hours.
                   </p>
                 </div>
 
@@ -164,13 +177,20 @@ export const ContactSection = () => {
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                        transition={{
+                          delay: 0.2,
+                          type: "spring",
+                          stiffness: 200,
+                        }}
                       >
                         <CheckCircle className="w-12 h-12 sm:w-16 sm:h-16 text-green-400 mx-auto mb-4" />
                       </motion.div>
-                      <h4 className="text-lg sm:text-xl font-semibold mb-2">Thank You!</h4>
+                      <h4 className="text-lg sm:text-xl font-semibold mb-2">
+                        Thank You!
+                      </h4>
                       <p className="text-muted-foreground text-sm sm:text-base">
-                        Your message has been sent successfully. I'll get back to you soon.
+                        Your message has been sent successfully. I'll get back
+                        to you soon.
                       </p>
                     </motion.div>
                   ) : (
@@ -182,16 +202,22 @@ export const ContactSection = () => {
                     >
                       {/* Name Field */}
                       <div className="space-y-2">
-                        <Label htmlFor="name" className="text-sm font-medium">Name *</Label>
+                        <Label htmlFor="name" className="text-sm font-medium">
+                          Name *
+                        </Label>
                         <div className="relative">
                           <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input
                             id="name"
                             type="text"
                             value={formData.name}
-                            onChange={(e) => handleInputChange('name', e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange("name", e.target.value)
+                            }
                             className={`pl-10 h-11 sm:h-12 bg-background/50 border-border/50 focus:border-primary/50 focus:ring-primary/20 focus:ring-2 transition-all duration-300 text-sm sm:text-base touch-target ${
-                              errors.name ? 'border-red-400 focus:border-red-400' : ''
+                              errors.name
+                                ? "border-red-400 focus:border-red-400"
+                                : ""
                             }`}
                             placeholder="Your full name"
                           />
@@ -209,16 +235,22 @@ export const ContactSection = () => {
 
                       {/* Email Field */}
                       <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-medium">Email *</Label>
+                        <Label htmlFor="email" className="text-sm font-medium">
+                          Email *
+                        </Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input
                             id="email"
                             type="email"
                             value={formData.email}
-                            onChange={(e) => handleInputChange('email', e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange("email", e.target.value)
+                            }
                             className={`pl-10 h-11 sm:h-12 bg-background/50 border-border/50 focus:border-primary/50 focus:ring-primary/20 focus:ring-2 transition-all duration-300 text-sm sm:text-base touch-target ${
-                              errors.email ? 'border-red-400 focus:border-red-400' : ''
+                              errors.email
+                                ? "border-red-400 focus:border-red-400"
+                                : ""
                             }`}
                             placeholder="your@email.com"
                           />
@@ -236,13 +268,20 @@ export const ContactSection = () => {
 
                       {/* Company Field */}
                       <div className="space-y-2">
-                        <Label htmlFor="company" className="text-sm font-medium">Company</Label>
+                        <Label
+                          htmlFor="company"
+                          className="text-sm font-medium"
+                        >
+                          Company
+                        </Label>
                         <div className="relative">
                           <Input
                             id="company"
                             type="text"
                             value={formData.company}
-                            onChange={(e) => handleInputChange('company', e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange("company", e.target.value)
+                            }
                             className="pl-4 h-11 sm:h-12 bg-background/50 border-border/50 focus:border-primary/50 focus:ring-primary/20 focus:ring-2 transition-all duration-300 text-sm sm:text-base touch-target"
                             placeholder="Your company name"
                           />
@@ -251,14 +290,23 @@ export const ContactSection = () => {
 
                       {/* Message Field */}
                       <div className="space-y-2">
-                        <Label htmlFor="message" className="text-sm font-medium">Message *</Label>
+                        <Label
+                          htmlFor="message"
+                          className="text-sm font-medium"
+                        >
+                          Message *
+                        </Label>
                         <div className="relative">
                           <Textarea
                             id="message"
                             value={formData.message}
-                            onChange={(e) => handleInputChange('message', e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange("message", e.target.value)
+                            }
                             className={`pl-4 pt-3 min-h-[100px] sm:min-h-[120px] bg-background/50 border-border/50 focus:border-primary/50 focus:ring-primary/20 focus:ring-2 transition-all duration-300 resize-none text-sm sm:text-base touch-target ${
-                              errors.message ? 'border-red-400 focus:border-red-400' : ''
+                              errors.message
+                                ? "border-red-400 focus:border-red-400"
+                                : ""
                             }`}
                             placeholder="Tell me about your project, goals, or how I can help..."
                           />
@@ -287,7 +335,11 @@ export const ContactSection = () => {
                           {isLoading ? (
                             <motion.div
                               animate={{ rotate: 360 }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                              transition={{
+                                duration: 1,
+                                repeat: Infinity,
+                                ease: "linear",
+                              }}
                               className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full"
                             />
                           ) : (

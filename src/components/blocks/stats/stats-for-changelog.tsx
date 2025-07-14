@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValue } from "motion/react";
+import { AnimatePresence, motion, useMotionValue } from "framer-motion";
 
 export function StatsForChangelog() {
   const stats = [
@@ -113,7 +113,7 @@ export const StatsForChangelogMobile = ({ stats }: { stats: Stats[] }) => {
         >
           <div
             className={cn(
-              "flex items-center rounded-2xl hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              "flex items-center rounded-2xl hover:bg-neutral-100 dark:hover:bg-neutral-800",
             )}
           >
             <span className="mr-4 flex-shrink-0 font-medium text-neutral-700 dark:text-neutral-100">
@@ -156,7 +156,7 @@ export const StatsForChangelogDesktop = ({ stats }: { stats: Stats[] }) => {
             className={cn(
               "flex items-center rounded-2xl p-4 hover:bg-neutral-100 dark:hover:bg-neutral-800",
 
-              isActive(stat) ? "bg-neutral-100 dark:bg-neutral-800" : ""
+              isActive(stat) ? "bg-neutral-100 dark:bg-neutral-800" : "",
             )}
           >
             <span className="mr-4 flex-shrink-0 font-medium text-neutral-700 dark:text-neutral-100">

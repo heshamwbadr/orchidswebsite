@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -41,7 +41,7 @@ export function FullBackgroundImageWithText({
           className={cn(
             "pointer-events-none absolute inset-0 h-full w-full select-none object-cover",
             gradientFade &&
-              "[mask-image:radial-gradient(200px_at_center,transparent,black)]"
+              "[mask-image:radial-gradient(200px_at_center,transparent,black)]",
           )}
           width={1000}
           height={1000}
@@ -133,7 +133,7 @@ export const BlurImage = (props: React.ComponentProps<typeof Image>) => {
       className={cn(
         "transition duration-300",
         isLoading ? "opacity-0" : "opacity-100",
-        props.className
+        props.className,
       )}
       onLoad={() => setLoading(false)}
       src={src}

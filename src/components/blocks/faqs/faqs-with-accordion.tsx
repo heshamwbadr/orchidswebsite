@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
@@ -87,13 +87,13 @@ const FAQItem = ({
           <IconPlus
             className={cn(
               "absolute inset-0 h-6 w-6 transform text-blue-500 transition-all duration-200",
-              isOpen && "rotate-90 scale-0"
+              isOpen && "rotate-90 scale-0",
             )}
           />
           <IconMinus
             className={cn(
               "absolute inset-0 h-6 w-6 rotate-90 scale-0 transform text-blue-500 transition-all duration-200",
-              isOpen && "rotate-0 scale-100"
+              isOpen && "rotate-0 scale-100",
             )}
           />
         </div>

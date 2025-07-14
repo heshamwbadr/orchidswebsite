@@ -35,7 +35,7 @@ export function StatsWithGridBackground() {
               className={cn(
                 "group/card relative overflow-hidden p-10",
                 index !== items.length - 1 &&
-                  "border-b border-neutral-200 dark:border-neutral-800 md:border-b-0 md:border-r"
+                  "border-b border-neutral-200 dark:border-neutral-800 md:border-b-0 md:border-r",
               )}
             >
               <Grid size={20} />

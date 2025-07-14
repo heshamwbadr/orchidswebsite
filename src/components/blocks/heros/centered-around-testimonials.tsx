@@ -1,10 +1,10 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { useMotionValueEvent, useScroll } from "motion/react";
+import { useMotionValueEvent, useScroll } from "framer-motion";
 import { Outfit } from "next/font/google";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -40,7 +40,7 @@ export function CenteredAroundTestimonials() {
         key={String(movedOut)}
         className={cn(
           "absolute z-20 flex items-center gap-2 rounded-md bg-white p-4 opacity-20 shadow-lg lg:opacity-100 dark:bg-neutral-800",
-          className
+          className,
         )}
         animate={{
           y: movedOut ? 300 : 0,
@@ -48,8 +48,8 @@ export function CenteredAroundTestimonials() {
             ? direction === "left"
               ? -400
               : direction === "right"
-              ? 400
-              : 0
+                ? 400
+                : 0
             : 0,
           rotate: testimonial.rotate ?? 20,
         }}
@@ -117,7 +117,7 @@ export function CenteredAroundTestimonials() {
         <h1
           className={cn(
             "relative z-50 mx-auto mt-10 max-w-5xl text-center text-lg font-semibold text-neutral-700 sm:text-2xl md:text-4xl lg:text-7xl dark:text-neutral-100",
-            outfit.className
+            outfit.className,
           )}
         >
           Join the biggest Image Generation Hackathon ever

@@ -1,9 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
-import { Mail, Phone, Linkedin, Calendar, ArrowUp, ExternalLink, MapPin } from "lucide-react";
-import { openCalendlyPopup } from '@/lib/calendly';
+import { motion } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  Linkedin,
+  Calendar,
+  ArrowUp,
+  ExternalLink,
+  MapPin,
+} from "lucide-react";
+import { openCalendlyPopup } from "@/lib/calendly";
 
 export const Footer = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -22,9 +30,9 @@ export const Footer = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.08,
-        duration: 0.8
-      }
-    }
+        duration: 0.8,
+      },
+    },
   };
 
   const itemVariants = {
@@ -32,8 +40,8 @@ export const Footer = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const navigationSections = [
@@ -43,17 +51,17 @@ export const Footer = () => {
         { name: "AI Strategy & Implementation", href: "#services" },
         { name: "Digital Transformation", href: "#services" },
         { name: "Process Optimization", href: "#services" },
-        { name: "Executive Consulting", href: "#services" }
-      ]
+        { name: "Executive Consulting", href: "#services" },
+      ],
     },
     {
       title: "Portfolio",
       links: [
         { name: "Why Leaders Trust Me", href: "#trust" },
         { name: "Case Studies", href: "#case-studies" },
-        { name: "Testimonials", href: "#testimonials" }
-      ]
-    }
+        { name: "Testimonials", href: "#testimonials" },
+      ],
+    },
   ];
 
   return (
@@ -62,15 +70,18 @@ export const Footer = () => {
       <div className="absolute inset-0">
         {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 opacity-[0.02] hidden lg:block">
-          <div className="h-full w-full" style={{
-            backgroundImage: `
+          <div
+            className="h-full w-full"
+            style={{
+              backgroundImage: `
               linear-gradient(rgba(255, 215, 0, 0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(255, 215, 0, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: '60px 60px'
-          }} />
+              backgroundSize: "60px 60px",
+            }}
+          />
         </div>
-        
+
         {/* Gradient Orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-radial from-primary/5 via-primary/2 to-transparent rounded-full blur-3xl hidden lg:block" />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-radial from-secondary/5 via-secondary/2 to-transparent rounded-full blur-3xl hidden lg:block" />
@@ -86,16 +97,13 @@ export const Footer = () => {
             viewport={{ once: true }}
             className="text-center mb-12 lg:mb-16"
           >
-            <motion.div 
-              variants={itemVariants}
-              className="max-w-4xl mx-auto"
-            >
+            <motion.div variants={itemVariants} className="max-w-4xl mx-auto">
               <div className="relative responsive-card bg-gradient-to-br from-card/50 via-card/80 to-card/50 backdrop-blur-sm border border-primary/10 rounded-2xl lg:rounded-3xl shadow-2xl">
                 {/* Decorative border accent */}
                 <div className="absolute inset-0 rounded-2xl lg:rounded-3xl bg-gradient-to-br from-primary/20 via-transparent to-secondary/20 p-[1px]">
                   <div className="h-full w-full rounded-2xl lg:rounded-3xl bg-gradient-to-br from-background/95 to-background/90" />
                 </div>
-                
+
                 <div className="relative z-10">
                   <motion.div
                     initial={{ scale: 0.95 }}
@@ -106,10 +114,12 @@ export const Footer = () => {
                       Ready to Transform Your Business?
                     </h2>
                     <p className="responsive-text-lg sm:responsive-text-xl text-muted-foreground mb-6 lg:mb-8 leading-relaxed">
-                      Schedule a complimentary 30-minute strategic consultation to explore how AI and digital transformation can accelerate your growth.
+                      Schedule a complimentary 30-minute strategic consultation
+                      to explore how AI and digital transformation can
+                      accelerate your growth.
                     </p>
                   </motion.div>
-                  
+
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -120,7 +130,9 @@ export const Footer = () => {
                       className="responsive-button group inline-flex items-center bg-gradient-to-r from-primary via-primary to-secondary text-primary-foreground rounded-xl lg:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:from-primary/90 hover:to-secondary/90 touch-target"
                     >
                       <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 group-hover:rotate-12 transition-transform duration-300" />
-                      <span className="responsive-text-base sm:responsive-text-lg font-semibold">Schedule Consultation</span>
+                      <span className="responsive-text-base sm:responsive-text-lg font-semibold">
+                        Schedule Consultation
+                      </span>
                     </button>
                   </motion.div>
                 </div>
@@ -146,10 +158,11 @@ export const Footer = () => {
                   AI & Digital Transformation Strategist
                 </p>
                 <p className="responsive-text-sm text-muted-foreground leading-relaxed max-w-md">
-                  Empowering executives and organizations to harness AI for strategic advantage and sustainable growth.
+                  Empowering executives and organizations to harness AI for
+                  strategic advantage and sustainable growth.
                 </p>
               </div>
-              
+
               {/* Contact Information */}
               <div className="space-y-3 lg:space-y-4">
                 <motion.a
@@ -164,7 +177,9 @@ export const Footer = () => {
                     <div className="font-medium text-foreground group-hover:text-primary transition-colors responsive-text-base">
                       Hesham.badr@neuronovate.consulting
                     </div>
-                    <div className="responsive-text-sm text-muted-foreground">Drop me a line anytime</div>
+                    <div className="responsive-text-sm text-muted-foreground">
+                      Drop me a line anytime
+                    </div>
                   </div>
                 </motion.a>
 
@@ -180,7 +195,9 @@ export const Footer = () => {
                     <div className="font-medium text-foreground group-hover:text-secondary transition-colors responsive-text-base">
                       Book a Call
                     </div>
-                    <div className="responsive-text-sm text-muted-foreground">Let's discuss your project</div>
+                    <div className="responsive-text-sm text-muted-foreground">
+                      Let's discuss your project
+                    </div>
                   </div>
                 </motion.button>
 
@@ -189,8 +206,12 @@ export const Footer = () => {
                     <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium text-foreground responsive-text-base">Available Globally</div>
-                    <div className="responsive-text-sm text-muted-foreground">(Remote & Hybrid)</div>
+                    <div className="font-medium text-foreground responsive-text-base">
+                      Available Globally
+                    </div>
+                    <div className="responsive-text-sm text-muted-foreground">
+                      (Remote & Hybrid)
+                    </div>
                   </div>
                 </div>
               </div>
@@ -239,8 +260,10 @@ export const Footer = () => {
             <div className="flex flex-col lg:flex-row items-center justify-between responsive-gap-lg">
               {/* Social Links */}
               <div className="flex flex-col sm:flex-row items-center responsive-gap-base">
-                <p className="responsive-text-sm text-muted-foreground font-medium">Connect:</p>
-                
+                <p className="responsive-text-sm text-muted-foreground font-medium">
+                  Connect:
+                </p>
+
                 <motion.a
                   href="https://linkedin.com/in/heshambadr"
                   target="_blank"
@@ -250,22 +273,30 @@ export const Footer = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Linkedin className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span className="responsive-text-sm font-medium">LinkedIn</span>
+                  <span className="responsive-text-sm font-medium">
+                    LinkedIn
+                  </span>
                 </motion.a>
               </div>
 
               {/* Copyright & Legal */}
               <div className="flex flex-col sm:flex-row items-center responsive-gap-base text-center lg:text-right">
                 <div className="flex flex-col sm:flex-row items-center responsive-gap-sm responsive-text-sm text-muted-foreground">
-                  <a href="/privacy" className="hover:text-foreground transition-colors responsive-px-sm responsive-py-sm rounded hover:bg-muted/20 touch-target">
+                  <a
+                    href="/privacy"
+                    className="hover:text-foreground transition-colors responsive-px-sm responsive-py-sm rounded hover:bg-muted/20 touch-target"
+                  >
                     Privacy Policy
                   </a>
                   <span className="hidden sm:inline">•</span>
-                  <a href="/terms" className="hover:text-foreground transition-colors responsive-px-sm responsive-py-sm rounded hover:bg-muted/20 touch-target">
+                  <a
+                    href="/terms"
+                    className="hover:text-foreground transition-colors responsive-px-sm responsive-py-sm rounded hover:bg-muted/20 touch-target"
+                  >
                     Terms of Service
                   </a>
                 </div>
-                
+
                 <motion.button
                   onClick={scrollToTop}
                   className="group flex items-center responsive-gap-sm responsive-text-sm text-muted-foreground hover:text-primary transition-all duration-300 bg-card/50 hover:bg-primary/5 responsive-px-sm responsive-py-sm rounded-full border border-border/30 hover:border-primary/30 touch-target"
@@ -277,7 +308,7 @@ export const Footer = () => {
                 </motion.button>
               </div>
             </div>
-            
+
             {/* Copyright */}
             <div className="text-center mt-6 lg:mt-8 pt-4 lg:pt-6 border-t border-border/30">
               <p className="responsive-text-sm text-muted-foreground">

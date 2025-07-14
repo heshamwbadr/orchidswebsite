@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState, useRef } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 export function BackgroundLines() {
   return (

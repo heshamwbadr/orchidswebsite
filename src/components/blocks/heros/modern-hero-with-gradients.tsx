@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { IconArrowRight } from "@tabler/icons-react";
 import Link from "next/link";
 import React from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 export function ModernHeroWithGradients() {
   return (
@@ -538,7 +538,7 @@ const BottomGradient = ({ className }: { className?: string }) => {
       fill="none"
       className={cn(
         "pointer-events-none absolute -right-80 bottom-0 hidden h-full w-full dark:block",
-        className
+        className,
       )}
     >
       <path
@@ -574,7 +574,7 @@ const TopGradient = ({ className }: { className?: string }) => {
       fill="none"
       className={cn(
         "pointer-events-none absolute -left-96 top-0 hidden h-full w-full dark:block",
-        className
+        className,
       )}
     >
       <path

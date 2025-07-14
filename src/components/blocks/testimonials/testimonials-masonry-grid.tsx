@@ -16,14 +16,14 @@ export function TestimonialsMasonryGrid() {
       <h2
         id="reviews-title"
         className={cn(
-          "text-3xl font-medium tracking-tight text-neutral-900 dark:text-white sm:text-center"
+          "text-3xl font-medium tracking-tight text-neutral-900 dark:text-white sm:text-center",
         )}
       >
         Loved by thousands of people
       </h2>
       <p
         className={cn(
-          "mt-2 text-lg text-neutral-600 dark:text-neutral-200 sm:text-center"
+          "mt-2 text-lg text-neutral-600 dark:text-neutral-200 sm:text-center",
         )}
       >
         Here&apos;s what some of our users have to say about Aceternity UI.
@@ -72,7 +72,7 @@ export const Card = ({
     <div
       className={cn(
         "p-8 rounded-xl border border-transparent relative bg-white dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(40,40,40,0.30)] shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)] dark:shadow-[2px_4px_16px_0px_rgba(248,248,248,0.06)_inset] group",
-        className
+        className,
       )}
     >
       <FaQuoteLeft className="absolute top-2 left-2 text-neutral-300" />
@@ -92,7 +92,7 @@ export const Quote = ({
     <h3
       className={cn(
         "text-base font-normal dark:text-white text-black py-2 relative",
-        className
+        className,
       )}
     >
       {children}
@@ -111,7 +111,7 @@ export const QuoteDescription = ({
     <p
       className={cn(
         "text-xs font-normal dark:text-neutral-400 text-neutral-600 max-w-sm",
-        className
+        className,
       )}
     >
       {children}

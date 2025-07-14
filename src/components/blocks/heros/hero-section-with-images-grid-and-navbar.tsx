@@ -1,6 +1,6 @@
 "use client";
 import { IconMenu2, IconX } from "@tabler/icons-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
@@ -96,7 +96,7 @@ export const ImagesGrid = () => {
           <div
             className={cn(
               "relative mt-0 rounded-lg border border-neutral-200 bg-gray-100 p-2 dark:border-neutral-900 dark:bg-neutral-800",
-              image.className
+              image.className,
             )}
             key={image.src}
           >
@@ -154,7 +154,7 @@ export const FeaturedImages = ({
       <div
         className={cn(
           "mb-2 flex flex-col items-center justify-center sm:flex-row",
-          className
+          className,
         )}
       >
         <div className="mb-4 flex flex-row items-center sm:mb-0">

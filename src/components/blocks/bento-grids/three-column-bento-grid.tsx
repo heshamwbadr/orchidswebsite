@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState, useRef, useId } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { IconUpload } from "@tabler/icons-react";
 
@@ -180,7 +180,7 @@ export const SkeletonTwo = () => {
       <div
         className={cn(
           "absolute z-30 h-4 w-4 transition-all duration-200",
-          className
+          className,
         )}
       >
         <svg
@@ -203,7 +203,7 @@ export const SkeletonTwo = () => {
         <div
           className={cn(
             "absolute left-3 top-3 whitespace-pre rounded-md p-1 text-[10px] text-neutral-500 transition duration-200",
-            textClassName
+            textClassName,
           )}
         >
           {text ?? "Manu"}
@@ -223,12 +223,12 @@ export const SkeletonTwo = () => {
       <div
         className={cn(
           "relative z-20 w-fit rounded-lg border border-neutral-100 p-0.5 shadow-sm dark:border-neutral-600",
-          className
+          className,
         )}
       >
         <div
           className={cn(
-            "flex h-10 items-center justify-center rounded-[5px] bg-neutral-100 px-2 text-xs text-neutral-600 shadow-lg dark:bg-[rgba(248,248,248,0.01)] dark:text-neutral-400"
+            "flex h-10 items-center justify-center rounded-[5px] bg-neutral-100 px-2 text-xs text-neutral-600 shadow-lg dark:bg-[rgba(248,248,248,0.01)] dark:text-neutral-400",
           )}
         >
           {children}
@@ -245,7 +245,7 @@ export const SkeletonTwo = () => {
       >
         <div
           className={cn(
-            `h-3 w-3 rounded-full border border-neutral-200 bg-neutral-100 shadow-[2px_4px_16px_0px_rgba(248,248,248,0.06)_inset] dark:border-[rgba(255,255,255,0.2)] dark:bg-[rgba(248,248,248,0.02)]`
+            `h-3 w-3 rounded-full border border-neutral-200 bg-neutral-100 shadow-[2px_4px_16px_0px_rgba(248,248,248,0.06)_inset] dark:border-[rgba(255,255,255,0.2)] dark:bg-[rgba(248,248,248,0.02)]`,
           )}
         />
         <svg
@@ -459,7 +459,7 @@ export const SkeletonFour = ({}: {}) => {
                   layoutId={idx === 0 ? "file-upload" : "file-upload-" + idx}
                   className={cn(
                     "relative z-40 mx-auto mt-4 flex w-full flex-col items-start justify-start overflow-hidden rounded-md bg-white p-4 md:h-24 dark:bg-neutral-900",
-                    "border-t border-neutral-100 shadow-md dark:border-neutral-800"
+                    "border-t border-neutral-100 shadow-md dark:border-neutral-800",
                   )}
                 >
                   <div className="flex w-full items-center justify-between gap-4">
@@ -509,7 +509,7 @@ export const SkeletonFour = ({}: {}) => {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className={cn(
                   "relative z-40 mx-auto mt-4 flex h-32 w-full max-w-[8rem] items-center justify-center rounded-md bg-white group-hover/file:shadow-2xl dark:bg-neutral-900",
-                  "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]"
+                  "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]",
                 )}
               >
                 <IconUpload className="h-4 w-4 text-neutral-600 dark:text-neutral-300" />
@@ -560,7 +560,7 @@ const CardTitle = ({
     <h3
       className={cn(
         "font-sans text-sm font-medium tracking-tight text-neutral-700 dark:text-neutral-100",
-        className
+        className,
       )}
     >
       {children}
@@ -578,7 +578,7 @@ const CardDescription = ({
     <h3
       className={cn(
         "mt-2 max-w-xs font-sans text-sm font-normal tracking-tight text-neutral-500 dark:text-neutral-400",
-        className
+        className,
       )}
     >
       {children}
@@ -598,7 +598,7 @@ const Card = ({
       whileHover="animate"
       className={cn(
         "group isolate flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)] dark:bg-neutral-900",
-        className
+        className,
       )}
     >
       {children}
@@ -635,7 +635,7 @@ export function GridPattern() {
               }`}
             />
           );
-        })
+        }),
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Check, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,20 +25,24 @@ interface FormErrors {
 const processSteps = [
   {
     title: "Understand Your Challenge",
-    description: "We dive deep into your specific situation, goals, and constraints to get a complete picture."
+    description:
+      "We dive deep into your specific situation, goals, and constraints to get a complete picture.",
   },
   {
     title: "Assess Your Readiness",
-    description: "We evaluate your current capabilities, resources, and organizational readiness for change."
+    description:
+      "We evaluate your current capabilities, resources, and organizational readiness for change.",
   },
   {
     title: "Shape a Targeted Plan",
-    description: "We develop a customized roadmap that aligns with your timeline and business objectives."
+    description:
+      "We develop a customized roadmap that aligns with your timeline and business objectives.",
   },
   {
     title: "Align our Next Moves",
-    description: "We establish clear next steps and mutual expectations for moving forward together."
-  }
+    description:
+      "We establish clear next steps and mutual expectations for moving forward together.",
+  },
 ];
 
 export const CTASection = () => {
@@ -46,7 +50,7 @@ export const CTASection = () => {
     name: "",
     email: "",
     company: "",
-    message: ""
+    message: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,27 +87,27 @@ export const CTASection = () => {
   };
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setIsSubmitting(true);
-    
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     setIsSubmitting(false);
     setIsSubmitted(true);
-    
+
     // Reset form after success message
     setTimeout(() => {
       setIsSubmitted(false);
@@ -112,13 +116,13 @@ export const CTASection = () => {
   };
 
   return (
-    <section 
+    <section
       style={{ backgroundColor: "#0A0A0B" }}
       className="relative responsive-py-lg mobile-safe-area overflow-hidden"
     >
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-yellow-500/5" />
-      
+
       <div className="container-responsive max-w-7xl relative z-10">
         {/* Main heading */}
         <motion.div
@@ -143,25 +147,33 @@ export const CTASection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="order-2 lg:order-1"
           >
-            <div 
+            <div
               className="responsive-card rounded-2xl border backdrop-blur-sm"
-              style={{ 
-                backgroundColor: "rgba(26, 26, 26, 0.8)", 
-                borderColor: "#262626" 
+              style={{
+                backgroundColor: "rgba(26, 26, 26, 0.8)",
+                borderColor: "#262626",
               }}
             >
               {!isSubmitted ? (
-                <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-4 lg:space-y-6"
+                >
                   {/* Name Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-white font-light responsive-text-base">
+                    <Label
+                      htmlFor="name"
+                      className="text-white font-light responsive-text-base"
+                    >
                       Full Name *
                     </Label>
                     <Input
                       id="name"
                       type="text"
                       value={formData.name}
-                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("name", e.target.value)
+                      }
                       className="responsive-button bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
                       style={{ backgroundColor: "#1A1A1A" }}
                       placeholder="Enter your full name"
@@ -179,14 +191,19 @@ export const CTASection = () => {
 
                   {/* Email Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white font-light responsive-text-base">
+                    <Label
+                      htmlFor="email"
+                      className="text-white font-light responsive-text-base"
+                    >
                       Email Address *
                     </Label>
                     <Input
                       id="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("email", e.target.value)
+                      }
                       className="responsive-button bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
                       style={{ backgroundColor: "#1A1A1A" }}
                       placeholder="your.email@company.com"
@@ -204,14 +221,19 @@ export const CTASection = () => {
 
                   {/* Company Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="company" className="text-white font-light responsive-text-base">
+                    <Label
+                      htmlFor="company"
+                      className="text-white font-light responsive-text-base"
+                    >
                       Company *
                     </Label>
                     <Input
                       id="company"
                       type="text"
                       value={formData.company}
-                      onChange={(e) => handleInputChange("company", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("company", e.target.value)
+                      }
                       className="responsive-button bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors"
                       style={{ backgroundColor: "#1A1A1A" }}
                       placeholder="Your company name"
@@ -229,13 +251,18 @@ export const CTASection = () => {
 
                   {/* Message Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-white font-light responsive-text-base">
+                    <Label
+                      htmlFor="message"
+                      className="text-white font-light responsive-text-base"
+                    >
                       Message *
                     </Label>
                     <Textarea
                       id="message"
                       value={formData.message}
-                      onChange={(e) => handleInputChange("message", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("message", e.target.value)
+                      }
                       className="min-h-[100px] sm:min-h-[120px] bg-black/50 border-gray-600 text-white placeholder-gray-400 focus:border-yellow-500 transition-colors resize-none responsive-text-base"
                       style={{ backgroundColor: "#1A1A1A" }}
                       placeholder="Tell us about your challenge, timeline, and what you're hoping to achieve..."
@@ -280,7 +307,7 @@ export const CTASection = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center responsive-py-lg"
                 >
-                  <div 
+                  <div
                     className="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
                     style={{ backgroundColor: "#10B981" }}
                   >
@@ -289,8 +316,12 @@ export const CTASection = () => {
                   <h3 className="responsive-text-2xl font-light text-white mb-2">
                     Message Sent!
                   </h3>
-                  <p className="responsive-text-base" style={{ color: "#A1A1AA" }}>
-                    Thank you for reaching out. We'll get back to you within 24 hours.
+                  <p
+                    className="responsive-text-base"
+                    style={{ color: "#A1A1AA" }}
+                  >
+                    Thank you for reaching out. We'll get back to you within 24
+                    hours.
                   </p>
                 </motion.div>
               )}
@@ -321,7 +352,7 @@ export const CTASection = () => {
                     whileHover={{ x: 10 }}
                     className="flex items-start responsive-gap-sm group cursor-default"
                   >
-                    <div 
+                    <div
                       className="w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform"
                       style={{ backgroundColor: "#10B981" }}
                     >
@@ -331,7 +362,10 @@ export const CTASection = () => {
                       <h4 className="responsive-text-base font-medium text-white mb-1 group-hover:text-yellow-500 transition-colors">
                         {step.title}
                       </h4>
-                      <p className="responsive-text-sm font-light" style={{ color: "#A1A1AA" }}>
+                      <p
+                        className="responsive-text-sm font-light"
+                        style={{ color: "#A1A1AA" }}
+                      >
                         {step.description}
                       </p>
                     </div>
@@ -365,8 +399,12 @@ export const CTASection = () => {
                 transition={{ duration: 0.8, delay: 0.8 }}
                 className="mt-4 lg:mt-6 text-center"
               >
-                <blockquote className="responsive-text-base italic font-light" style={{ color: "#A1A1AA" }}>
-                  "No fluff. No generic decks. Just insight, clarity, and a practical next step forward."
+                <blockquote
+                  className="responsive-text-base italic font-light"
+                  style={{ color: "#A1A1AA" }}
+                >
+                  "No fluff. No generic decks. Just insight, clarity, and a
+                  practical next step forward."
                 </blockquote>
               </motion.div>
             </div>

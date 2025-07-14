@@ -8,7 +8,7 @@ import {
 
 export function SimpleCenteredContactForm() {
   const handleSubmit = (
-    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;

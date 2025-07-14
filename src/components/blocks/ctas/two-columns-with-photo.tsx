@@ -1,13 +1,13 @@
-import { CheckCircleIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon } from "@heroicons/react/20/solid";
 
 const benefits = [
-  'Competitive salaries',
-  'Flexible work hours',
-  '30 days of paid vacation',
-  'Annual team retreats',
-  'Benefits for you and your family',
-  'A great work environment',
-]
+  "Competitive salaries",
+  "Flexible work hours",
+  "30 days of paid vacation",
+  "Annual team retreats",
+  "Benefits for you and your family",
+  "A great work environment",
+];
 
 export default function TwoColumnsWithPhoto() {
   return (
@@ -25,8 +25,8 @@ export default function TwoColumnsWithPhoto() {
                 Join our team
               </h2>
               <p className="mt-6 text-lg/8 text-pretty text-gray-400">
-                Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in
-                accusamus quisquam.
+                Lorem ipsum dolor sit amet consect adipisicing elit. Possimus
+                magnam voluptatum cupiditate veritatis in accusamus quisquam.
               </p>
               <ul
                 role="list"
@@ -34,13 +34,19 @@ export default function TwoColumnsWithPhoto() {
               >
                 {benefits.map((benefit) => (
                   <li key={benefit} className="flex gap-x-3">
-                    <CheckCircleIcon aria-hidden="true" className="h-7 w-5 flex-none text-gray-200" />
+                    <CheckCircleIcon
+                      aria-hidden="true"
+                      className="h-7 w-5 flex-none text-gray-200"
+                    />
                     {benefit}
                   </li>
                 ))}
               </ul>
               <div className="mt-10 flex">
-                <a href="#" className="text-sm/6 font-semibold text-indigo-400 hover:text-indigo-300">
+                <a
+                  href="#"
+                  className="text-sm/6 font-semibold text-indigo-400 hover:text-indigo-300"
+                >
                   See our job postings
                   <span aria-hidden="true">&rarr;</span>
                 </a>
@@ -55,12 +61,12 @@ export default function TwoColumnsWithPhoto() {
           <div
             style={{
               clipPath:
-                'polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)',
+                "polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)",
             }}
             className="aspect-1318/752 w-329.5 flex-none bg-linear-to-r from-[#80caff] to-[#4f46e5] opacity-20"
           />
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -62,7 +62,7 @@ export function FAQsWithGrid() {
   const columns = 3;
   const faqsGrid: { question: string; answer: string }[][] = Array.from(
     { length: columns },
-    () => []
+    () => [],
   );
   FAQs.forEach((faq, index) => {
     faqsGrid[index % columns].push(faq);

@@ -3,7 +3,14 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Brain, MessageSquare, FileText, HelpCircle, Banknote, Building2 } from "lucide-react";
+import {
+  Brain,
+  MessageSquare,
+  FileText,
+  HelpCircle,
+  Banknote,
+  Building2,
+} from "lucide-react";
 
 const caseStudies = [
   {
@@ -14,17 +21,20 @@ const caseStudies = [
     tags: ["Healthcare", "AI/ML", "Process Automation"],
     bullets: [
       "Reduced patient wait times by 40%",
-      "Automated 70% of routine administrative tasks", 
-      "Improved diagnostic accuracy by 25%"
+      "Automated 70% of routine administrative tasks",
+      "Improved diagnostic accuracy by 25%",
     ],
-    challenge: "A major healthcare provider was struggling with inefficient patient flow, manual administrative processes, and inconsistent diagnostic protocols across multiple facilities.",
-    solution: "Implemented an AI-driven platform that automated patient scheduling, streamlined administrative workflows, and provided decision support tools for medical professionals.",
-    impact: "The solution resulted in significantly improved patient satisfaction scores, reduced operational costs by $2M annually, and enhanced the overall quality of care delivery.",
+    challenge:
+      "A major healthcare provider was struggling with inefficient patient flow, manual administrative processes, and inconsistent diagnostic protocols across multiple facilities.",
+    solution:
+      "Implemented an AI-driven platform that automated patient scheduling, streamlined administrative workflows, and provided decision support tools for medical professionals.",
+    impact:
+      "The solution resulted in significantly improved patient satisfaction scores, reduced operational costs by $2M annually, and enhanced the overall quality of care delivery.",
     metrics: [
       { label: "Wait Time Reduction", value: "40%" },
       { label: "Task Automation", value: "70%" },
-      { label: "Cost Savings", value: "$2M" }
-    ]
+      { label: "Cost Savings", value: "$2M" },
+    ],
   },
   {
     id: 2,
@@ -35,16 +45,19 @@ const caseStudies = [
     bullets: [
       "Migrated 500K+ customers to new platform",
       "Achieved 99.9% system uptime",
-      "Enhanced security protocols by 300%"
+      "Enhanced security protocols by 300%",
     ],
-    challenge: "A traditional bank needed to modernize their legacy systems while maintaining regulatory compliance and ensuring zero downtime during the transition.",
-    solution: "Designed and executed a phased digital transformation strategy that included cloud migration, API modernization, and enhanced security frameworks.",
-    impact: "Successfully transformed the bank's infrastructure, resulting in improved customer experience, enhanced security posture, and increased operational efficiency.",
+    challenge:
+      "A traditional bank needed to modernize their legacy systems while maintaining regulatory compliance and ensuring zero downtime during the transition.",
+    solution:
+      "Designed and executed a phased digital transformation strategy that included cloud migration, API modernization, and enhanced security frameworks.",
+    impact:
+      "Successfully transformed the bank's infrastructure, resulting in improved customer experience, enhanced security posture, and increased operational efficiency.",
     metrics: [
       { label: "Customer Migration", value: "500K+" },
       { label: "System Uptime", value: "99.9%" },
-      { label: "Security Enhancement", value: "300%" }
-    ]
+      { label: "Security Enhancement", value: "300%" },
+    ],
   },
   {
     id: 3,
@@ -55,16 +68,19 @@ const caseStudies = [
     bullets: [
       "Reduced inventory costs by 30%",
       "Improved delivery accuracy to 98%",
-      "Streamlined vendor management processes"
+      "Streamlined vendor management processes",
     ],
-    challenge: "A global manufacturing company faced challenges with inventory management, supplier coordination, and demand forecasting across multiple regions.",
-    solution: "Developed a comprehensive supply chain analytics platform that provided real-time visibility, predictive insights, and automated optimization recommendations.",
-    impact: "The implementation led to substantial cost savings, improved customer satisfaction, and enhanced operational resilience across the global supply network.",
+    challenge:
+      "A global manufacturing company faced challenges with inventory management, supplier coordination, and demand forecasting across multiple regions.",
+    solution:
+      "Developed a comprehensive supply chain analytics platform that provided real-time visibility, predictive insights, and automated optimization recommendations.",
+    impact:
+      "The implementation led to substantial cost savings, improved customer satisfaction, and enhanced operational resilience across the global supply network.",
     metrics: [
       { label: "Inventory Cost Reduction", value: "30%" },
       { label: "Delivery Accuracy", value: "98%" },
-      { label: "Vendor Efficiency", value: "45%" }
-    ]
+      { label: "Vendor Efficiency", value: "45%" },
+    ],
   },
   {
     id: 4,
@@ -75,16 +91,19 @@ const caseStudies = [
     bullets: [
       "Unified customer data across 8 channels",
       "Increased customer satisfaction by 50%",
-      "Reduced response times to under 2 minutes"
+      "Reduced response times to under 2 minutes",
     ],
-    challenge: "An e-commerce company struggled with fragmented customer data across multiple touchpoints, leading to inconsistent service experiences and decreased satisfaction.",
-    solution: "Built an integrated customer experience platform that unified data sources, enabled real-time personalization, and provided comprehensive analytics dashboards.",
-    impact: "The solution created a seamless customer journey that significantly improved satisfaction scores and increased customer lifetime value by 35%.",
+    challenge:
+      "An e-commerce company struggled with fragmented customer data across multiple touchpoints, leading to inconsistent service experiences and decreased satisfaction.",
+    solution:
+      "Built an integrated customer experience platform that unified data sources, enabled real-time personalization, and provided comprehensive analytics dashboards.",
+    impact:
+      "The solution created a seamless customer journey that significantly improved satisfaction scores and increased customer lifetime value by 35%.",
     metrics: [
       { label: "Channel Integration", value: "8" },
       { label: "Satisfaction Increase", value: "50%" },
-      { label: "Response Time", value: "<2min" }
-    ]
+      { label: "Response Time", value: "<2min" },
+    ],
   },
   {
     id: 5,
@@ -95,16 +114,19 @@ const caseStudies = [
     bullets: [
       "Migrated 200+ applications to cloud",
       "Reduced infrastructure costs by 45%",
-      "Achieved 10x scalability improvement"
+      "Achieved 10x scalability improvement",
     ],
-    challenge: "A rapidly growing startup needed to migrate their on-premises infrastructure to the cloud while maintaining performance and reducing costs.",
-    solution: "Executed a comprehensive cloud migration strategy using containerization, microservices architecture, and automated CI/CD pipelines.",
-    impact: "The migration enabled the company to scale efficiently, reduce operational overhead, and focus resources on core business innovation rather than infrastructure management.",
+    challenge:
+      "A rapidly growing startup needed to migrate their on-premises infrastructure to the cloud while maintaining performance and reducing costs.",
+    solution:
+      "Executed a comprehensive cloud migration strategy using containerization, microservices architecture, and automated CI/CD pipelines.",
+    impact:
+      "The migration enabled the company to scale efficiently, reduce operational overhead, and focus resources on core business innovation rather than infrastructure management.",
     metrics: [
       { label: "Applications Migrated", value: "200+" },
       { label: "Cost Reduction", value: "45%" },
-      { label: "Scalability", value: "10x" }
-    ]
+      { label: "Scalability", value: "10x" },
+    ],
   },
   {
     id: 6,
@@ -115,17 +137,20 @@ const caseStudies = [
     bullets: [
       "Implemented zero-trust architecture",
       "Reduced security incidents by 80%",
-      "Achieved SOC 2 Type II compliance"
+      "Achieved SOC 2 Type II compliance",
     ],
-    challenge: "A technology company needed to strengthen their cybersecurity posture to protect sensitive customer data and meet stringent compliance requirements.",
-    solution: "Designed and implemented a comprehensive cybersecurity framework including zero-trust architecture, advanced threat detection, and automated incident response.",
-    impact: "The new security framework significantly reduced the risk of data breaches, improved compliance standing, and enhanced customer trust in the platform.",
+    challenge:
+      "A technology company needed to strengthen their cybersecurity posture to protect sensitive customer data and meet stringent compliance requirements.",
+    solution:
+      "Designed and implemented a comprehensive cybersecurity framework including zero-trust architecture, advanced threat detection, and automated incident response.",
+    impact:
+      "The new security framework significantly reduced the risk of data breaches, improved compliance standing, and enhanced customer trust in the platform.",
     metrics: [
       { label: "Incident Reduction", value: "80%" },
       { label: "Compliance Achievement", value: "SOC 2" },
-      { label: "Threat Detection", value: "Real-time" }
-    ]
-  }
+      { label: "Threat Detection", value: "Real-time" },
+    ],
+  },
 ];
 
 export default function CaseStudiesGrid() {
@@ -160,14 +185,18 @@ export default function CaseStudiesGrid() {
                         </h3>
                       </div>
                     </div>
-                    
+
                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                       {study.subtitle}
                     </p>
 
                     <div className="flex flex-wrap gap-2 mb-4">
                       {study.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
+                        <Badge
+                          key={tag}
+                          variant="secondary"
+                          className="text-xs"
+                        >
                           {tag}
                         </Badge>
                       ))}
@@ -175,7 +204,10 @@ export default function CaseStudiesGrid() {
 
                     <ul className="space-y-2 mb-4">
                       {study.bullets.map((bullet, index) => (
-                        <li key={index} className="text-sm text-gray-600 flex items-start">
+                        <li
+                          key={index}
+                          className="text-sm text-gray-600 flex items-start"
+                        >
                           <span className="text-green-500 mr-2 mt-1">•</span>
                           {bullet}
                         </li>
@@ -187,7 +219,7 @@ export default function CaseStudiesGrid() {
                     </div>
                   </div>
                 </DialogTrigger>
-                
+
                 <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
                   <div className="space-y-6">
                     <div className="flex items-start">
@@ -198,9 +230,7 @@ export default function CaseStudiesGrid() {
                         <h2 className="text-2xl font-bold text-gray-900 mb-2">
                           {study.title}
                         </h2>
-                        <p className="text-gray-600 mb-4">
-                          {study.subtitle}
-                        </p>
+                        <p className="text-gray-600 mb-4">{study.subtitle}</p>
                         <div className="flex flex-wrap gap-2">
                           {study.tags.map((tag) => (
                             <Badge key={tag} variant="secondary">
@@ -237,10 +267,13 @@ export default function CaseStudiesGrid() {
                         <p className="text-gray-600 leading-relaxed mb-4">
                           {study.impact}
                         </p>
-                        
+
                         <div className="grid grid-cols-3 gap-4">
                           {study.metrics.map((metric, index) => (
-                            <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
+                            <div
+                              key={index}
+                              className="text-center p-4 bg-gray-50 rounded-lg"
+                            >
                               <div className="text-2xl font-bold text-blue-600 mb-1">
                                 {metric.value}
                               </div>

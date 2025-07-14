@@ -101,7 +101,7 @@ export function SimplePricingWithThreeTiers() {
       <div
         className={cn(
           "mx-auto grid grid-cols-1 gap-4  mt-20 ",
-          "max-w-7xl mx-auto  md:grid-cols-2 xl:grid-cols-3"
+          "max-w-7xl mx-auto  md:grid-cols-2 xl:grid-cols-3",
         )}
       >
         {plans.map((tier, tierIdx) => {
@@ -116,13 +116,13 @@ const Card = ({ plan, onClick }: { plan: Plan; onClick: () => void }) => {
   return (
     <div
       className={cn(
-        "p-1 sm:p-4 md:p-4 rounded-3xl bg-gray-50 dark:bg-neutral-900 border border-gray-100 dark:border-neutral-800"
+        "p-1 sm:p-4 md:p-4 rounded-3xl bg-gray-50 dark:bg-neutral-900 border border-gray-100 dark:border-neutral-800",
       )}
     >
       <div className="flex flex-col gap-4 h-full justify-start">
         <div
           className={cn(
-            "p-4 bg-white dark:bg-neutral-800 rounded-2xl shadow-input w-full dark:shadow-[0px_-1px_0px_0px_var(--neutral-700)]"
+            "p-4 bg-white dark:bg-neutral-800 rounded-2xl shadow-input w-full dark:shadow-[0px_-1px_0px_0px_var(--neutral-700)]",
           )}
         >
           <div className="flex justify-between items-start ">
@@ -137,7 +137,7 @@ const Card = ({ plan, onClick }: { plan: Plan; onClick: () => void }) => {
             {plan.featured && (
               <div
                 className={cn(
-                  "font-medium text-xs px-3 py-1 rounded-full relative bg-neutral-900 dark:bg-white dark:text-black text-white"
+                  "font-medium text-xs px-3 py-1 rounded-full relative bg-neutral-900 dark:bg-white dark:text-black text-white",
                 )}
               >
                 <div className="absolute inset-x-0 bottom-0 w-3/4 mx-auto h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
@@ -149,7 +149,7 @@ const Card = ({ plan, onClick }: { plan: Plan; onClick: () => void }) => {
             <div className="flex items-end">
               <span
                 className={cn(
-                  "text-lg font-bold text-neutral-500 dark:text-neutral-200"
+                  "text-lg font-bold text-neutral-500 dark:text-neutral-200",
                 )}
               >
                 {plan.currency}
@@ -157,7 +157,7 @@ const Card = ({ plan, onClick }: { plan: Plan; onClick: () => void }) => {
               <div className="flex items-start gap-2">
                 <span
                   className={cn(
-                    "text-3xl md:text-7xl font-bold dark:text-neutral-50 text-neutral-800"
+                    "text-3xl md:text-7xl font-bold dark:text-neutral-50 text-neutral-800",
                   )}
                 >
                   {plan?.price}
@@ -165,7 +165,7 @@ const Card = ({ plan, onClick }: { plan: Plan; onClick: () => void }) => {
               </div>
               <span
                 className={cn(
-                  "text-base font-normal text-neutral-500 dark:text-neutral-200 mb-1 md:mb-2"
+                  "text-base font-normal text-neutral-500 dark:text-neutral-200 mb-1 md:mb-2",
                 )}
               >
                 {plan.subText}
@@ -174,7 +174,7 @@ const Card = ({ plan, onClick }: { plan: Plan; onClick: () => void }) => {
           </div>
           <button
             className={cn(
-              "w-full md:w-full mt-10 mb-4 px-2 py-2 rounded-lg bg-gradient-to-b from-sky-500 to-sky-600 text-white font-medium"
+              "w-full md:w-full mt-10 mb-4 px-2 py-2 rounded-lg bg-gradient-to-b from-sky-500 to-sky-600 text-white font-medium",
             )}
             onClick={onClick}
           >
@@ -214,7 +214,7 @@ const Step = ({
       <div
         className={cn(
           "h-4 w-4 rounded-full bg-neutral-700 flex items-center justify-center flex-shrink-0 mt-0.5",
-          additional ? "bg-sky-500" : "bg-neutral-700"
+          additional ? "bg-sky-500" : "bg-neutral-700",
         )}
       >
         <IconCheck className="h-3 w-3 [stroke-width:4px] text-neutral-300" />
@@ -233,12 +233,12 @@ const Divider = () => {
       <div className={cn("w-full h-px bg-neutral-200 dark:bg-neutral-800")} />
       <div
         className={cn(
-          "absolute inset-0 h-5 w-5 m-auto rounded-xl dark:bg-neutral-800 bg-white shadow-[0px_-1px_0px_0px_var(--neutral-200)] dark:shadow-[0px_-1px_0px_0px_var(--neutral-700)] flex items-center justify-center"
+          "absolute inset-0 h-5 w-5 m-auto rounded-xl dark:bg-neutral-800 bg-white shadow-[0px_-1px_0px_0px_var(--neutral-200)] dark:shadow-[0px_-1px_0px_0px_var(--neutral-700)] flex items-center justify-center",
         )}
       >
         <IconPlus
           className={cn(
-            "h-3 w-3 [stroke-width:4px] dark:text-neutral-300 text-black"
+            "h-3 w-3 [stroke-width:4px] dark:text-neutral-300 text-black",
           )}
         />
       </div>

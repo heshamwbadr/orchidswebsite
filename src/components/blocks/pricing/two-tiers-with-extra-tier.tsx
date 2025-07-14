@@ -1,29 +1,36 @@
-import { CheckIcon } from '@heroicons/react/20/solid'
+import { CheckIcon } from "@heroicons/react/20/solid";
 
 const tiers = [
   {
-    name: 'Hobby',
-    id: 'tier-hobby',
-    href: '#',
-    priceMonthly: '$29',
-    description: 'Modi dolorem expedita deleniti. Corporis iste qui inventore pariatur adipisci vitae.',
-    features: ['5 products', 'Up to 1,000 subscribers', 'Basic analytics', '48-hour support response time'],
-  },
-  {
-    name: 'Team',
-    id: 'tier-team',
-    href: '#',
-    priceMonthly: '$99',
-    description: 'Explicabo quo fugit vel facere ullam corrupti non dolores. Expedita eius sit sequi.',
+    name: "Hobby",
+    id: "tier-hobby",
+    href: "#",
+    priceMonthly: "$29",
+    description:
+      "Modi dolorem expedita deleniti. Corporis iste qui inventore pariatur adipisci vitae.",
     features: [
-      'Unlimited products',
-      'Unlimited subscribers',
-      'Advanced analytics',
-      '1-hour, dedicated support response time',
-      'Marketing automations',
+      "5 products",
+      "Up to 1,000 subscribers",
+      "Basic analytics",
+      "48-hour support response time",
     ],
   },
-]
+  {
+    name: "Team",
+    id: "tier-team",
+    href: "#",
+    priceMonthly: "$99",
+    description:
+      "Explicabo quo fugit vel facere ullam corrupti non dolores. Expedita eius sit sequi.",
+    features: [
+      "Unlimited products",
+      "Unlimited subscribers",
+      "Advanced analytics",
+      "1-hour, dedicated support response time",
+      "Marketing automations",
+    ],
+  },
+];
 
 export default function TwoTiersWithExtraTier() {
   return (
@@ -37,14 +44,21 @@ export default function TwoTiersWithExtraTier() {
         </div>
         <div className="relative mt-6">
           <p className="mx-auto max-w-2xl text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
-            Choose an affordable plan that’s packed with the best features for engaging your audience, creating customer
-            loyalty, and driving sales.
+            Choose an affordable plan that’s packed with the best features for
+            engaging your audience, creating customer loyalty, and driving
+            sales.
           </p>
           <svg
             viewBox="0 0 1208 1024"
             className="absolute -top-10 left-1/2 -z-10 h-256 -translate-x-1/2 mask-[radial-gradient(closest-side,white,transparent)] sm:-top-12 md:-top-20 lg:-top-12 xl:top-0"
           >
-            <ellipse cx={604} cy={512} rx={604} ry={512} fill="url(#6d1bd035-0dd1-437e-93fa-59d316231eb0)" />
+            <ellipse
+              cx={604}
+              cy={512}
+              rx={604}
+              ry={512}
+              fill="url(#6d1bd035-0dd1-437e-93fa-59d316231eb0)"
+            />
             <defs>
               <radialGradient id="6d1bd035-0dd1-437e-93fa-59d316231eb0">
                 <stop stopColor="#7775D6" />
@@ -64,18 +78,33 @@ export default function TwoTiersWithExtraTier() {
                   className="flex flex-col justify-between rounded-3xl bg-white p-8 shadow-xl ring-1 ring-gray-900/10 sm:p-10"
                 >
                   <div>
-                    <h3 id={tier.id} className="text-base/7 font-semibold text-indigo-600">
+                    <h3
+                      id={tier.id}
+                      className="text-base/7 font-semibold text-indigo-600"
+                    >
                       {tier.name}
                     </h3>
                     <div className="mt-4 flex items-baseline gap-x-2">
-                      <span className="text-5xl font-semibold tracking-tight text-gray-900">{tier.priceMonthly}</span>
-                      <span className="text-base/7 font-semibold text-gray-600">/month</span>
+                      <span className="text-5xl font-semibold tracking-tight text-gray-900">
+                        {tier.priceMonthly}
+                      </span>
+                      <span className="text-base/7 font-semibold text-gray-600">
+                        /month
+                      </span>
                     </div>
-                    <p className="mt-6 text-base/7 text-gray-600">{tier.description}</p>
-                    <ul role="list" className="mt-10 space-y-4 text-sm/6 text-gray-600">
+                    <p className="mt-6 text-base/7 text-gray-600">
+                      {tier.description}
+                    </p>
+                    <ul
+                      role="list"
+                      className="mt-10 space-y-4 text-sm/6 text-gray-600"
+                    >
                       {tier.features.map((feature) => (
                         <li key={feature} className="flex gap-x-3">
-                          <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-indigo-600" />
+                          <CheckIcon
+                            aria-hidden="true"
+                            className="h-6 w-5 flex-none text-indigo-600"
+                          />
                           {feature}
                         </li>
                       ))}
@@ -92,9 +121,12 @@ export default function TwoTiersWithExtraTier() {
               ))}
               <div className="flex flex-col items-start gap-x-8 gap-y-6 rounded-3xl p-8 ring-1 ring-gray-900/10 sm:gap-y-10 sm:p-10 lg:col-span-2 lg:flex-row lg:items-center">
                 <div className="lg:min-w-0 lg:flex-1">
-                  <h3 className="text-base/7 font-semibold text-indigo-600">Discounted</h3>
+                  <h3 className="text-base/7 font-semibold text-indigo-600">
+                    Discounted
+                  </h3>
                   <p className="mt-1 text-base/7 text-gray-600">
-                    Dolor dolores repudiandae doloribus. Rerum sunt aut eum. Odit omnis non voluptatem sunt eos nostrum.
+                    Dolor dolores repudiandae doloribus. Rerum sunt aut eum.
+                    Odit omnis non voluptatem sunt eos nostrum.
                   </p>
                 </div>
                 <a
@@ -109,5 +141,5 @@ export default function TwoTiersWithExtraTier() {
         </div>
       </div>
     </div>
-  )
+  );
 }

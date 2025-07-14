@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 
 export default function SplitWithCodeExample() {
   return (
@@ -20,7 +20,10 @@ export default function SplitWithCodeExample() {
                     </span>
                     <span className="inline-flex items-center space-x-2 text-sm/6 font-medium text-gray-600">
                       <span>Just shipped v0.1.0</span>
-                      <ChevronRightIcon className="size-5 text-gray-400" aria-hidden="true" />
+                      <ChevronRightIcon
+                        className="size-5 text-gray-400"
+                        aria-hidden="true"
+                      />
                     </span>
                   </a>
                 </div>
@@ -28,7 +31,8 @@ export default function SplitWithCodeExample() {
                   Supercharge your web app
                 </h1>
                 <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
-                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
+                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
+                  qui lorem cupidatat commodo.
                 </p>
                 <div className="mt-10 flex items-center gap-x-6">
                   <a
@@ -63,10 +67,14 @@ export default function SplitWithCodeExample() {
                           <div className="border-r border-b border-r-white/10 border-b-white/20 bg-white/5 px-4 py-2 text-white">
                             NotificationSetting.jsx
                           </div>
-                          <div className="border-r border-gray-600/10 px-4 py-2">App.jsx</div>
+                          <div className="border-r border-gray-600/10 px-4 py-2">
+                            App.jsx
+                          </div>
                         </div>
                       </div>
-                      <div className="px-6 pt-6 pb-14">{/* Your code example */}</div>
+                      <div className="px-6 pt-6 pb-14">
+                        {/* Your code example */}
+                      </div>
                     </div>
                   </div>
                   <div
@@ -81,5 +89,5 @@ export default function SplitWithCodeExample() {
         <div className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-linear-to-t from-white sm:h-32" />
       </div>
     </div>
-  )
+  );
 }

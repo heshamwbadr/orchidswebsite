@@ -18,12 +18,12 @@ export function FooterWithGrid() {
                 AI & Digital Transformation Strategist
               </p>
             </div>
-            
+
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-sm">
                 <Mail className="h-4 w-4 text-primary" />
-                <a 
-                  href="mailto:hesham@strategicai.expert" 
+                <a
+                  href="mailto:hesham@strategicai.expert"
                   className="text-foreground hover:text-primary transition-colors"
                 >
                   hesham@strategicai.expert
@@ -31,8 +31,8 @@ export function FooterWithGrid() {
               </div>
               <div className="flex items-center space-x-3 text-sm">
                 <Phone className="h-4 w-4 text-secondary" />
-                <a 
-                  href="tel:+15551234567" 
+                <a
+                  href="tel:+15551234567"
                   className="text-foreground hover:text-secondary transition-colors"
                 >
                   +1 (555) 123-4567

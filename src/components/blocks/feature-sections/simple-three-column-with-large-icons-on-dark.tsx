@@ -1,49 +1,52 @@
-import { Brain, Settings, Rocket } from 'lucide-react'
+import { Brain, Settings, Rocket } from "lucide-react";
 
 const features = [
   {
-    name: 'Strategic Intelligence & AI',
-    description: 'Unlock the power of artificial intelligence to drive strategic decision-making and competitive advantage.',
+    name: "Strategic Intelligence & AI",
+    description:
+      "Unlock the power of artificial intelligence to drive strategic decision-making and competitive advantage.",
     services: [
-      'AI Strategy Development',
-      'Machine Learning Implementation', 
-      'Data Analytics & Insights',
-      'Intelligent Automation',
-      'Predictive Business Models'
+      "AI Strategy Development",
+      "Machine Learning Implementation",
+      "Data Analytics & Insights",
+      "Intelligent Automation",
+      "Predictive Business Models",
     ],
-    href: '#',
+    href: "#",
     icon: Brain,
-    color: '#FFD700',
+    color: "#FFD700",
   },
   {
-    name: 'Digital & Operational Transformation',
-    description: 'Transform your operations through strategic digital initiatives that optimize performance and enable scalable growth.',
+    name: "Digital & Operational Transformation",
+    description:
+      "Transform your operations through strategic digital initiatives that optimize performance and enable scalable growth.",
     services: [
-      'Digital Roadmap Creation',
-      'Process Optimization',
-      'Technology Integration',
-      'Cloud Migration Strategy',
-      'Enterprise Architecture'
+      "Digital Roadmap Creation",
+      "Process Optimization",
+      "Technology Integration",
+      "Cloud Migration Strategy",
+      "Enterprise Architecture",
     ],
-    href: '#',
+    href: "#",
     icon: Settings,
-    color: '#007AFF',
+    color: "#007AFF",
   },
   {
-    name: 'Leadership & Change Acceleration',
-    description: 'Develop transformational leadership capabilities and accelerate organizational change to achieve breakthrough results.',
+    name: "Leadership & Change Acceleration",
+    description:
+      "Develop transformational leadership capabilities and accelerate organizational change to achieve breakthrough results.",
     services: [
-      'Executive Coaching',
-      'Change Management',
-      'Team Transformation',
-      'Innovation Culture Building',
-      'Strategic Communication'
+      "Executive Coaching",
+      "Change Management",
+      "Team Transformation",
+      "Innovation Culture Building",
+      "Strategic Communication",
     ],
-    href: '#',
+    href: "#",
     icon: Rocket,
-    color: '#FFD700',
+    color: "#FFD700",
   },
-]
+];
 
 export default function SimpleThreeColumnWithLargeIconsOnDark() {
   return (
@@ -62,11 +65,14 @@ export default function SimpleThreeColumnWithLargeIconsOnDark() {
             {features.map((feature) => (
               <div key={feature.name} className="flex flex-col">
                 <dt className="text-base/7 font-semibold text-foreground font-[var(--font-display)]">
-                  <div 
+                  <div
                     className="mb-6 flex size-10 items-center justify-center rounded-lg"
                     style={{ backgroundColor: feature.color }}
                   >
-                    <feature.icon aria-hidden="true" className="size-6 text-background" />
+                    <feature.icon
+                      aria-hidden="true"
+                      className="size-6 text-background"
+                    />
                   </div>
                   {feature.name}
                 </dt>
@@ -75,7 +81,7 @@ export default function SimpleThreeColumnWithLargeIconsOnDark() {
                   <ul className="space-y-2 mb-6">
                     {feature.services.map((service, index) => (
                       <li key={index} className="text-sm flex items-start">
-                        <span 
+                        <span
                           className="inline-block w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0"
                           style={{ backgroundColor: feature.color }}
                         ></span>
@@ -84,8 +90,8 @@ export default function SimpleThreeColumnWithLargeIconsOnDark() {
                     ))}
                   </ul>
                   <p className="mt-auto">
-                    <a 
-                      href={feature.href} 
+                    <a
+                      href={feature.href}
                       className="text-sm/6 font-semibold hover:opacity-80 transition-opacity font-[var(--font-body)]"
                       style={{ color: feature.color }}
                     >
@@ -99,5 +105,5 @@ export default function SimpleThreeColumnWithLargeIconsOnDark() {
         </div>
       </div>
     </div>
-  )
+  );
 }

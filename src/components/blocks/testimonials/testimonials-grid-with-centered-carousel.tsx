@@ -81,7 +81,7 @@ export const Card = ({
     <div
       className={cn(
         "p-8 rounded-xl border border-border bg-card shadow-[2px_4px_16px_0px_rgba(255,215,0,0.06)_inset] group",
-        className
+        className,
       )}
     >
       {children}
@@ -100,7 +100,7 @@ export const QuoteText = ({
     <h3
       className={cn(
         "text-xs font-semibold text-foreground py-2 font-[var(--font-body)]",
-        className
+        className,
       )}
     >
       {children}
@@ -119,7 +119,7 @@ export const QuoteDescription = ({
     <p
       className={cn(
         "text-xs font-normal text-muted-foreground max-w-sm font-[var(--font-body)]",
-        className
+        className,
       )}
     >
       {children}
@@ -232,7 +232,7 @@ export const TestimonialsSlider = () => {
     if (!autorotate) return;
     const interval = setInterval(() => {
       setActive(
-        active + 1 === slicedTestimonials.length ? 0 : (active) => active + 1
+        active + 1 === slicedTestimonials.length ? 0 : (active) => active + 1,
       );
     }, 7000);
     return () => clearInterval(interval);
@@ -327,7 +327,7 @@ export const TestimonialsSlider = () => {
                       active === index
                         ? "border-primary text-primary bg-primary/10"
                         : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                    }`
+                    }`,
                   )}
                   key={index}
                   onClick={() => {
@@ -336,9 +336,7 @@ export const TestimonialsSlider = () => {
                   }}
                 >
                   <span className="relative">
-                    <span className="font-semibold">
-                      {item.name}
-                    </span>{" "}
+                    <span className="font-semibold">{item.name}</span>{" "}
                     <span className="text-secondary text-[10px]">
                       {item.designation}
                     </span>

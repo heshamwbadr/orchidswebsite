@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
@@ -97,13 +97,13 @@ const FAQItem = ({
           <IconChevronUp
             className={cn(
               "absolute inset-0 h-6 w-6 transform text-black transition-all duration-200 dark:text-white",
-              isOpen && "rotate-90 scale-0"
+              isOpen && "rotate-90 scale-0",
             )}
           />
           <IconChevronDown
             className={cn(
               "absolute inset-0 h-6 w-6 rotate-90 scale-0 transform text-black transition-all duration-200 dark:text-white",
-              isOpen && "rotate-0 scale-100"
+              isOpen && "rotate-0 scale-100",
             )}
           />
         </div>

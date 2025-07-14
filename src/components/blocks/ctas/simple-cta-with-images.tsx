@@ -10,7 +10,7 @@ import {
   useSpring,
   animate,
   stagger,
-} from "motion/react";
+} from "framer-motion";
 
 import { BsStarFill } from "react-icons/bs";
 import { HiArrowRight } from "react-icons/hi2";
@@ -60,7 +60,7 @@ export const FeaturedImages = ({
   const x = useMotionValue(0);
   const translateX = useSpring(
     useTransform(x, [-100, 100], [-50, 50]),
-    springConfig
+    springConfig,
   );
 
   const handleMouseMove = (event: any) => {
@@ -72,20 +72,20 @@ export const FeaturedImages = ({
     animate(
       ".animation-container",
       { scale: [1.1, 1, 0.9, 1], opacity: [0, 1] },
-      { duration: 0.4, delay: stagger(0.1) }
+      { duration: 0.4, delay: stagger(0.1) },
     );
   }, []);
   return (
     <div
       className={cn(
         "mb-10 mt-10 flex flex-col items-center",
-        containerClassName
+        containerClassName,
       )}
     >
       <div
         className={cn(
           "mb-2 flex flex-col items-center justify-center sm:flex-row",
-          className
+          className,
         )}
       >
         <div className="mb-4 flex flex-row items-center sm:mb-0">
@@ -169,7 +169,7 @@ export const FeaturedImages = ({
       <p
         className={cn(
           "relative z-40 text-left text-sm text-neutral-400",
-          textClassName
+          textClassName,
         )}
       >
         Trusted by 27,000+ creators

@@ -1,28 +1,28 @@
-import { InboxIcon, TrashIcon, UsersIcon } from '@heroicons/react/24/outline'
+import { InboxIcon, TrashIcon, UsersIcon } from "@heroicons/react/24/outline";
 
 const features = [
   {
-    name: 'Unlimited inboxes',
+    name: "Unlimited inboxes",
     description:
-      'Non quo aperiam repellendus quas est est. Eos aut dolore aut ut sit nesciunt. Ex tempora quia. Sit nobis consequatur dolores incidunt.',
-    href: '#',
+      "Non quo aperiam repellendus quas est est. Eos aut dolore aut ut sit nesciunt. Ex tempora quia. Sit nobis consequatur dolores incidunt.",
+    href: "#",
     icon: InboxIcon,
   },
   {
-    name: 'Manage team members',
+    name: "Manage team members",
     description:
-      'Vero eum voluptatem aliquid nostrum voluptatem. Vitae esse natus. Earum nihil deserunt eos quasi cupiditate. A inventore et molestiae natus.',
-    href: '#',
+      "Vero eum voluptatem aliquid nostrum voluptatem. Vitae esse natus. Earum nihil deserunt eos quasi cupiditate. A inventore et molestiae natus.",
+    href: "#",
     icon: UsersIcon,
   },
   {
-    name: 'Spam report',
+    name: "Spam report",
     description:
-      'Et quod quaerat dolorem quaerat architecto aliquam accusantium. Ex adipisci et doloremque autem quia quam. Quis eos molestiae at iure impedit.',
-    href: '#',
+      "Et quod quaerat dolorem quaerat architecto aliquam accusantium. Ex adipisci et doloremque autem quia quam. Quis eos molestiae at iure impedit.",
+    href: "#",
     icon: TrashIcon,
   },
-]
+];
 
 export default function SimpleThreeColumnWithLargeIcons() {
   return (
@@ -33,8 +33,8 @@ export default function SimpleThreeColumnWithLargeIcons() {
             Stay on top of customer support
           </h2>
           <p className="mt-6 text-lg/8 text-gray-600">
-            Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in
-            accusamus quisquam.
+            Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam
+            voluptatum cupiditate veritatis in accusamus quisquam.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
@@ -43,14 +43,20 @@ export default function SimpleThreeColumnWithLargeIcons() {
               <div key={feature.name} className="flex flex-col">
                 <dt className="text-base/7 font-semibold text-gray-900">
                   <div className="mb-6 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
-                    <feature.icon aria-hidden="true" className="size-6 text-white" />
+                    <feature.icon
+                      aria-hidden="true"
+                      className="size-6 text-white"
+                    />
                   </div>
                   {feature.name}
                 </dt>
                 <dd className="mt-1 flex flex-auto flex-col text-base/7 text-gray-600">
                   <p className="flex-auto">{feature.description}</p>
                   <p className="mt-6">
-                    <a href={feature.href} className="text-sm/6 font-semibold text-indigo-600 hover:text-indigo-500">
+                    <a
+                      href={feature.href}
+                      className="text-sm/6 font-semibold text-indigo-600 hover:text-indigo-500"
+                    >
                       Learn more <span aria-hidden="true">→</span>
                     </a>
                   </p>
@@ -61,5 +67,5 @@ export default function SimpleThreeColumnWithLargeIcons() {
         </div>
       </div>
     </div>
-  )
+  );
 }

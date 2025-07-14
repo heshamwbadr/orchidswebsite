@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { motion } from "motion/react";
-import { openCalendlyPopup } from '@/lib/calendly';
+import { motion } from "framer-motion";
+import { openCalendlyPopup } from "@/lib/calendly";
 
 export const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
@@ -16,7 +16,7 @@ export const HeroSection = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -56,122 +56,139 @@ export const HeroSection = () => {
             preserveAspectRatio="xMidYMid slice"
           >
             <defs>
-              <linearGradient id="neural-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient
+                id="neural-gradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#007AFF" stopOpacity="0.4" />
                 <stop offset="50%" stopColor="#FFD700" stopOpacity="0.3" />
                 <stop offset="100%" stopColor="#007AFF" stopOpacity="0.2" />
               </linearGradient>
             </defs>
-            
+
             {/* Neural Network Pattern */}
-            {mounted && Array.from({ length: 20 }).map((_, i) => (
-              <g key={i}>
-                <circle
-                  cx={Math.random() * 1000}
-                  cy={Math.random() * 1000}
-                  r="2"
-                  fill="url(#neural-gradient)"
-                  opacity={0.8}
-                >
-                  <animate
-                    attributeName="opacity"
-                    values="0.4;1;0.4"
-                    dur={`${3 + Math.random() * 4}s`}
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                
-                <line
-                  x1={Math.random() * 1000}
-                  y1={Math.random() * 1000}
-                  x2={Math.random() * 1000}
-                  y2={Math.random() * 1000}
-                  stroke="url(#neural-gradient)"
-                  strokeWidth="1"
-                  opacity={0.3}
-                >
-                  <animate
-                    attributeName="opacity"
-                    values="0.2;0.6;0.2"
-                    dur={`${4 + Math.random() * 3}s`}
-                    repeatCount="indefinite"
-                  />
-                </line>
-              </g>
-            ))}
+            {mounted &&
+              Array.from({ length: 20 }).map((_, i) => (
+                <g key={i}>
+                  <circle
+                    cx={Math.random() * 1000}
+                    cy={Math.random() * 1000}
+                    r="2"
+                    fill="url(#neural-gradient)"
+                    opacity={0.8}
+                  >
+                    <animate
+                      attributeName="opacity"
+                      values="0.4;1;0.4"
+                      dur={`${3 + Math.random() * 4}s`}
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+
+                  <line
+                    x1={Math.random() * 1000}
+                    y1={Math.random() * 1000}
+                    x2={Math.random() * 1000}
+                    y2={Math.random() * 1000}
+                    stroke="url(#neural-gradient)"
+                    strokeWidth="1"
+                    opacity={0.3}
+                  >
+                    <animate
+                      attributeName="opacity"
+                      values="0.2;0.6;0.2"
+                      dur={`${4 + Math.random() * 3}s`}
+                      repeatCount="indefinite"
+                    />
+                  </line>
+                </g>
+              ))}
           </svg>
         </div>
       </div>
 
       {/* Floating Elements */}
       <div className="absolute inset-0 pointer-events-none z-5">
-        {mounted && Array.from({ length: 6 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-primary rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              opacity: [0.3, 1, 0.3],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
+        {mounted &&
+          Array.from({ length: 6 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-primary rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                opacity: [0.3, 1, 0.3],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+              }}
+            />
+          ))}
       </div>
 
       {/* Main Content */}
       <div className="relative z-10 container-responsive max-w-8xl">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center min-h-[80vh] responsive-py-lg">
-          
           {/* Left Column - Text Content */}
-          <div 
+          <div
             className={`transform transition-all duration-1000 order-2 lg:order-1 text-center lg:text-left ${
-              mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+              mounted ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
             }`}
           >
             {/* Main Headline */}
-            <motion.h1 
+            <motion.h1
               className="responsive-text-6xl font-light mb-4 lg:mb-6 leading-tight tracking-tight"
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
             >
               <span className="block text-foreground font-light">
-                Real <span className="text-primary font-medium">AI transformation</span> doesn't live in <span className="text-accent font-medium">strategy</span> decks — it lives in <span className="text-primary font-medium">execution</span>.
+                Real{" "}
+                <span className="text-primary font-medium">
+                  AI transformation
+                </span>{" "}
+                doesn't live in{" "}
+                <span className="text-accent font-medium">strategy</span> decks
+                — it lives in{" "}
+                <span className="text-primary font-medium">execution</span>.
               </span>
             </motion.h1>
 
             {/* Subheader */}
-            <motion.div 
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <p className="responsive-text-xl text-muted-foreground font-light leading-relaxed mb-4 lg:mb-6">
-                I lead where most stop: at the intersection of <span className="text-accent font-medium">vision</span> and <span className="text-primary font-medium">delivery</span>.
+                I lead where most stop: at the intersection of{" "}
+                <span className="text-accent font-medium">vision</span> and{" "}
+                <span className="text-primary font-medium">delivery</span>.
               </p>
             </motion.div>
 
             {/* Muted tagline */}
-            <motion.div 
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 1.0 }}
             >
               <p className="responsive-text-sm text-muted-foreground/70 font-light mb-6 lg:mb-8">
-                Engineer by training. Strategist by design. Transformer by impact.
+                Engineer by training. Strategist by design. Transformer by
+                impact.
               </p>
             </motion.div>
 
             {/* CTA Buttons */}
-            <motion.div 
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 1.1 }}
@@ -180,7 +197,7 @@ export const HeroSection = () => {
                 <Button
                   size="lg"
                   className="responsive-button relative group bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-primary-foreground font-medium rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-primary/25 w-full sm:w-auto"
-                  onClick={() => scrollToSection('portfolio')}
+                  onClick={() => scrollToSection("portfolio")}
                 >
                   <span className="relative z-10 flex items-center justify-center responsive-gap-sm">
                     See My Work
@@ -206,25 +223,24 @@ export const HeroSection = () => {
           </div>
 
           {/* Right Column - Professional Portrait */}
-          <motion.div 
+          <motion.div
             initial={{ y: 30, opacity: 0, x: 30 }}
             animate={{ y: 0, opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 1.3 }}
             className="flex justify-center lg:justify-end items-center lg:items-end order-1 lg:order-2 mt-8 lg:mt-0"
           >
             <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex items-center justify-center lg:justify-end">
-              <img 
-                src="https://clever-pika-899e4f.netlify.app/mypictransparent.png" 
+              <img
+                src="https://clever-pika-899e4f.netlify.app/mypictransparent.png"
                 alt="Hesham Badr - AI & Digital Transformation Strategist"
                 className="responsive-image-contain w-full h-auto max-h-[60vh] sm:max-h-[70vh] lg:max-h-none"
-                style={{ 
-                  transform: "scale(0.6) translateY(20px)", 
-                  transformOrigin: "center bottom" 
+                style={{
+                  transform: "scale(0.6) translateY(20px)",
+                  transformOrigin: "center bottom",
                 }}
               />
             </div>
           </motion.div>
-
         </div>
       </div>
 
@@ -233,18 +249,19 @@ export const HeroSection = () => {
 
       <style jsx>{`
         @keyframes gradient {
-          0%, 100% {
+          0%,
+          100% {
             background-position: 0% 50%;
           }
           50% {
             background-position: 100% 50%;
           }
         }
-        
+
         .animate-gradient {
           animation: gradient 6s ease infinite;
         }
-        
+
         .bg-300% {
           background-size: 300%;
         }

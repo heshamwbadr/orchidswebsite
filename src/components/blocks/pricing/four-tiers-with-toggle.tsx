@@ -1,52 +1,57 @@
-import { CheckIcon } from '@heroicons/react/20/solid'
+import { CheckIcon } from "@heroicons/react/20/solid";
 
 const tiers = [
   {
-    name: 'Hobby',
-    id: 'hobby',
-    price: { monthly: '$19', annually: '$199' },
-    description: 'The essentials to provide your best work for clients.',
-    features: ['5 products', 'Up to 1,000 subscribers', 'Basic analytics'],
+    name: "Hobby",
+    id: "hobby",
+    price: { monthly: "$19", annually: "$199" },
+    description: "The essentials to provide your best work for clients.",
+    features: ["5 products", "Up to 1,000 subscribers", "Basic analytics"],
     featured: false,
   },
   {
-    name: 'Freelancer',
-    id: 'freelancer',
-    price: { monthly: '$29', annually: '$299' },
-    description: 'The essentials to provide your best work for clients.',
-    features: ['5 products', 'Up to 1,000 subscribers', 'Basic analytics', '48-hour support response time'],
-    featured: false,
-  },
-  {
-    name: 'Startup',
-    id: 'startup',
-    price: { monthly: '$59', annually: '$599' },
-    description: 'A plan that scales with your rapidly growing business.',
+    name: "Freelancer",
+    id: "freelancer",
+    price: { monthly: "$29", annually: "$299" },
+    description: "The essentials to provide your best work for clients.",
     features: [
-      '25 products',
-      'Up to 10,000 subscribers',
-      'Advanced analytics',
-      '24-hour support response time',
-      'Marketing automations',
+      "5 products",
+      "Up to 1,000 subscribers",
+      "Basic analytics",
+      "48-hour support response time",
+    ],
+    featured: false,
+  },
+  {
+    name: "Startup",
+    id: "startup",
+    price: { monthly: "$59", annually: "$599" },
+    description: "A plan that scales with your rapidly growing business.",
+    features: [
+      "25 products",
+      "Up to 10,000 subscribers",
+      "Advanced analytics",
+      "24-hour support response time",
+      "Marketing automations",
     ],
     featured: true,
   },
   {
-    name: 'Enterprise',
-    id: 'enterprise',
-    price: { monthly: '$99', annually: '$999' },
-    description: 'Dedicated support and infrastructure for your company.',
+    name: "Enterprise",
+    id: "enterprise",
+    price: { monthly: "$99", annually: "$999" },
+    description: "Dedicated support and infrastructure for your company.",
     features: [
-      'Unlimited products',
-      'Unlimited subscribers',
-      'Advanced analytics',
-      '1-hour, dedicated support response time',
-      'Marketing automations',
-      'Custom reporting tools',
+      "Unlimited products",
+      "Unlimited subscribers",
+      "Advanced analytics",
+      "1-hour, dedicated support response time",
+      "Marketing automations",
+      "Custom reporting tools",
     ],
     featured: false,
   },
-]
+];
 
 export default function FourTiersWithToggle() {
   return (
@@ -59,8 +64,8 @@ export default function FourTiersWithToggle() {
           </p>
         </div>
         <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty text-gray-600 sm:text-xl/8">
-          Choose an affordable plan that’s packed with the best features for engaging your audience, creating customer
-          loyalty, and driving sales.
+          Choose an affordable plan that’s packed with the best features for
+          engaging your audience, creating customer loyalty, and driving sales.
         </p>
         <div className="mt-16 flex justify-center">
           <fieldset aria-label="Payment frequency">
@@ -73,7 +78,9 @@ export default function FourTiersWithToggle() {
                   type="radio"
                   className="absolute inset-0 appearance-none rounded-full"
                 />
-                <span className="text-gray-500 group-has-checked:text-white">Monthly</span>
+                <span className="text-gray-500 group-has-checked:text-white">
+                  Monthly
+                </span>
               </label>
               <label className="group relative rounded-full px-2.5 py-1 has-checked:bg-indigo-600">
                 <input
@@ -82,7 +89,9 @@ export default function FourTiersWithToggle() {
                   type="radio"
                   className="absolute inset-0 appearance-none rounded-full"
                 />
-                <span className="text-gray-500 group-has-checked:text-white">Annually</span>
+                <span className="text-gray-500 group-has-checked:text-white">
+                  Annually
+                </span>
               </label>
             </div>
           </fieldset>
@@ -91,7 +100,7 @@ export default function FourTiersWithToggle() {
           {tiers.map((tier) => (
             <div
               key={tier.id}
-              data-featured={tier.featured ? 'true' : undefined}
+              data-featured={tier.featured ? "true" : undefined}
               className="group/tier rounded-3xl p-8 ring-1 ring-gray-200 data-featured:ring-2 data-featured:ring-indigo-600"
             >
               <div className="flex items-center justify-between gap-x-4">
@@ -107,12 +116,20 @@ export default function FourTiersWithToggle() {
               </div>
               <p className="mt-4 text-sm/6 text-gray-600">{tier.description}</p>
               <p className="mt-6 flex items-baseline gap-x-1 group-not-has-[[name=frequency][value=monthly]:checked]/tiers:hidden">
-                <span className="text-4xl font-semibold tracking-tight text-gray-900">{tier.price.monthly}</span>
-                <span className="text-sm/6 font-semibold text-gray-600">/month</span>
+                <span className="text-4xl font-semibold tracking-tight text-gray-900">
+                  {tier.price.monthly}
+                </span>
+                <span className="text-sm/6 font-semibold text-gray-600">
+                  /month
+                </span>
               </p>
               <p className="mt-6 flex items-baseline gap-x-1 group-not-has-[[name=frequency][value=annually]:checked]/tiers:hidden">
-                <span className="text-4xl font-semibold tracking-tight text-gray-900">{tier.price.annually}</span>
-                <span className="text-sm/6 font-semibold text-gray-600">/year</span>
+                <span className="text-4xl font-semibold tracking-tight text-gray-900">
+                  {tier.price.annually}
+                </span>
+                <span className="text-sm/6 font-semibold text-gray-600">
+                  /year
+                </span>
               </p>
               <button
                 value={tier.id}
@@ -123,10 +140,16 @@ export default function FourTiersWithToggle() {
               >
                 Buy plan
               </button>
-              <ul role="list" className="mt-8 space-y-3 text-sm/6 text-gray-600">
+              <ul
+                role="list"
+                className="mt-8 space-y-3 text-sm/6 text-gray-600"
+              >
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex gap-x-3">
-                    <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-indigo-600" />
+                    <CheckIcon
+                      aria-hidden="true"
+                      className="h-6 w-5 flex-none text-indigo-600"
+                    />
                     {feature}
                   </li>
                 ))}
@@ -136,5 +159,5 @@ export default function FourTiersWithToggle() {
         </div>
       </div>
     </form>
-  )
+  );
 }

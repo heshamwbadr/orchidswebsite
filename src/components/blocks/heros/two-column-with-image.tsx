@@ -4,7 +4,7 @@ import { Manrope } from "next/font/google";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import { RoughNotation, RoughNotationGroup } from "react-rough-notation";
-import { animate, stagger, useInView } from "motion/react";
+import { animate, stagger, useInView } from "framer-motion";
 
 const manrope = Manrope({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -22,7 +22,7 @@ export function PlayfulHeroSection() {
             <h2
               className={cn(
                 "text-center text-2xl font-bold tracking-tight text-neutral-900 sm:text-left sm:text-4xl lg:text-7xl dark:text-neutral-50",
-                manrope.className
+                manrope.className,
               )}
             >
               Your favourite{" "}
@@ -162,7 +162,7 @@ export const MobileMockup = ({ className }: { className?: string }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
         "absolute inset-0 mx-auto h-full w-full flex-shrink-0 object-cover object-top text-neutral-900 dark:text-neutral-50",
-        className
+        className,
       )}
     >
       <path

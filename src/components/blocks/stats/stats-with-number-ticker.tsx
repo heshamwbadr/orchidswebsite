@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import React, { useRef } from "react";
-import { motion, useInView, useSpring, useTransform } from "motion/react";
+import { motion, useInView, useSpring, useTransform } from "framer-motion";
 import { useEffect } from "react";
 
 export function StatsWithNumberTicker() {
@@ -76,7 +76,7 @@ function AnimatedNumber({
 
   const spring = useSpring(initial, { mass: 0.8, stiffness: 75, damping: 15 });
   const display = useTransform(spring, (current) =>
-    Math.round(current).toLocaleString()
+    Math.round(current).toLocaleString(),
   );
 
   useEffect(() => {

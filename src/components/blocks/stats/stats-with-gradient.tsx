@@ -37,7 +37,7 @@ export function StatsWithGradient() {
             <div
               key={"card" + index}
               className={cn(
-                "group/card relative overflow-hidden rounded-lg bg-white/50 p-4 backdrop-blur-sm dark:bg-neutral-800/50"
+                "group/card relative overflow-hidden rounded-lg bg-white/50 p-4 backdrop-blur-sm dark:bg-neutral-800/50",
               )}
             >
               <div className="flex items-center gap-2">

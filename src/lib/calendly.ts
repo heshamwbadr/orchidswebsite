@@ -6,18 +6,18 @@ declare global {
   }
 }
 
-const CALENDLY_URL = 'https://calendly.com/hesham-badr-neuronovate/30min';
+const CALENDLY_URL = "https://calendly.com/hesham-badr-neuronovate/30min";
 
 export const openCalendlyPopup = (): void => {
   // Check if Calendly is available
-  if (typeof window !== 'undefined' && window.Calendly) {
+  if (typeof window !== "undefined" && window.Calendly) {
     window.Calendly.initPopupWidget({
-      url: CALENDLY_URL
+      url: CALENDLY_URL,
     });
   } else {
     // Fallback: open in new tab if Calendly widget is not loaded
-    if (typeof window !== 'undefined') {
-      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+    if (typeof window !== "undefined") {
+      window.open(CALENDLY_URL, "_blank", "noopener,noreferrer");
     }
   }
 };
@@ -26,8 +26,8 @@ export const openCalendlyPopup = (): void => {
 export const loadCalendlyScript = (): Promise<void> => {
   return new Promise((resolve, reject) => {
     // Check if we're in browser environment
-    if (typeof window === 'undefined') {
-      reject(new Error('Not in browser environment'));
+    if (typeof window === "undefined") {
+      reject(new Error("Not in browser environment"));
       return;
     }
 
@@ -52,10 +52,10 @@ export const loadCalendlyScript = (): Promise<void> => {
     }
 
     // Load Calendly script
-    const script = document.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
     script.async = true;
-    
+
     script.onload = () => {
       // Wait a bit for Calendly to initialize
       const checkCalendly = () => {
@@ -67,17 +67,17 @@ export const loadCalendlyScript = (): Promise<void> => {
       };
       checkCalendly();
     };
-    
+
     script.onerror = () => {
-      reject(new Error('Failed to load Calendly script'));
+      reject(new Error("Failed to load Calendly script"));
     };
 
     document.head.appendChild(script);
 
     // Also load CSS
-    const link = document.createElement('link');
-    link.href = 'https://assets.calendly.com/assets/external/widget.css';
-    link.rel = 'stylesheet';
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
     document.head.appendChild(link);
   });
 };
@@ -88,10 +88,10 @@ export const openCalendlyPopupSafe = async (): Promise<void> => {
     await loadCalendlyScript();
     openCalendlyPopup();
   } catch (error) {
-    console.warn('Could not load Calendly, opening in new tab:', error);
+    console.warn("Could not load Calendly, opening in new tab:", error);
     // Fallback to direct link
-    if (typeof window !== 'undefined') {
-      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+    if (typeof window !== "undefined") {
+      window.open(CALENDLY_URL, "_blank", "noopener,noreferrer");
     }
   }
 };

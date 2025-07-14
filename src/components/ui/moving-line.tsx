@@ -5,7 +5,7 @@ import {
   useScroll,
   useSpring,
   useTransform,
-} from "motion/react";
+} from "framer-motion";
 
 const MovingLine = () => {
   const transition = {

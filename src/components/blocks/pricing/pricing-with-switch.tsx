@@ -3,7 +3,7 @@ import React from "react";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Outfit } from "next/font/google";
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "700"] });
@@ -14,7 +14,7 @@ export function PricingWithSwitch() {
         <h2
           className={cn(
             "text-center text-xl font-bold text-black md:text-4xl dark:text-white",
-            outfit.className
+            outfit.className,
           )}
         >
           Simple pricing for your ease
@@ -22,7 +22,7 @@ export function PricingWithSwitch() {
         <p
           className={cn(
             "mx-auto mt-4 max-w-2xl text-center text-sm font-normal text-neutral-700 md:text-base dark:text-neutral-400",
-            outfit.className
+            outfit.className,
           )}
         >
           Every AI offers a wide range of services. You can choose the one that
@@ -50,7 +50,7 @@ export function Pricing() {
             key={tab.value}
             className={cn(
               "relative rounded-md p-4 text-sm font-medium text-gray-500 dark:text-neutral-400",
-              active === tab.value ? "text-white dark:text-black" : ""
+              active === tab.value ? "text-white dark:text-black" : "",
             )}
             onClick={() => setActive(tab.value)}
           >
@@ -73,7 +73,7 @@ export function Pricing() {
               tier.featured
                 ? "relative bg-[radial-gradient(164.75%_100%_at_50%_0%,#334155_0%,#0F172A_48.73%)] shadow-2xl"
                 : "bg-white dark:bg-black",
-              "flex h-full flex-col justify-between rounded-lg px-6 py-8 sm:mx-8 lg:mx-0"
+              "flex h-full flex-col justify-between rounded-lg px-6 py-8 sm:mx-8 lg:mx-0",
             )}
           >
             <div className="">
@@ -83,7 +83,7 @@ export function Pricing() {
                   tier.featured
                     ? "text-white"
                     : "text-neutral-700 dark:text-neutral-400",
-                  "text-base font-semibold leading-7"
+                  "text-base font-semibold leading-7",
                 )}
               >
                 {tier.name}
@@ -102,7 +102,7 @@ export function Pricing() {
                     "inline-block text-4xl font-bold tracking-tight",
                     tier.featured
                       ? "text-white"
-                      : "text-neutral-900 dark:text-neutral-200"
+                      : "text-neutral-900 dark:text-neutral-200",
                   )}
                 >
                   {active === "monthly" ? tier.priceMonthly : tier.priceYearly}
@@ -113,7 +113,7 @@ export function Pricing() {
                   tier.featured
                     ? "text-neutral-300"
                     : "text-neutral-600 dark:text-neutral-300",
-                  "mt-6 h-12 text-sm leading-7 md:h-12 xl:h-12"
+                  "mt-6 h-12 text-sm leading-7 md:h-12 xl:h-12",
                 )}
               >
                 {tier.description}
@@ -124,7 +124,7 @@ export function Pricing() {
                   tier.featured
                     ? "text-neutral-300"
                     : "text-neutral-600 dark:text-neutral-300",
-                  "mt-8 space-y-3 text-sm leading-6 sm:mt-10"
+                  "mt-8 space-y-3 text-sm leading-6 sm:mt-10",
                 )}
               >
                 {tier.features.map((feature) => (
@@ -134,7 +134,7 @@ export function Pricing() {
                         tier.featured
                           ? "text-white"
                           : "text-neutral-700 dark:text-neutral-400",
-                        "h-6 w-5 flex-none"
+                        "h-6 w-5 flex-none",
                       )}
                       aria-hidden="true"
                     />
@@ -151,7 +151,7 @@ export function Pricing() {
                   "mt-8 block w-full rounded-full bg-black px-3.5 py-2.5 text-center text-sm font-semibold text-white ring-black ring-offset-2 transition duration-200 hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10 dark:bg-white dark:text-black dark:ring-white dark:ring-offset-2",
                   tier.featured
                     ? "bg-white text-black shadow-sm hover:bg-white/90 focus-visible:outline-white dark:bg-white"
-                    : ""
+                    : "",
                 )}
               >
                 {tier.cta}

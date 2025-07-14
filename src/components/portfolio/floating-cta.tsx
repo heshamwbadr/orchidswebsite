@@ -1,9 +1,9 @@
 "use client";
 
-import React from 'react';
-import { Phone } from 'lucide-react';
-import { motion } from 'motion/react';
-import { openCalendlyPopup } from '@/lib/calendly';
+import React from "react";
+import { Phone } from "lucide-react";
+import { motion } from "framer-motion";
+import { openCalendlyPopup } from "@/lib/calendly";
 
 export const FloatingCallToAction = () => {
   const handleCallClick = () => {
@@ -39,7 +39,8 @@ export const FloatingCallToAction = () => {
         className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target"
         whileHover={{
           scale: 1.1,
-          boxShadow: '0 8px 25px rgba(0, 122, 255, 0.4), 0 4px 15px rgba(255, 215, 0, 0.2)',
+          boxShadow:
+            "0 8px 25px rgba(0, 122, 255, 0.4), 0 4px 15px rgba(255, 215, 0, 0.2)",
         }}
         whileTap={{ scale: 0.95 }}
         animate={{
@@ -64,8 +65,8 @@ export const FloatingCallToAction = () => {
           transition={{ duration: 0.2 }}
           className="flex items-center justify-center h-full"
         >
-          <Phone 
-            className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" 
+          <Phone
+            className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white"
             strokeWidth={2}
           />
         </motion.div>
