@@ -431,7 +431,7 @@ export const HeroSection = () => {
                   variant="outline"
                   size="lg"
                   className="responsive-button relative group border-2 border-secondary text-secondary hover:text-secondary-foreground font-medium rounded-full transition-all duration-300 transform hover:scale-105 bg-transparent hover:bg-secondary shadow-lg hover:shadow-secondary/25 w-full sm:w-auto"
-                  onClick={() => scrollToSection("portfolio")}
+                  onClick={() => scrollToSection("case-studies")}
                 >
                   <span className="relative z-10 flex items-center justify-center responsive-gap-sm">
                     See My Work

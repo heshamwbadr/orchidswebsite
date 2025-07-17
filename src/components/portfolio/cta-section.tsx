@@ -397,14 +397,13 @@ export const CTASection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.8 }}
-                className="mt-4 lg:mt-6 text-center"
+                className="mt-4 lg:mt-6 text-center w-full"
               >
                 <blockquote
-                  className="responsive-text-base italic font-light"
+                  className="responsive-text-sm italic font-light mx-auto max-w-lg"
                   style={{ color: "#A1A1AA" }}
                 >
-                  "No fluff. No generic decks. Just insight, clarity, and a
-                  practical next step forward."
+                  "In a sea of flashy decks and half-built pilots, I’ve built trust by turning strategy into results across boardrooms and front lines."
                 </blockquote>
               </motion.div>
             </div>

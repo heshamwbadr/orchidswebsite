@@ -304,7 +304,7 @@ export const AboutSection = () => {
           </div>
           <p className="responsive-text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             <span className="hidden lg:inline">
-              Driving transformation through strategic insight, innovative solutions, and exceptional leadership across global markets.
+            Behind every bold transformation is someone who connects the dots. I bring AI, strategy, and people together to turn vision into measurable change.
             </span>
             <span className="block lg:hidden">
               Engineer by training. Strategist by design. Transformer by impact.

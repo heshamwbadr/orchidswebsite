@@ -266,21 +266,19 @@ export function CaseStudiesSection() {
 
                       <div className="relative z-10 h-full flex flex-col">
                         {/* Header with Icon */}
-                        <div className="flex items-start mb-3 lg:mb-4">
+                        <div className="flex items-center gap-3 mb-3 lg:mb-4">
                           <motion.div
-                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 mr-3 flex-shrink-0"
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 flex-shrink-0"
                             whileHover={{
                               rotate: 5,
-                              transition: { duration: 0.3, ease: "easeOut" },
+                              transition: { duration: 0.3, ease: 'easeOut' },
                             }}
                           >
                             <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                           </motion.div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300 leading-tight">
-                              {study.title}
-                            </h3>
-                          </div>
+                          <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300 leading-tight m-0">
+                            {study.title}
+                          </h3>
                         </div>
 
                         {/* Subtitle */}
@@ -344,22 +342,22 @@ export function CaseStudiesSection() {
                     </DialogTitle>
                     <div className="responsive-card space-y-6 lg:space-y-8">
                       {/* Dialog Header */}
-                      <div className="flex items-start responsive-gap-base">
+                      <div className="flex items-start responsive-gap-base text-left">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-muted/50 to-secondary/50 rounded-xl flex items-center justify-center flex-shrink-0">
                           <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h2 className="responsive-text-2xl font-bold text-foreground mb-2">
+                          <h2 className="responsive-text-2xl font-bold text-foreground mb-2 text-left">
                             {study.title}
                           </h2>
-                          <p className="text-muted-foreground mb-3 lg:mb-4 leading-relaxed responsive-text-base">
+                          <p className="text-accent italic mb-3 lg:mb-4 leading-relaxed responsive-text-base text-left">
                             {study.subtitle}
                           </p>
-                          <div className="flex flex-wrap responsive-gap-sm">
+                          <div className="flex flex-wrap gap-2 mb-2 text-left">
                             {study.tags.map((tag) => (
                               <Badge
                                 key={tag}
-                                className="bg-card/60 text-muted-foreground border-border/50 responsive-text-sm"
+                                className="bg-card/60 text-muted-foreground border-border/50 responsive-text-sm px-3 py-1 rounded-full font-medium"
                               >
                                 {tag}
                               </Badge>

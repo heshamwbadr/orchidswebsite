@@ -22,49 +22,64 @@ interface Differentiator {
 const differentiators: Differentiator[] = [
   {
     icon: <Trophy className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />,
-    title: "Proven Track Record",
+    title: "Proven Transformation, Real Impact",
     description:
-      "13+ years transforming enterprises with measurable results. Over $21M in value delivered, with ROI up to 340%.",
-    points: ["40+ Workflows Transformed", "3 Continents Served"],
+      "Over a decade of leading transformations that stick. $21M+ in quantified outcomes. Not theory, results.",
+    points: [
+      "40+ business-critical workflows overhauled",
+      "Delivered across Australia, Europe & MENA",
+    ],
   },
   {
     icon: <Building className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />,
-    title: "Executive Partnership",
+    title: "Strategic Partner to the C-Suite",
     description:
-      "Trusted advisor to leadership teams and boards, guiding enterprise-scale change with strategic influence.",
-    points: ["Board-Level Advisory", "Strategic Governance"],
+      "From boardrooms to strategy offsites, I’ve helped executives navigate change, align teams, and execute with precision.",
+    points: [
+      "Advisory roles with Tier-1 bank execs",
+      "Built governance models still in use",
+    ],
   },
   {
     icon: <GraduationCap className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />,
-    title: "Credentials You Can Trust",
+    title: "Credibility Backed by World-Class Training",
     description:
-      "Engineered for excellence. Strategically trained. Continuously learning to stay ahead of the curve.",
+      "Global education meets practical wisdom. I blend engineering logic with business strategy, and keep evolving.",
     points: [
-      "Masters Process Engineering (Top 20 worldwide)",
+      "MSc in Process Engineering (Top 20 Global)",
       "MBA in Emerging Tech (Europe)",
-      "Harvard Certified in Advanced Business Strategy & Management Consulting",
+      "Harvard-certified in Business Strategy & Consulting",
     ],
   },
   {
     icon: <Zap className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />,
-    title: "AI-First Approach",
+    title: "AI-Driven. Business-Led.",
     description:
-      "Expertise in GenAI, multi-agent systems, and machine learning — delivering scalable, future-ready solutions.",
-    points: ["50+ AI Projects", "95% Success Rate"],
+      "I don’t just apply AI, I architect meaningful use cases that scale and serve the business, not the buzz.",
+    points: [
+      "Led 50+ AI use cases",
+      "95% solution adoption rate",
+    ],
   },
   {
     icon: <Cog className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />,
-    title: "End-to-End Solutions",
+    title: "End-to-End Ownership, No Silos",
     description:
-      "I own the full lifecycle of transformation — from strategic vision to operational excellence. No handoffs.",
-    points: ["Zero Handoffs", "Full Ownership"],
+      "I take accountability from idea to delivery. No relay races - just consistent momentum and clear outcomes.",
+    points: [
+      "Strategic to operational execution",
+      "Zero handoffs, single point of trust",
+    ],
   },
   {
     icon: <Shield className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />,
-    title: "Ethical AI Focus",
+    title: "Human-Centered, Ethically Aligned AI",
     description:
-      "Transparent, compliant, and human-centric AI design aligned with global governance frameworks.",
-    points: ["100% Compliance", "Ethical Frameworks"],
+      "Built with care. I design AI systems that are ethical, compliant, and built around real people - not just data.",
+    points: [
+      "100% compliance with global standards",
+      "Embedded ethics in every design",
+    ],
   },
 ];
 
