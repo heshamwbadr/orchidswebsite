@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import { CheckIcon, MinusIcon } from "@heroicons/react/20/solid";
 
+type TierName = "Starter" | "Growth" | "Scale";
+
 const tiers = [
   {
     name: "Starter",
@@ -90,7 +92,7 @@ const sections = [
   },
 ];
 
-function classNames(...classes) {
+function classNames(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -153,7 +155,7 @@ export default function WithComparisonTable() {
                   <li key={section.name}>
                     <ul role="list" className="space-y-4">
                       {section.features.map((feature) =>
-                        feature.tiers[tier.name] ? (
+                        feature.tiers[tier.name as TierName] ? (
                           <li key={feature.name} className="flex gap-x-3">
                             <CheckIcon
                               aria-hidden="true"
@@ -161,9 +163,9 @@ export default function WithComparisonTable() {
                             />
                             <span>
                               {feature.name}{" "}
-                              {typeof feature.tiers[tier.name] === "string" ? (
+                              {typeof feature.tiers[tier.name as TierName] === "string" ? (
                                 <span className="text-sm/6 text-gray-500">
-                                  ({feature.tiers[tier.name]})
+                                  ({feature.tiers[tier.name as TierName]})
                                 </span>
                               ) : null}
                             </span>
@@ -271,13 +273,13 @@ export default function WithComparisonTable() {
                         </th>
                         {tiers.map((tier) => (
                           <td key={tier.id} className="px-6 py-4 xl:px-8">
-                            {typeof feature.tiers[tier.name] === "string" ? (
+                            {typeof feature.tiers[tier.name as TierName] === "string" ? (
                               <div className="text-center text-sm/6 text-gray-500">
-                                {feature.tiers[tier.name]}
+                                {feature.tiers[tier.name as TierName]}
                               </div>
                             ) : (
                               <>
-                                {feature.tiers[tier.name] === true ? (
+                                {feature.tiers[tier.name as TierName] === true ? (
                                   <CheckIcon
                                     aria-hidden="true"
                                     className="mx-auto size-5 text-indigo-600"
@@ -290,7 +292,7 @@ export default function WithComparisonTable() {
                                 )}
 
                                 <span className="sr-only">
-                                  {feature.tiers[tier.name] === true
+                                  {feature.tiers[tier.name as TierName] === true
                                     ? "Included"
                                     : "Not included"}{" "}
                                   in {tier.name}
