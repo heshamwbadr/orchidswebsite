@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Script from "next/script";
+import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
 
 export const metadata: Metadata = {
   title: "Hesham Badr - AI & Digital Transformation Strategist",
@@ -51,6 +52,7 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-foreground antialiased overflow-x-hidden">
         <div className="relative min-h-screen">{children}</div>
+        <FloatingCallButton />
         <Script
           src="https://assets.calendly.com/assets/external/widget.js"
           strategy="afterInteractive"

@@ -108,7 +108,6 @@ export const WhyMeSection = () => {
 
   return (
     <section
-      id="why-me"
       className="relative min-h-screen responsive-py-lg mobile-safe-area overflow-hidden bg-background"
     >
       {/* Background Effects */}
@@ -127,6 +126,7 @@ export const WhyMeSection = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
+          <div id="why-leaders-trust-me" className="scroll-mt-40"></div>
           <motion.h2
             className="responsive-text-5xl font-light mb-4 lg:mb-6 text-foreground"
             initial={{ opacity: 0, scale: 0.9 }}

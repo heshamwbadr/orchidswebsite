@@ -48,10 +48,10 @@ export const Footer = () => {
     {
       title: "Services",
       links: [
-        { name: "AI Strategy & Implementation", href: "#services" },
-        { name: "Digital Transformation", href: "#services" },
-        { name: "Process Optimization", href: "#services" },
-        { name: "Executive Consulting", href: "#services" },
+        { name: "Strategic Intelligence & AI", href: "#how-i-help-you-win" },
+        { name: "Digital & Operational Transformation", href: "#how-i-help-you-win" },
+        { name: "Leadership & Change Acceleration", href: "#how-i-help-you-win" },
+        { name: "AI Agent Enablement", href: "#how-i-help-you-win" },
       ],
     },
     {
@@ -290,7 +290,7 @@ export const Footer = () => {
                   </a>
                   <span className="hidden sm:inline">•</span>
                   <a
-                    href="/terms"
+                    href="/termsofuse"
                     className="hover:text-foreground transition-colors responsive-px-sm responsive-py-sm rounded hover:bg-muted/20 touch-target"
                   >
                     Terms of Service

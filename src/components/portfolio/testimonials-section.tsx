@@ -1,6 +1,8 @@
+// TestimonialsCarousel.tsx
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { Star, Building2, User, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,17 +18,19 @@ const testimonials = [
     industry: "Banking & Finance",
     rating: 5,
     metric: "Inclusive Leadership",
+    image: "/testimonials/preeti.jpeg",
   },
   {
     id: 2,
     quote:
-      "Blends strategic thinking with operational excellence. Sees the big picture while delivering outcomes with detail and discipline — an invaluable asset to any transformation effort.",
+      "Blends strategic thinking with operational excellence. Sees the big picture while delivering outcomes with detail and discipline. An invaluable asset to any transformation effort.",
     name: "Janine Modaro",
     title: "Leadership Consultant | GM",
     company: "Westpac",
     industry: "Banking & Finance",
     rating: 5,
     metric: "Strategic Excellence",
+    image: "/testimonials/janine.jpeg"
   },
   {
     id: 3,
@@ -38,6 +42,7 @@ const testimonials = [
     industry: "Corporate Governance",
     rating: 5,
     metric: "Innovation Catalyst",
+    image: "/testimonials/angela.jpeg",
   },
   {
     id: 4,
@@ -49,17 +54,19 @@ const testimonials = [
     industry: "Banking & Finance",
     rating: 5,
     metric: "Transformation Impact",
+    image: "/testimonials/michael.jpeg",
   },
   {
     id: 5,
     quote:
-      "Hesham brings clarity to complexity like few can. His insights shaped strategic decisions and delivered real impact while managing a multimillion-dollar portfolio at Westpac. Driven, bright, and collaborative — highly recommended.",
+      "Hesham brings clarity to complexity like few can. His insights shaped strategic decisions and delivered real impact while managing a multimillion-dollar portfolio at Westpac. Driven, bright, and collaborative. Highly recommended.",
     name: "LD Posada",
     title: "Senior Finance Partner",
     company: "Chartered Accountant",
-    industry: "Financial Services",
+    industry: "Finance",
     rating: 5,
     metric: "Strategic Decision Impact",
+    image: "/testimonials/LD.jpeg",
   },
   {
     id: 6,
@@ -71,306 +78,201 @@ const testimonials = [
     industry: "Banking & Finance",
     rating: 5,
     metric: "Executive Advisory",
+    image: "/testimonials/Waleed.jpeg",
   },
 ];
 
 export const Testimonials = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
-  const [currentOffset, setCurrentOffset] = useState(0);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const cardWidth = 320; // Reduced for better mobile fit
-  const gap = 16; // Reduced gap for mobile
+  const [isDragging, setIsDragging] = useState(false);
+  const animationRef = useRef<number | null>(null);
+  const dragStartX = useRef<number | null>(null);
+  const dragStartOffset = useRef(0);
+  const lastUpdateTime = useRef(0);
+  const cardWidth = 320;
+  const gap = 16;
+  const seamlessTestimonials = [...testimonials, ...testimonials, ...testimonials];
+  const singleLoopWidth = (seamlessTestimonials.length / 3) * (cardWidth + gap);
 
-  // Duplicate testimonials for seamless loop
-  const duplicatedTestimonials = [...testimonials, ...testimonials];
-
-  const handleMouseEnter = () => {
-    setIsPaused(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsPaused(false);
-  };
-
-  const scrollLeft = () => {
-    setCurrentOffset((prev) => {
-      const newOffset = Math.max(prev - (cardWidth + gap), 0);
-      return newOffset;
-    });
-  };
-
-  const scrollRight = () => {
-    setCurrentOffset((prev) => {
-      const maxOffset = (testimonials.length - 1) * (cardWidth + gap);
-      const newOffset = Math.min(prev + (cardWidth + gap), maxOffset);
-      return newOffset;
-    });
-  };
-
-  // Update scroll button states
   useEffect(() => {
-    const maxOffset = (testimonials.length - 1) * (cardWidth + gap);
-    setCanScrollLeft(currentOffset > 0);
-    setCanScrollRight(currentOffset < maxOffset);
-  }, [currentOffset]);
+    const container = scrollRef.current;
+    if (container) container.scrollLeft = cardWidth + gap;
+  }, []);
 
-  // Handle responsive scroll on mobile/tablet
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const container = e.currentTarget;
-    const scrollLeft = container.scrollLeft;
-    const maxScroll = container.scrollWidth - container.clientWidth;
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container || isPaused || isDragging) return;
 
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < maxScroll);
+    const animate = () => {
+      if (!container) return;
+      const maxScroll = container.scrollWidth / 3;
+      let nextScroll = container.scrollLeft + 0.5;
+
+      if (nextScroll >= maxScroll * 2) {
+        container.scrollLeft = maxScroll;
+      } else {
+        container.scrollLeft = nextScroll;
+      }
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, [isPaused, isDragging]);
+
+  const handleMouseEnter = () => setIsPaused(true);
+  const handleMouseLeave = () => setIsPaused(false);
+  const handleTouchStart = () => {
+    setIsPaused(true);
+    setIsDragging(true);
+  };
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    setTimeout(() => setIsPaused(false), 3000);
+  };
+
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    setIsDragging(true);
+    setIsPaused(true);
+    const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+    dragStartX.current = clientX;
+    if (scrollRef.current) {
+      dragStartOffset.current = scrollRef.current.scrollLeft;
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    setIsPaused(false);
+    dragStartX.current = null;
+    const container = scrollRef.current;
+    if (container) {
+      const snap = Math.round(container.scrollLeft / (cardWidth + gap)) * (cardWidth + gap);
+      container.scrollTo({ left: snap, behavior: "smooth" });
+    }
+  };
+
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging || dragStartX.current === null) return;
+    const container = scrollRef.current;
+    if (!container) return;
+    const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+    const dx = dragStartX.current - clientX;
+    let newOffset = dragStartOffset.current + dx;
+    const maxScroll = container.scrollWidth / 3;
+
+    if (newOffset < 0) {
+      newOffset += maxScroll;
+      container.scrollLeft = maxScroll;
+    } else if (newOffset >= maxScroll * 2) {
+      newOffset -= maxScroll;
+    }
+
+    container.scrollLeft = newOffset;
+  };
+
+  const scroll = (direction: 'left' | 'right') => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const scrollAmount = direction === 'left' ? -(cardWidth + gap) : (cardWidth + gap);
+    let newScroll = container.scrollLeft + scrollAmount;
+    const maxScroll = container.scrollWidth / 3;
+    if (newScroll < 0) newScroll += maxScroll;
+    if (newScroll >= maxScroll * 2) newScroll -= maxScroll;
+    container.scrollTo({ left: newScroll, behavior: "smooth" });
   };
 
   return (
-    <section className="responsive-py-lg mobile-safe-area relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/5 to-background"></div>
+    <section id="testimonials" className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-bold">What Clients Say</h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Trusted by leaders across industries.
+        </p>
+      </div>
 
-      {/* Floating elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-
-      <div className="container-responsive max-w-7xl relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="responsive-text-5xl font-bold mb-4 lg:mb-6 bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent">
-            What Clients Say
-          </h2>
-          <p className="responsive-text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Trusted by industry leaders across sectors. See how we've
-            transformed businesses worldwide.
-          </p>
+      <div className="relative px-4">
+        <div className="flex justify-between mb-4">
+          <Button onClick={() => scroll("left")}><ChevronLeft /></Button>
+          <Button onClick={() => scroll("right")}><ChevronRight /></Button>
         </div>
 
-        {/* Desktop Auto-scrolling + Manual Controls */}
-        <div className="hidden md:block relative">
-          <div
-            className="relative overflow-hidden"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x cursor-grab"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleDragStart}
+          onMouseUp={handleDragEnd}
+          onMouseMove={handleDragMove}
+          onTouchMove={handleDragMove}
+        >
+          {seamlessTestimonials.map((t, idx) => (
             <div
-              className={`flex responsive-gap-base w-fit transition-transform duration-300 ease-in-out ${
-                isPaused ? "[animation-play-state:paused]" : ""
-              }`}
-              style={{
-                animation: "scroll 30s linear infinite",
-                transform: `translateX(-${currentOffset}px)`,
-              }}
+              key={`${t.id}-${idx}`}
+              className="flex-shrink-0 snap-start w-[380px]"
+              style={{ minWidth: 380 }}
             >
-              {duplicatedTestimonials.map((testimonial, index) => (
-                <div
-                  key={`${testimonial.id}-${index}`}
-                  className="flex-shrink-0 w-80 lg:w-96"
-                >
-                  <Card className="relative border border-border/50 bg-card/50 backdrop-blur-sm responsive-card text-left group hover:border-primary/30 transition-all duration-500 h-full">
-                    {/* Glow effect */}
-                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                    <div className="relative z-10 h-full flex flex-col">
-                      {/* Stars */}
-                      <div className="flex mb-3 lg:mb-4">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className="w-3 h-3 sm:w-4 sm:h-4 text-primary fill-primary mr-0.5"
-                          />
-                        ))}
-                      </div>
-
-                      {/* Quote */}
-                      <blockquote className="responsive-text-base text-foreground mb-4 lg:mb-6 leading-relaxed font-medium flex-grow">
-                        "{testimonial.quote}"
-                      </blockquote>
-
-                      {/* Metric */}
-                      <div className="mb-3 lg:mb-4">
-                        <div className="inline-block responsive-px-sm responsive-py-sm bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full border border-primary/30">
-                          <span className="text-primary font-semibold responsive-text-sm">
-                            {testimonial.metric}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Client info */}
-                      <div className="flex items-center">
-                        {/* Avatar placeholder */}
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-muted to-muted-foreground/20 border-2 border-primary/30 flex items-center justify-center mr-3 group-hover:border-primary/50 transition-colors duration-300">
-                          <User className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
-                        </div>
-
-                        <div>
-                          <h4 className="responsive-text-base font-semibold text-foreground mb-0.5">
-                            {testimonial.name}
-                          </h4>
-                          <p className="text-primary font-medium responsive-text-sm mb-1">
-                            {testimonial.title}
-                          </p>
-                          <div className="flex items-center text-muted-foreground">
-                            <Building2 className="w-3 h-3 mr-1" />
-                            <span className="responsive-text-sm">
-                              {testimonial.company} • {testimonial.industry}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
+              <Card className="p-6 h-full bg-black border border-zinc-800 rounded-xl text-white shadow-md flex flex-col">
+                {/* Stars */}
+                <div className="mb-4 flex text-cyan-400" aria-label={`${t.rating} out of 5 stars`}>
+                  {[...Array(t.rating)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-cyan-400 mr-1" />
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            {/* Fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-20 bg-gradient-to-r from-background to-transparent pointer-events-none z-10"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-20 bg-gradient-to-l from-background to-transparent pointer-events-none z-10"></div>
-          </div>
+                {/* Quote */}
+                <blockquote className="text-base leading-relaxed font-medium text-white mb-6 flex-grow">
+                  "{t.quote}"
+                </blockquote>
 
-          {/* Manual scroll controls */}
-          <div className="flex flex-col sm:flex-row justify-center items-center mt-6 lg:mt-8 responsive-gap-base">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={scrollLeft}
-              disabled={!canScrollLeft}
-              className="responsive-button flex items-center responsive-gap-sm disabled:opacity-50 order-2 sm:order-1"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              <span className="hidden sm:inline">Previous</span>
-            </Button>
+                {/* Metric Badge */}
+                <div className="mb-4">
+                  <span className="inline-block px-4 py-1 rounded-full border border-cyan-700 bg-gradient-to-br from-cyan-900 to-cyan-700 text-cyan-300 text-sm font-semibold">
+                    {t.metric}
+                  </span>
+                </div>
 
-            <div
-              className={`responsive-text-sm text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center responsive-gap-sm order-1 sm:order-2 ${isPaused ? "opacity-60" : ""}`}
-            >
-              <div
-                className={`w-2 h-2 rounded-full ${isPaused ? "bg-muted-foreground/50" : "bg-primary animate-pulse"}`}
-              ></div>
-              <span>
-                {isPaused ? "Paused - Hover to pause" : "Auto-scrolling"}
-              </span>
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={scrollRight}
-              disabled={!canScrollRight}
-              className="responsive-button flex items-center responsive-gap-sm disabled:opacity-50 order-3"
-            >
-              <span className="hidden sm:inline">Next</span>
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Mobile/Tablet Responsive Horizontal Scroll */}
-        <div className="md:hidden">
-          <div
-            ref={scrollContainerRef}
-            className="flex responsive-gap-base overflow-x-auto scrollbar-hide pb-4 lg:pb-6"
-            style={{
-              scrollSnapType: "x mandatory",
-              scrollBehavior: "smooth",
-            }}
-            onScroll={handleScroll}
-          >
-            {testimonials.map((testimonial) => (
-              <div
-                key={testimonial.id}
-                className="flex-shrink-0 w-72 sm:w-80 scroll-snap-align-start"
-              >
-                <Card className="relative border border-border/50 bg-card/50 backdrop-blur-sm responsive-card text-left group hover:border-primary/30 transition-all duration-500 h-full">
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                  <div className="relative z-10 h-full flex flex-col">
-                    {/* Stars */}
-                    <div className="flex mb-3 lg:mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-3 h-3 sm:w-4 sm:h-4 text-primary fill-primary mr-0.5"
-                        />
-                      ))}
-                    </div>
-
-                    {/* Quote */}
-                    <blockquote className="responsive-text-base text-foreground mb-4 lg:mb-6 leading-relaxed font-medium flex-grow">
-                      "{testimonial.quote}"
-                    </blockquote>
-
-                    {/* Metric */}
-                    <div className="mb-3 lg:mb-4">
-                      <div className="inline-block responsive-px-sm responsive-py-sm bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full border border-primary/30">
-                        <span className="text-primary font-semibold responsive-text-sm">
-                          {testimonial.metric}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Client info */}
-                    <div className="flex items-center">
-                      {/* Avatar placeholder */}
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-muted to-muted-foreground/20 border-2 border-primary/30 flex items-center justify-center mr-3 group-hover:border-primary/50 transition-colors duration-300">
-                        <User className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
-                      </div>
-
-                      <div>
-                        <h4 className="responsive-text-base font-semibold text-foreground mb-0.5">
-                          {testimonial.name}
-                        </h4>
-                        <p className="text-primary font-medium responsive-text-sm mb-1">
-                          {testimonial.title}
-                        </p>
-                        <div className="flex items-center text-muted-foreground">
-                          <Building2 className="w-3 h-3 mr-1" />
-                          <span className="responsive-text-sm">
-                            {testimonial.company} • {testimonial.industry}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                {/* Avatar and Info */}
+                <div className="flex items-center">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-cyan-800 mr-3">
+                    <Image
+                      src={t.image}
+                      alt={t.name}
+                      width={48}
+                      height={48}
+                      className="object-cover w-full h-full"
+                    />
                   </div>
-                </Card>
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile scroll indicator */}
-          <div className="flex justify-center mt-4 lg:mt-6">
-            <div className="responsive-text-sm text-muted-foreground flex items-center responsive-gap-sm">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-              <span>Swipe to scroll</span>
+                  <div>
+                    <p className="font-semibold text-white text-base leading-tight">{t.name}</p>
+                    <p className="text-cyan-400 text-sm font-medium leading-snug">{t.title}</p>
+                    <p className="text-zinc-400 text-sm mt-1">{t.company} • {t.industry}</p>
+                  </div>
+                </div>
+              </Card>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
       <style jsx>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
-
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
         }
-
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-
-        .scroll-snap-align-start {
-          scroll-snap-align: start;
+        .cursor-grab:active {
+          cursor: grabbing;
         }
       `}</style>
     </section>

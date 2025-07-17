@@ -93,7 +93,7 @@ export const ContactSection = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-background via-background to-muted/20 relative overflow-hidden">
+    <section id="contact" className="hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div

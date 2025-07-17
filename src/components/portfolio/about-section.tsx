@@ -21,47 +21,113 @@ import {
   UserCheck,
   Briefcase as BriefcaseIcon,
   Calendar,
+  Check,
+  Sparkles,
+  Flame,
+  Cpu,
+  ClipboardList,
+  ListChecks,
+  LineChart,
+  BarChart,
+  AlertTriangle,
+  Activity,
+  Server,
+  Boxes,
+  ShieldCheck,
+  Scale,
+  RotateCw,
+  FlaskConical,
+  BookOpen,
 } from "lucide-react";
+
+// Utility function to get icon by service name
+const getIconByServiceName = (title: string) => {
+  // Strategic Intelligence & AI
+  if (title.includes("AI Strategy & Implementation Blueprints")) return <ClipboardList className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AI-Augmented Scenario Planning")) return <LineChart className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AI Risk Intelligence")) return <AlertTriangle className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AI-First Enterprise Architecture")) return <Server className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Governance, Risk & Compliance for AI")) return <ShieldCheck className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Innovation Loops with GenAI")) return <Sparkles className="w-5 h-5 text-blue-400" />;
+
+  // Digital & Operational Transformation
+  if (title.includes("AI-Powered Process Mining")) return <Activity className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Smart Automation & Agent Integration")) return <Cpu className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Performance & Predictive Analytics")) return <BarChart className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AI-Augmented Change & Adoption")) return <RotateCw className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AI-Based Quality Assurance")) return <FlaskConical className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Hyperautomation & Digital Twin Models")) return <Boxes className="w-5 h-5 text-blue-400" />;
+
+  // Leadership & Change Acceleration
+  if (title.includes("AI Leadership Coaching")) return <UserCheck className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AI Culture-by-Design")) return <Users className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Org Design for AI Fluency")) return <Globe className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Executive Influence & Alignment Tools")) return <Target className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AI Literacy & GenAI Labs")) return <GraduationCap className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AI-Driven Change Comms")) return <TrendingUp className="w-5 h-5 text-blue-400" />;
+
+  // AI Agent Enablement
+  if (title.includes("Internal Copilots")) return <Briefcase className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Customer Experience Chat Agents")) return <Users className="w-5 h-5 text-blue-400" />;
+  if (title.includes("End-to-End Workflow Orchestration")) return <Server className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Knowledge Assistants")) return <BookOpen className="w-5 h-5 text-blue-400" />;
+  if (title.includes("AgentOps")) return <BarChart3 className="w-5 h-5 text-blue-400" />;
+  if (title.includes("Custom GPTs")) return <Flame className="w-5 h-5 text-blue-400" />;
+
+  return <Check className="w-5 h-5 text-blue-400" />;
+};
 
 const competencyPillars = [
   {
     icon: Briefcase,
     title: "Strategic Intelligence & AI",
-    subtitle: "AI-driven strategy, governance, and scalable value creation.",
+    subtitle: "Turning AI vision into value with governance, insight, and foresight.",
     competencies: [
-      "AI Strategy & Roadmaps",
-      "Digital Transformation Architecture",
-      "Technology Governance",
-      "Innovation Management",
-      "Strategic Planning",
-      "Risk Assessment",
+      "AI Strategy & Implementation Blueprints\nTailored, end-to-end plans to identify, prioritize, and activate AI opportunities across your business.",
+      "AI-Augmented Scenario Planning & Investment Prioritization\nUse GenAI and simulation tools to model future scenarios and guide strategic investment decisions.",
+      "AI Risk Intelligence & Predictive Analytics\nProactively identify operational, regulatory, and strategic risks while leveraging predictive models for early insight.",
+      "AI-First Enterprise Architecture\nDesign scalable, interoperable tech stacks for long-term AI integration.",
+      "Governance, Risk & Compliance for AI\nEstablish responsible, explainable, and auditable AI practices.",
+      "Innovation Loops with GenAI\nAccelerate idea-to-impact cycles with rapid prototyping and AI experimentation.",
     ],
   },
   {
     icon: Building2,
     title: "Digital & Operational Transformation",
-    subtitle: "Optimizing performance and experience through smart automation.",
+    subtitle: "Drive measurable outcomes through automation, analytics, and optimization.",
     competencies: [
-      "Process Optimization",
-      "Automation Implementation",
-      "Performance Analytics",
-      "Change Management",
-      "Quality Assurance",
-      "Operational Excellence",
+      "AI-Powered Process Mining & Reengineering\nUncover hidden inefficiencies and transform workflows.",
+      "Smart Automation & Agent Integration\nDeploy bots, LLM agents, and intelligent flows across ops.",
+      "Performance & Predictive Analytics\nGet real-time visibility, forecasting, and ROI tracking.",
+      "AI-Augmented Change & Adoption\nBoost rollout success with insight-led change interventions.",
+      "AI-Based Quality Assurance\nImprove output quality with continuous AI-based checks.",
+      "Hyperautomation & Digital Twin Models\nScale automation across functions, model real-world performance.",
     ],
   },
   {
     icon: Target,
     title: "Leadership & Change Acceleration",
-    subtitle:
-      "Empowering leadership and enabling sustainable AI-powered change.",
+    subtitle: "Empowering people and culture to lead in an AI-driven world.",
     competencies: [
-      "Executive Coaching",
-      "Culture Redesign",
-      "Organizational Design for AI",
-      "Stakeholder Alignment & Influence",
-      "Capability Building & Innovation",
-      "Change Comms Strategy",
+      "AI Leadership Coaching & Enablement\nEquip leaders to navigate AI’s complexity with clarity.",
+      "AI Culture-by-Design\nBuild adaptable, innovation-driven cultures.",
+      "Org Design for AI Fluency\nRedesign roles, teams, and structures for AI integration.",
+      "Executive Influence & Alignment Tools\nMap stakeholder alignment; deliver CxO-ready insights.",
+      "AI Literacy & GenAI Labs\nBuild hands-on skills, fast — prompt engineering & more.",
+      "AI-Driven Change Comms\nDeliver change narratives powered by data & AI.",
+    ],
+  },
+  {
+    icon: Cpu,
+    title: "AI Agent Enablement",
+    subtitle: "Deploy AI agents that actually get things done.",
+    competencies: [
+      "Internal Copilots (Sales, Ops, HR, Finance)",
+      "Customer Experience Chat Agents",
+      "End-to-End Workflow Orchestration (e.g. n8n, LangChain)",
+      "Knowledge Assistants (Policies, Training, SOPs)",
+      "AgentOps: Monitoring & Optimizing Agent Performance",
+      "Custom GPTs & Embedded Interfaces",
     ],
   },
 ];
@@ -129,14 +195,6 @@ const impactMetrics = [
     description:
       "8+ enterprise programs delivered, aligned to customer experience, regulatory uplift, and intelligent automation.",
     value: "8",
-    unit: "+",
-  },
-  {
-    icon: Calendar,
-    label: "Years Experience",
-    description:
-      "13+ years of experience in automation, risk and compliance, strategic transformation, and technology leadership.",
-    value: "13",
     unit: "+",
   },
 ];
@@ -220,7 +278,7 @@ export const AboutSection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <section id="how-i-help-you-win" className="min-h-screen bg-background relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl hidden lg:block" />
@@ -245,8 +303,12 @@ export const AboutSection = () => {
             />
           </div>
           <p className="responsive-text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Driving transformation through strategic insight, innovative
-            solutions, and exceptional leadership across global markets.
+            <span className="hidden lg:inline">
+              Driving transformation through strategic insight, innovative solutions, and exceptional leadership across global markets.
+            </span>
+            <span className="block lg:hidden">
+              Engineer by training. Strategist by design. Transformer by impact.
+            </span>
           </p>
         </motion.div>
 
@@ -262,12 +324,10 @@ export const AboutSection = () => {
             {/* Enhanced Section Title */}
             <motion.div
               variants={itemVariants}
-              className="flex items-center responsive-gap-sm mb-4 lg:mb-6"
+              className="flex items-center gap-2 mb-6"
             >
-              <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
-              <h3 className="responsive-text-3xl font-extrabold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-lg">
-                Core Service Pillars
-              </h3>
+              <Briefcase className="w-6 h-6 text-primary align-middle relative top-[1px]" />
+              <span className="text-lg md:text-2xl font-semibold">Here's How I Help You Win</span>
             </motion.div>
 
             {/* Stacked Cards Layout */}
@@ -395,8 +455,11 @@ export const AboutSection = () => {
                             <div className="responsive-card pb-4 sm:pb-6 lg:pb-8">
                               <div className="border-t border-border/50 pt-4 lg:pt-6">
                                 <div className="responsive-grid-2 responsive-gap-sm">
-                                  {pillar.competencies.map(
-                                    (competency, compIndex) => (
+                                  {pillar.competencies.map((competency, compIndex) => {
+                                    const [serviceTitle, ...descArr] = competency.split("\n");
+                                    const serviceDesc = descArr.join(" ").trim();
+                                    const ServiceIcon = getIconByServiceName(serviceTitle);
+                                    return (
                                       <motion.div
                                         key={competency}
                                         custom={compIndex}
@@ -405,20 +468,30 @@ export const AboutSection = () => {
                                         animate="visible"
                                         exit="exit"
                                         whileHover={{
-                                          scale: 1.02,
-                                          x: 2,
+                                          scale: 1.03,
+                                          x: 4,
+                                          boxShadow: "0 2px 16px 0 rgba(56,189,248,0.10)",
                                         }}
-                                        className="group/pill"
+                                        className="group"
                                       >
-                                        <div className="responsive-card flex items-center bg-card/40 backdrop-blur-sm border border-border/40 rounded-lg lg:rounded-xl hover:bg-primary/10 hover:border-primary/50 transition-all duration-300 cursor-default touch-target">
-                                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary/60 rounded-full mr-2 sm:mr-3 group-hover/pill:bg-primary group-hover/pill:shadow-sm group-hover/pill:shadow-primary/50 transition-all duration-300 flex-shrink-0" />
-                                          <span className="responsive-text-sm text-muted-foreground group-hover/pill:text-foreground transition-colors duration-300 leading-relaxed">
-                                            {competency}
+                                        <div className="flex items-start gap-3 bg-card/40 backdrop-blur-sm border border-border/40 rounded-lg lg:rounded-xl transition-all duration-300 cursor-default touch-target hover:bg-blue-700/20 p-3 sm:p-4 shadow-sm">
+                                          <span className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full bg-blue-600/20 text-blue-300 shadow-lg animate-service-glow group-hover:scale-110 transition-transform duration-300">
+                                            {ServiceIcon}
                                           </span>
+                                          <div className="min-w-0 flex-1">
+                                            <div className="font-semibold text-foreground text-base leading-tight mb-0.5">
+                                              {serviceTitle}
+                                            </div>
+                                            {serviceDesc && (
+                                              <div className="text-sm text-muted-foreground leading-snug">
+                                                {serviceDesc}
+                                              </div>
+                                            )}
+                                          </div>
                                         </div>
                                       </motion.div>
-                                    ),
-                                  )}
+                                    );
+                                  })}
                                 </div>
                               </div>
                             </div>
@@ -433,78 +506,57 @@ export const AboutSection = () => {
           </div>
 
           {/* Right Column - Impact Metrics */}
-          <div className="lg:col-span-1 space-y-4 lg:space-y-6">
-            {/* Enhanced Section Title */}
+          <div className="lg:col-span-1">
             <motion.div
               variants={itemVariants}
-              className="flex items-center responsive-gap-sm mb-4 lg:mb-6"
+              className="flex items-center gap-2 mb-6"
             >
-              <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-accent" />
-              <h3 className="responsive-text-3xl font-extrabold bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent drop-shadow-lg">
-                Impact Metrics
-              </h3>
+              <BarChart3 className="w-6 h-6 text-accent align-middle relative top-[1px]" />
+              <span className="text-lg md:text-2xl font-semibold">Impact Metrics</span>
             </motion.div>
-
-            {/* Three-Column Metrics Grid */}
-            <motion.div
-              variants={containerVariants}
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 responsive-gap-sm"
-            >
-              {impactMetrics.map((metric, index) => (
-                <motion.div
-                  key={metric.label}
-                  variants={metricVariants}
-                  whileHover={{
-                    scale: 1.02,
-                    transition: { duration: 0.3, ease: "easeOut" },
-                  }}
-                  onClick={() =>
-                    setExpandedMetric(expandedMetric === index ? null : index)
-                  }
-                  className="group relative bg-card/40 backdrop-blur-xl border border-border/50 rounded-lg responsive-card hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20 transition-all duration-500 cursor-pointer touch-target"
-                >
-                  <div className="text-center space-y-1 sm:space-y-2">
-                    <div className="space-y-0.5 sm:space-y-1">
-                      <div className="flex items-baseline justify-center space-x-0.5">
-                        <span className="responsive-text-lg lg:responsive-text-xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent group-hover:from-primary group-hover:via-accent group-hover:to-primary transition-all duration-500">
-                          {metric.value}
-                        </span>
-                        {metric.unit && (
-                          <span className="text-primary font-bold responsive-text-sm lg:responsive-text-base group-hover:text-accent transition-colors duration-500">
-                            {metric.unit}
-                          </span>
-                        )}
+            <div className="w-full">
+              <div className="grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 max-w-[600px] mx-auto">
+                {impactMetrics.map((metric, idx) => {
+                  const popupId = `popup-${idx}`;
+                  return (
+                    <div
+                      key={metric.label}
+                      tabIndex={0}
+                      aria-describedby={popupId}
+                      className="relative bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-4 w-[120px] md:w-[150px] h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile"
+                    >
+                      <div className="text-2xl md:text-3xl font-light leading-none text-cyan-400 mb-2 text-center stat-number">
+                        {metric.value}{metric.unit}
                       </div>
-                      <p className="responsive-text-sm leading-tight px-0.5 sm:px-1 font-medium text-muted-foreground">
+                      <div className="text-xs md:text-sm text-white/70 font-normal leading-tight mt-2 text-center stat-label">
                         {metric.label}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Expandable Description */}
-                  <AnimatePresence>
-                    {expandedMetric === index && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0, marginTop: 0 }}
-                        animate={{ height: "auto", opacity: 1, marginTop: 8 }}
-                        exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="overflow-hidden"
+                      </div>
+                      <div
+                        id={popupId}
+                        className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-[-20px] z-20 opacity-0 group-hover:opacity-100 group-hover:visible group-hover:-translate-y-2 transition-all duration-300 bg-[rgba(10,10,10,0.95)] border border-cyan-300/30 rounded-xl px-5 py-4 text-[0.85rem] leading-snug text-white/90 max-w-[280px] w-max shadow-2xl text-center backdrop-blur-lg break-words hover-popup max-[480px]:hidden"
+                        style={{ overflowWrap: 'break-word' }}
+                        aria-hidden="true"
                       >
-                        <div className="border-t border-border/50 pt-1.5 sm:pt-2">
-                          <p className="responsive-text-sm text-muted-foreground text-center leading-relaxed">
-                            {metric.description}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              ))}
-            </motion.div>
+                        {metric.description}
+                        <span className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-cyan-300/30"></span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
-    </div>
+      <style jsx>{`
+        @keyframes service-glow {
+          0%, 100% { filter: drop-shadow(0 0 2px #38bdf8) drop-shadow(0 0 6px #38bdf8aa); }
+          50% { filter: drop-shadow(0 0 8px #38bdf8cc) drop-shadow(0 0 16px #38bdf8cc); }
+        }
+        .animate-service-glow {
+          animation: service-glow 2.2s ease-in-out infinite;
+        }
+      `}</style>
+    </section>
   );
 };

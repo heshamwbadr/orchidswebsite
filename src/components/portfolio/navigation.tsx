@@ -5,9 +5,8 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navigationItems = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
+  { name: "Here's How I Help You Win", href: "#how-i-help-you-win" },
+  { name: "Why Leaders Trust me?", href: "#why-leaders-trust-me" },
   { name: "Portfolio", href: "#case-studies" },
   { name: "Testimonials", href: "#testimonials" },
   { name: "Contact", href: "#contact" },
@@ -33,18 +32,10 @@ export const Navigation = () => {
 
   const handleNavClick = (href: string) => {
     setIsOpen(false);
-    if (href === "#home") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const element = document.getElementById(href.replace("#", ""));
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+    const element = document.getElementById(href.replace("#", ""));
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const openCalendly = () => {
-    window.open("https://calendly.com/hesham-badr/30min", "_blank");
   };
 
   return (
@@ -91,14 +82,6 @@ export const Navigation = () => {
           </div>
 
           {/* Desktop CTA Button - Right Side */}
-          <div className="hidden lg:flex">
-            <button
-              onClick={openCalendly}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-2.5 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              Book a Call
-            </button>
-          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -144,12 +127,6 @@ export const Navigation = () => {
                   </button>
                 ))}
                 <div className="pt-4 border-t border-border/50 mt-4">
-                  <button
-                    onClick={openCalendly}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-300"
-                  >
-                    Book a Call
-                  </button>
                 </div>
               </div>
             </motion.div>

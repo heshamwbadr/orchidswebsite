@@ -6,7 +6,6 @@ import { ServicesSection } from "@/components/portfolio/services-section";
 import { CaseStudiesSection } from "@/components/portfolio/case-studies-section";
 import { Testimonials } from "@/components/portfolio/testimonials-section";
 import { CTASection } from "@/components/portfolio/cta-section";
-import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
 import { Footer } from "@/components/portfolio/footer";
 
 export default function Home() {
@@ -40,7 +39,6 @@ export default function Home() {
       </section>
 
       <Footer />
-      <FloatingCallButton />
     </main>
   );
 }
