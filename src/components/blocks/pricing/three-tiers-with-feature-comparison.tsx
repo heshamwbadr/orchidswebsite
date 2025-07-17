@@ -110,7 +110,7 @@ const sections = [
   },
 ];
 
-function classNames(...classes: (string | undefined | null | false)[]) {
+function classNames(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
