@@ -1,9 +1,11 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
+type TierName = "Starter" | "Growth" | "Scale";
+
 const tiers = [
   {
     id: "starter",
-    name: "Starter",
+    name: "Starter" as TierName,
     description: "Everything you need to get started.",
     price: { monthly: "$19", annually: "$199" },
     highlights: [
@@ -15,7 +17,7 @@ const tiers = [
   },
   {
     id: "scale",
-    name: "Scale",
+    name: "Scale" as TierName,
     description: "Added flexibility at scale.",
     price: { monthly: "$99", annually: "$999" },
     highlights: [
@@ -30,7 +32,7 @@ const tiers = [
   },
   {
     id: "growth",
-    name: "Growth",
+    name: "Growth" as TierName,
     description: "All the extras for your growing team.",
     price: { monthly: "$49", annually: "$499" },
     highlights: [
@@ -312,7 +314,7 @@ export default function ThreeTiersWithFeatureComparison() {
                                     {feature.name}
                                   </dt>
                                   <dd className="flex items-center justify-end sm:justify-center sm:px-4">
-                                    {typeof feature.tiers[tier.name] ===
+                                    {typeof feature.tiers[tier.name as TierName] ===
                                     "string" ? (
                                       <span
                                         className={
@@ -321,11 +323,11 @@ export default function ThreeTiersWithFeatureComparison() {
                                             : "text-gray-900"
                                         }
                                       >
-                                        {feature.tiers[tier.name]}
+                                        {feature.tiers[tier.name as TierName]}
                                       </span>
                                     ) : (
                                       <>
-                                        {feature.tiers[tier.name] === true ? (
+                                        {feature.tiers[tier.name as TierName] === true ? (
                                           <CheckIcon
                                             aria-hidden="true"
                                             className="mx-auto size-5 text-indigo-600"
@@ -338,7 +340,7 @@ export default function ThreeTiersWithFeatureComparison() {
                                         )}
 
                                         <span className="sr-only">
-                                          {feature.tiers[tier.name] === true
+                                          {feature.tiers[tier.name as TierName] === true
                                             ? "Yes"
                                             : "No"}
                                         </span>
@@ -453,7 +455,7 @@ export default function ThreeTiersWithFeatureComparison() {
                                 className="relative w-1/4 px-4 py-0 text-center"
                               >
                                 <span className="relative size-full py-3">
-                                  {typeof feature.tiers[tier.name] ===
+                                  {typeof feature.tiers[tier.name as TierName] ===
                                   "string" ? (
                                     <span
                                       className={classNames(
@@ -463,11 +465,11 @@ export default function ThreeTiersWithFeatureComparison() {
                                         "text-sm/6",
                                       )}
                                     >
-                                      {feature.tiers[tier.name]}
+                                      {feature.tiers[tier.name as TierName]}
                                     </span>
                                   ) : (
                                     <>
-                                      {feature.tiers[tier.name] === true ? (
+                                      {feature.tiers[tier.name as TierName] === true ? (
                                         <CheckIcon
                                           aria-hidden="true"
                                           className="mx-auto size-5 text-indigo-600"
@@ -480,7 +482,7 @@ export default function ThreeTiersWithFeatureComparison() {
                                       )}
 
                                       <span className="sr-only">
-                                        {feature.tiers[tier.name] === true
+                                        {feature.tiers[tier.name as TierName] === true
                                           ? "Yes"
                                           : "No"}
                                       </span>
