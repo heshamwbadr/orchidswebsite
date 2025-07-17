@@ -2,9 +2,11 @@ import { Fragment } from "react";
 import { CheckIcon, MinusIcon, PlusIcon } from "@heroicons/react/16/solid";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 
+type TierName = "Starter" | "Growth" | "Scale";
+
 const tiers = [
   {
-    name: "Starter",
+    name: "Starter" as TierName,
     description: "Everything you need to get started.",
     priceMonthly: "$19",
     href: "#",
@@ -18,7 +20,7 @@ const tiers = [
     ],
   },
   {
-    name: "Growth",
+    name: "Growth" as TierName,
     description: "All the extras for your growing team.",
     priceMonthly: "$49",
     href: "#",
@@ -32,7 +34,7 @@ const tiers = [
     ],
   },
   {
-    name: "Scale",
+    name: "Scale" as TierName,
     description: "Added flexibility at scale.",
     priceMonthly: "$99",
     href: "#",
@@ -279,16 +281,16 @@ export default function ThreeTiersWithLogosAndFeatureComparison() {
                   </th>
                   {tiers.map((tier) => (
                     <td key={tier.name} className="p-4 max-sm:text-center">
-                      {typeof feature.tiers[tier.name] === "string" ? (
+                      {typeof feature.tiers[tier.name as TierName] === "string" ? (
                         <>
                           <span className="sr-only">{tier.name} includes:</span>
                           <span className="text-sm/6 text-gray-950">
-                            {feature.tiers[tier.name]}
+                            {feature.tiers[tier.name as TierName]}
                           </span>
                         </>
                       ) : (
                         <>
-                          {feature.tiers[tier.name] === true ? (
+                          {feature.tiers[tier.name as TierName] === true ? (
                             <CheckIcon
                               aria-hidden="true"
                               className="inline-block size-4 fill-green-600"
@@ -301,7 +303,7 @@ export default function ThreeTiersWithLogosAndFeatureComparison() {
                           )}
 
                           <span className="sr-only">
-                            {feature.tiers[tier.name] === true
+                            {feature.tiers[tier.name as TierName] === true
                               ? `Included in ${tier.name}`
                               : `Not included in ${tier.name}`}
                           </span>
@@ -349,13 +351,13 @@ export default function ThreeTiersWithLogosAndFeatureComparison() {
                             {feature.name}
                           </dt>
                           <dd className="text-center">
-                            {typeof feature.tiers[tier.name] === "string" ? (
+                            {typeof feature.tiers[tier.name as TierName] === "string" ? (
                               <span className="text-sm/6 text-gray-950">
-                                {feature.tiers[tier.name]}
+                                {feature.tiers[tier.name as TierName]}
                               </span>
                             ) : (
                               <>
-                                {feature.tiers[tier.name] === true ? (
+                                {feature.tiers[tier.name as TierName] === true ? (
                                   <CheckIcon
                                     aria-hidden="true"
                                     className="inline-block size-4 fill-green-600"
@@ -368,7 +370,7 @@ export default function ThreeTiersWithLogosAndFeatureComparison() {
                                 )}
 
                                 <span className="sr-only">
-                                  {feature.tiers[tier.name] === true
+                                  {feature.tiers[tier.name as TierName] === true
                                     ? "Yes"
                                     : "No"}
                                 </span>
