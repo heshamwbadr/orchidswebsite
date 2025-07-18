@@ -80,7 +80,7 @@ const services = [
 
 export const ServicesSection = () => {
   return (
-    <section id="services" className="hidden">
+    <section id="services" className="scroll-mt-20">
       {/* Services section is hidden on all devices */}
     </section>
   );

@@ -455,26 +455,37 @@ export const HeroSection = () => {
             transition={{ duration: 1, delay: 1.3 }}
             className="hidden lg:flex flex-col items-center justify-end order-1 lg:order-2 mt-8 lg:mt-0"
           >
-            <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex flex-col items-center justify-center lg:justify-center">
+            <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex flex-col items-center justify-center lg:justify-center">
               <img
                 src="https://clever-pika-899e4f.netlify.app/mypictransparent.png"
                 alt="Hesham Badr - AI & Digital Transformation Strategist"
-                className="responsive-image-contain w-full h-auto max-h-[60vh] sm:max-h-[70vh] lg:max-h-none"
+                className="w-full h-auto max-h-[60vh] sm:max-h-[70vh] lg:max-h-none object-contain"
                 style={{
-                  transform: "scale(0.6) translateY(20px)",
+                  transform: "scale(0.65) translateY(15px)",
                   transformOrigin: "center bottom",
                 }}
               />
+              {/* Subtle glow effect for desktop */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 blur-2xl -z-10 scale-105 opacity-60"></div>
             </div>
           </motion.div>
         </div>
         {/* Mobile-only portrait at the bottom of HeroSection */}
-        <div className="block lg:hidden mt-10 w-full flex flex-col items-center justify-center">
+        <div className="block lg:hidden mt-8 sm:mt-12 w-full flex flex-col items-center justify-center">
+          <div className="relative">
           <img
             src="https://clever-pika-899e4f.netlify.app/mypictransparent.png"
             alt="Hesham Badr - AI & Digital Transformation Strategist"
-            className="w-32 h-32 rounded-full shadow-lg"
-          />
+              className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full shadow-xl border-2 border-primary/20 object-cover"
+              style={{
+                transform: "scale(0.85)",
+                transformOrigin: "center center",
+                objectPosition: "center 20%",
+              }}
+            />
+            {/* Subtle glow effect */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 blur-xl -z-10 scale-150 sm:scale-110"></div>
+          </div>
         </div>
       </div>
       {/* Trust credentials carousel - absolutely positioned at bottom of hero section (Desktop only) */}

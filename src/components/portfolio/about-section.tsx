@@ -278,7 +278,7 @@ export const AboutSection = () => {
   };
 
   return (
-    <section id="how-i-help-you-win" className="min-h-screen bg-background relative overflow-hidden">
+    <section id="about" className="scroll-mt-20 min-h-screen bg-background relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl hidden lg:block" />
@@ -303,12 +303,7 @@ export const AboutSection = () => {
             />
           </div>
           <p className="responsive-text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            <span className="hidden lg:inline">
             Behind every bold transformation is someone who connects the dots. I bring AI, strategy, and people together to turn vision into measurable change.
-            </span>
-            <span className="block lg:hidden">
-              Engineer by training. Strategist by design. Transformer by impact.
-            </span>
           </p>
         </motion.div>
 

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { motion } from "framer-motion";
 import { Check, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ interface FormErrors {
   email?: string;
   company?: string;
   message?: string;
+  recaptcha?: string;
 }
 
 const processSteps = [
@@ -55,6 +57,8 @@ export const CTASection = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -82,6 +86,11 @@ export const CTASection = () => {
       newErrors.message = "Message is required";
     }
 
+    // Only validate reCAPTCHA if it's enabled
+    if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !recaptchaValue) {
+      newErrors.recaptcha = "Please verify you are not a robot.";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -97,6 +106,10 @@ export const CTASection = () => {
     e.preventDefault();
 
     if (!validateForm()) {
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
+      setIsSubmitting(false);
       return;
     }
 
@@ -112,13 +125,17 @@ export const CTASection = () => {
     setTimeout(() => {
       setIsSubmitted(false);
       setFormData({ name: "", email: "", company: "", message: "" });
+      setRecaptchaValue(null);
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
     }, 3000);
   };
 
   return (
     <section
       style={{ backgroundColor: "#0A0A0B" }}
-      className="relative responsive-py-lg mobile-safe-area overflow-hidden"
+      className="relative responsive-py-lg mobile-safe-area overflow-hidden mb-24 lg:mb-32"
     >
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-yellow-500/5" />
@@ -277,6 +294,27 @@ export const CTASection = () => {
                       </motion.p>
                     )}
                   </div>
+
+                  {/* reCAPTCHA */}
+                  {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+                    <div className="my-4 flex justify-center">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                        onChange={setRecaptchaValue}
+                        theme="dark"
+                      />
+                    </div>
+                  )}
+                  {errors.recaptcha && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-400 responsive-text-sm text-center"
+                    >
+                      {errors.recaptcha}
+                    </motion.p>
+                  )}
 
                   {/* Submit Button */}
                   <Button

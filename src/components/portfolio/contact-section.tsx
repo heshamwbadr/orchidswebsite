@@ -93,7 +93,7 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="hidden">
+    <section id="contact" className="scroll-mt-20">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div

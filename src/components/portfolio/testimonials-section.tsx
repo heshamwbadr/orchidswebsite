@@ -187,7 +187,7 @@ export const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
+    <section id="testimonials" className="scroll-mt-20">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold">What Clients Say</h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

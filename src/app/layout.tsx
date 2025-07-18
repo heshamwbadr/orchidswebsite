@@ -4,9 +4,31 @@ import Script from "next/script";
 import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
 
 export const metadata: Metadata = {
-  title: "Hesham Badr - AI & Digital Transformation Strategist",
+  title: "Hesham Badr | Certified AI Transformation Consultant & Strategy Partner",
   description:
-    "Turning strategy into real-world impact with AI. Strategic Intelligence, Digital Transformation, and Leadership Excellence.",
+    "AI transformation consultant trusted by leaders to turn strategy into execution. Specialising in agentic AI, AI automation, and AI leadership. Founder of Neuronovate.",
+  keywords: [
+    "Hesham Badr",
+    "AI transformation consultant",
+    "Certified AI consultant",
+    "Agentic AI",
+    "AI strategy execution",
+    "AI agent enablement",
+    "AI leadership coach",
+    "AI partner",
+    "Enterprise AI automation",
+    "AI transformation",
+    "AI automation",
+    "AI Lean",
+    "AI Six Sigma",
+    "AI customer centric",
+    "AI service design",
+    "AI CX",
+    "Neuronovate",
+    "Neuronovate Consulting",
+    "AI consultant",
+    "Strategy consultant"
+  ],
 };
 
 export const viewport: Viewport = {
@@ -26,17 +48,28 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <title>Hesham Badr | AI Strategy & Transformation Consultant</title>
+        <meta name="description" content="Helping leaders cut through the AI noise and drive real outcomes. Strategy, automation, and transformation from boardroom to frontline." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Hesham Badr | AI Strategy & Transformation Consultant" />
+        <meta property="og:description" content="Helping leaders cut through the AI noise and drive real outcomes." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hesham.badr.neuronovate.consulting" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Hesham Badr | AI Strategy & Transformation Consultant" />
+        <meta name="twitter:description" content="Helping leaders cut through the AI noise and drive real outcomes." />
+        <meta name="twitter:image" content="/og-image.png" />
         <link
           href="https://assets.calendly.com/assets/external/widget.css"
           rel="stylesheet"
         />
-        <meta name="robots" content="index, follow" />
         <meta name="author" content="Hesham Badr" />
         <meta
           name="keywords"
           content="AI transformation, digital transformation, strategy consulting, artificial intelligence, business transformation"
         />
-
         {/* Preload critical fonts */}
         <link
           rel="preload"
@@ -48,6 +81,50 @@ export default function RootLayout({
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Person",
+                  "@id": "https://hesham.badr.neuronovate.consulting#hesham",
+                  "name": "Hesham Badr",
+                  "jobTitle": "AI Transformation Consultant & Founder",
+                  "description": "Trusted advisor and certified AI consultant helping businesses achieve AI-led transformation, strategy execution, and agentic AI enablement.",
+                  "url": "https://hesham.badr.neuronovate.consulting",
+                  "image": "https://clever-pika-899e4f.netlify.app/mypictransparent.png",
+                  "sameAs": [
+                    "https://www.linkedin.com/in/hesham-badr",
+                    "https://www.neuronovate.consulting"
+                  ],
+                  "worksFor": {
+                    "@id": "https://www.neuronovate.consulting#neuronovate"
+                  }
+                },
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.neuronovate.consulting#neuronovate",
+                  "name": "Neuronovate Consulting",
+                  "url": "https://www.neuronovate.consulting",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://clever-pika-899e4f.netlify.app/signaturetransparent1.png"
+                  },
+                  "founder": {
+                    "@id": "https://hesham.badr.neuronovate.consulting#hesham"
+                  },
+                  "description": "Neuronovate Consulting helps companies unlock measurable value through AI automation, strategy, and intelligent transformation across service design and operations.",
+                  "sameAs": [
+                    "https://www.linkedin.com/company/neuronovate",
+                    "https://www.hesham.badr.neuronovate.consulting"
+                  ]
+                }
+              ]
+            })
+          }}
         />
       </head>
       <body className="bg-background text-foreground antialiased overflow-x-hidden">
