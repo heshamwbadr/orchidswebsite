@@ -42,7 +42,7 @@ export const Navigation = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/80 backdrop-blur-md border-b border-border/50" : "bg-transparent"}`}
     >
-      <div className="container-responsive max-w-7xl">
+      <div className="container-responsive max-w-7xl relative">
         <div className="flex items-center justify-between h-16 sm:h-18 lg:h-20">
           {/* Logo - Left Side */}
           <button
@@ -103,7 +103,7 @@ export const Navigation = () => {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden border-t border-border/50 bg-background/95 backdrop-blur-md"
+              className="lg:hidden absolute top-full left-0 right-0 border-t border-border/50 bg-background/95 backdrop-blur-md shadow-lg"
             >
               <div className="responsive-py-sm responsive-px-sm space-y-2">
                 {navigationItems.map((item) => (
