@@ -170,6 +170,7 @@ const TrustCarousel: React.FC = () => {
           }`}
           style={{
             width: 'max-content',
+            maxWidth: 'none',
             animation: isLoaded ? 'hero-marquee 51.1s linear infinite' : 'none',
           }}
           onMouseEnter={(e) => {
@@ -471,12 +472,12 @@ export const HeroSection = () => {
           </motion.div>
         </div>
         {/* Mobile-only portrait at the bottom of HeroSection */}
-        <div className="block lg:hidden mt-8 sm:mt-12 w-full flex flex-col items-center justify-center">
+        <div className="block lg:hidden mt-0 sm:mt-4 w-full flex flex-col items-center justify-center">
           <div className="relative">
           <img
             src="https://clever-pika-899e4f.netlify.app/mypictransparent.png"
             alt="Hesham Badr - AI & Digital Transformation Strategist"
-              className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full shadow-xl border-2 border-primary/20 object-cover"
+              className="w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full shadow-xl border-2 border-primary/20 object-cover"
               style={{
                 transform: "scale(0.85)",
                 transformOrigin: "center center",

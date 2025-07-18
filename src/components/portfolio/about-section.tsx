@@ -284,7 +284,7 @@ export const AboutSection = () => {
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl hidden lg:block" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl hidden lg:block" />
         <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-secondary/10 rounded-full blur-3xl hidden lg:block" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-muted/20 to-transparent rounded-full hidden lg:block" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] h-[600px] bg-gradient-radial from-muted/20 to-transparent rounded-full hidden lg:block" />
       </div>
 
       <div className="relative z-10 container-responsive pt-8 pb-12 lg:pt-12 lg:pb-16">
@@ -299,7 +299,7 @@ export const AboutSection = () => {
             <img
               src="https://clever-pika-899e4f.netlify.app/signaturetransparent1.png"
               alt="Hesham Badr Signature"
-              className="h-12 sm:h-16 lg:h-20 xl:h-24 w-auto object-contain"
+              className="h-16 sm:h-20 lg:h-20 xl:h-24 w-auto object-contain"
             />
           </div>
           <p className="responsive-text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -518,7 +518,7 @@ export const AboutSection = () => {
                       key={metric.label}
                       tabIndex={0}
                       aria-describedby={popupId}
-                      className="relative bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-4 w-[120px] md:w-[150px] h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile"
+                      className="relative bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-4 w-full max-w-[120px] md:max-w-[150px] h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile"
                     >
                       <div className="text-2xl md:text-3xl font-light leading-none text-cyan-400 mb-2 text-center stat-number">
                         {metric.value}{metric.unit}
