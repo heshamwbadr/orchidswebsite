@@ -86,14 +86,26 @@ export const Testimonials = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const animationRef = useRef<number | null>(null);
   const dragStartX = useRef<number | null>(null);
+  const dragStartY = useRef<number | null>(null);
   const dragStartOffset = useRef(0);
   const lastUpdateTime = useRef(0);
   const cardWidth = 320;
   const gap = 16;
   const seamlessTestimonials = [...testimonials, ...testimonials, ...testimonials];
   const singleLoopWidth = (seamlessTestimonials.length / 3) * (cardWidth + gap);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -102,7 +114,9 @@ export const Testimonials = () => {
 
   useEffect(() => {
     const container = scrollRef.current;
-    if (!container || isPaused || isDragging) return;
+    // On mobile, only pause if actively dragging, not on touch
+    const shouldPause = isPaused || (isDragging && !isMobile);
+    if (!container || shouldPause) return;
 
     const animate = () => {
       if (!container) return;
@@ -122,23 +136,42 @@ export const Testimonials = () => {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isPaused, isDragging]);
+  }, [isPaused, isDragging, isMobile]);
 
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
   const handleTouchStart = () => {
-    setIsPaused(true);
-    setIsDragging(true);
+    // Don't pause auto-scrolling on mobile touch start
+    // This allows the carousel to continue auto-scrolling on mobile
   };
   const handleTouchEnd = () => {
-    setIsDragging(false);
-    setTimeout(() => setIsPaused(false), 3000);
+    // Only reset dragging if we were actually dragging
+    if (isDragging) {
+      setIsDragging(false);
+      setIsPaused(false);
+    }
+    // Don't add delay for mobile - let auto-scrolling continue immediately
   };
 
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    // For touch events, only start dragging if it's a clear horizontal gesture
+    if ('touches' in e) {
+      const touch = e.touches[0];
+      const touchStartY = touch.clientY;
+      const touchStartX = touch.clientX;
+      
+      // Store initial touch position for gesture detection
+      dragStartX.current = touchStartX;
+      dragStartY.current = touchStartY;
+      
+      // Don't immediately start dragging on touch
+      return;
+    }
+    
+    // For mouse events, start dragging immediately
     setIsDragging(true);
     setIsPaused(true);
-    const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+    const clientX = (e as React.MouseEvent).clientX;
     dragStartX.current = clientX;
     if (scrollRef.current) {
       dragStartOffset.current = scrollRef.current.scrollLeft;
@@ -204,15 +237,30 @@ export const Testimonials = () => {
         <div
           ref={scrollRef}
           className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x cursor-grab"
-          style={{ WebkitOverflowScrolling: 'touch' }}
+          style={{ 
+            WebkitOverflowScrolling: 'touch',
+            touchAction: 'pan-x pan-y' // Allow both horizontal and vertical scrolling
+          }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          onTouchStart={(e) => {
+            handleTouchStart();
+            // Don't prevent default to allow screen scrolling
+          }}
+          onTouchEnd={(e) => {
+            handleTouchEnd();
+            // Don't prevent default to allow screen scrolling
+          }}
           onMouseDown={handleDragStart}
           onMouseUp={handleDragEnd}
           onMouseMove={handleDragMove}
-          onTouchMove={handleDragMove}
+          onTouchMove={(e) => {
+            // Only handle drag if we're actually dragging, otherwise let screen scroll
+            if (isDragging) {
+              e.preventDefault();
+              handleDragMove(e);
+            }
+          }}
         >
           {seamlessTestimonials.map((t, idx) => (
             <div
@@ -273,6 +321,14 @@ export const Testimonials = () => {
         }
         .cursor-grab:active {
           cursor: grabbing;
+        }
+        
+        /* Mobile touch behavior */
+        @media (max-width: 768px) {
+          .touch-pan-x {
+            touch-action: pan-x pan-y;
+            -webkit-overflow-scrolling: touch;
+          }
         }
       `}</style>
     </section>

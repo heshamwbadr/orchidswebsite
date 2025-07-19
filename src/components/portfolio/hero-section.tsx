@@ -444,7 +444,7 @@ export const HeroSection = () => {
             </motion.div>
 
             {/* Mobile-only carousel below CTA buttons */}
-            <div className="block lg:hidden mt-20">
+            <div className="block lg:hidden mt-32 sm:mt-36">
               <TrustCarousel />
             </div>
           </div>
@@ -472,7 +472,7 @@ export const HeroSection = () => {
           </motion.div>
         </div>
         {/* Mobile-only portrait at the bottom of HeroSection */}
-        <div className="block lg:hidden mt-0 sm:mt-4 w-full flex flex-col items-center justify-center">
+        <div className="block lg:hidden mt-8 sm:mt-12 w-full flex flex-col items-center justify-center">
           <div className="relative">
           <img
             src="https://clever-pika-899e4f.netlify.app/mypictransparent.png"

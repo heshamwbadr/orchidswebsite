@@ -203,6 +203,20 @@ export const AboutSection = () => {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [expandedMetric, setExpandedMetric] = useState<number | null>(null);
 
+  const handleCardClick = (index: number, isExpanded: boolean, event: React.MouseEvent) => {
+    // Prevent scrolling on mobile when expanding/collapsing cards
+    if (window.innerWidth < 1024) { // lg breakpoint
+      event.preventDefault();
+      event.stopPropagation();
+      // Prevent any potential scroll behavior
+      const currentScrollY = window.scrollY;
+      setTimeout(() => {
+        window.scrollTo(0, currentScrollY);
+      }, 0);
+    }
+    setExpandedCard(isExpanded ? null : index);
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -370,14 +384,13 @@ export const AboutSection = () => {
 
                       {/* Clickable Header */}
                       <motion.div
-                        onClick={() =>
-                          setExpandedCard(isExpanded ? null : index)
-                        }
+                        onClick={(event) => handleCardClick(index, isExpanded, event)}
                         whileHover={{
                           backgroundColor: "rgba(71, 85, 105, 0.1)",
                         }}
                         whileTap={{ scale: 0.99 }}
                         className="relative z-10 responsive-card cursor-pointer touch-target"
+                        style={{ touchAction: window.innerWidth < 1024 ? 'none' : 'auto' }}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center responsive-gap-base min-w-0 flex-1">
@@ -510,7 +523,7 @@ export const AboutSection = () => {
               <span className="text-lg md:text-2xl font-semibold">Impact Metrics</span>
             </motion.div>
             <div className="w-full">
-              <div className="grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 max-w-[600px] mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-4 sm:gap-6 max-w-[600px] mx-auto">
                 {impactMetrics.map((metric, idx) => {
                   const popupId = `popup-${idx}`;
                   return (
@@ -518,12 +531,12 @@ export const AboutSection = () => {
                       key={metric.label}
                       tabIndex={0}
                       aria-describedby={popupId}
-                      className="relative bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-4 w-full max-w-[120px] md:max-w-[150px] h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile"
+                      className="relative bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-3 sm:p-4 w-full max-w-[120px] md:max-w-[150px] h-[80px] sm:h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile"
                     >
-                      <div className="text-2xl md:text-3xl font-light leading-none text-cyan-400 mb-2 text-center stat-number">
+                      <div className="text-xl sm:text-2xl md:text-3xl font-light leading-none text-cyan-400 mb-1 sm:mb-2 text-center stat-number">
                         {metric.value}{metric.unit}
                       </div>
-                      <div className="text-xs md:text-sm text-white/70 font-normal leading-tight mt-2 text-center stat-label">
+                      <div className="text-[10px] sm:text-xs md:text-sm text-white/70 font-normal leading-tight mt-1 sm:mt-2 text-center stat-label px-1">
                         {metric.label}
                       </div>
                       <div
@@ -550,6 +563,19 @@ export const AboutSection = () => {
         }
         .animate-service-glow {
           animation: service-glow 2.2s ease-in-out infinite;
+        }
+        
+        /* Prevent scrolling on mobile dropdown cards */
+        @media (max-width: 1023px) {
+          .touch-target {
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
         }
       `}</style>
     </section>
