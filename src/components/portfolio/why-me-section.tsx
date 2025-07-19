@@ -112,6 +112,112 @@ const itemVariants = {
   },
 };
 
+// Mobile-specific slide-in animations
+const mobileContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+      duration: 0.6,
+    },
+  },
+};
+
+const mobileItemVariants = {
+  hidden: {
+    opacity: 0,
+    x: -100,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+// Staggered slide-in for mobile tiles
+const getMobileItemVariants = (index: number) => ({
+  hidden: {
+    opacity: 0,
+    x: index % 2 === 0 ? -100 : 100, // Alternate left/right slide
+    scale: 0.9,
+    rotateY: index % 2 === 0 ? -15 : 15, // Slight 3D rotation
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    rotateY: 0,
+    transition: {
+      duration: 0.8,
+      delay: index * 0.12, // Slightly longer stagger for mobile
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+});
+
+// Mobile-specific icon animation variants
+const mobileIconVariants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 0.5, 
+    rotate: -180 
+  },
+  visible: { 
+    opacity: 1, 
+    scale: 1, 
+    rotate: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+      type: "spring",
+      stiffness: 200,
+    }
+  },
+};
+
+// Mobile-specific content animation variants
+const mobileContentVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 20 
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: 0.2,
+      ease: "easeOut",
+    }
+  },
+};
+
+const mobileTitleVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 15,
+    scale: 0.95
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      delay: 0.3,
+      ease: "easeOut",
+    }
+  },
+};
+
 export const WhyMeSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -192,15 +298,15 @@ export const WhyMeSection = () => {
           {/* Mobile and Tablet View - 2 column grid */}
           <motion.div
             className="responsive-grid-2 lg:hidden responsive-gap-lg"
-            variants={containerVariants}
+            variants={mobileContainerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
           >
             {differentiators.map((item, index) => (
               <motion.div
                 key={index}
-                variants={itemVariants}
+                variants={getMobileItemVariants(index)}
                 whileHover={{
                   scale: 1.05,
                   transition: { duration: 0.3, ease: "easeOut" },
@@ -220,6 +326,7 @@ export const WhyMeSection = () => {
                     {/* Icon Section */}
                     <motion.div
                       className="w-14 h-14 sm:w-16 sm:h-16 lg:w-16 lg:h-16 mb-4 lg:mb-6 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 group-active:from-primary/30 group-active:to-accent/30 flex items-center justify-center text-primary group-hover:scale-110 group-active:scale-105 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500"
+                      variants={mobileIconVariants}
                       whileHover={{
                         rotate: 5,
                         transition: { duration: 0.3, ease: "easeOut" },
@@ -234,14 +341,23 @@ export const WhyMeSection = () => {
                     </motion.div>
 
                     {/* Content */}
-                    <div className="space-y-3 lg:space-y-4 flex-grow flex flex-col">
-                      <h3 className="responsive-text-xl sm:responsive-text-2xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-active:text-transparent group-active:bg-gradient-to-r group-active:from-primary group-active:to-accent group-active:bg-clip-text transition-all duration-300">
+                    <motion.div 
+                      className="space-y-3 lg:space-y-4 flex-grow flex flex-col"
+                      variants={mobileContentVariants}
+                    >
+                      <motion.h3 
+                        className="responsive-text-xl sm:responsive-text-2xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-active:text-transparent group-active:bg-gradient-to-r group-active:from-primary group-active:to-accent group-active:bg-clip-text transition-all duration-300"
+                        variants={mobileTitleVariants}
+                      >
                         {item.title}
-                      </h3>
+                      </motion.h3>
 
-                      <p className="text-muted-foreground leading-relaxed font-light flex-grow responsive-text-sm sm:responsive-text-base">
+                      <motion.p 
+                        className="text-muted-foreground leading-relaxed font-light flex-grow responsive-text-sm sm:responsive-text-base"
+                        variants={mobileContentVariants}
+                      >
                         {item.description}
-                      </p>
+                      </motion.p>
 
                       {/* Bullet Points */}
                       <div className="space-y-2 mt-auto">
@@ -257,7 +373,7 @@ export const WhyMeSection = () => {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Floating Particles */}
                     <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse group-active:animate-pulse" />

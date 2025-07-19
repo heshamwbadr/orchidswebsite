@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navigationItems = [
-  { name: "Here's How I Help You Win", sectionId: "about-subheader" },
+  { name: "Here's How I Help You Win", sectionId: "about" },
   { name: "Why Leaders Trust me?", sectionId: "trust" },
   { name: "Portfolio", sectionId: "case-studies" },
   { name: "Testimonials", sectionId: "testimonials" },
@@ -64,13 +64,13 @@ export const Navigation = () => {
         console.log('Available elements with similar IDs:');
         
         // Check for similar elements
-        const allElements = document.querySelectorAll('[id*="about"], [id*="signature"]');
+        const allElements = document.querySelectorAll('[id*="about"], [id*="subheader"], [id*="trust"], [id*="signature"]');
         allElements.forEach(el => {
-          console.log('Found element:', el.id, el.tagName);
+          console.log('Found element:', el.id, el.tagName, el.textContent?.substring(0, 50));
         });
         
         // Fallback: try to scroll to the about section
-        if (sectionId === "about-signature") {
+        if (sectionId === "about") {
           console.log('Trying fallback to about section...');
           const aboutSection = document.getElementById("about");
           if (aboutSection) {
@@ -83,6 +83,23 @@ export const Navigation = () => {
             console.log('Fallback: scrolled to about section');
           } else {
             console.error('About section also not found!');
+          }
+        }
+        
+        // Fallback: try to scroll to the trust section
+        if (sectionId === "trust") {
+          console.log('Trying fallback to trust section...');
+          const trustSection = document.getElementById("trust");
+          if (trustSection) {
+            const navbarHeight = 80;
+            const elementPosition = trustSection.offsetTop - navbarHeight;
+            window.scrollTo({
+              top: elementPosition,
+              behavior: "smooth"
+            });
+            console.log('Fallback: scrolled to trust section');
+          } else {
+            console.error('Trust section also not found!');
           }
         }
       }
@@ -197,8 +214,8 @@ export const Navigation = () => {
                     console.log('Navigation button clicked:', item.name);
                     if (item.name === "Contact") {
                       scrollToContactForm();
-                    } else if (item.name === "Here's How I Help You Win") {
-                      console.log('Here\'s How I Help You Win clicked - calling scrollToSection with:', item.sectionId);
+                    } else if (item.name === "Here's How I Help You Win" || item.name === "Why Leaders Trust me?") {
+                      console.log(`${item.name} clicked - calling scrollToSection with:`, item.sectionId);
                       scrollToSection(item.sectionId);
                     } else {
                       scrollToSection(item.sectionId);
@@ -264,8 +281,8 @@ export const Navigation = () => {
                         console.log('Mobile navigation button clicked:', item.name);
                         if (item.name === "Contact") {
                           scrollToContactForm();
-                        } else if (item.name === "Here's How I Help You Win") {
-                          console.log('Mobile: Here\'s How I Help You Win clicked - calling scrollToSection with:', item.sectionId);
+                        } else if (item.name === "Here's How I Help You Win" || item.name === "Why Leaders Trust me?") {
+                          console.log(`Mobile: ${item.name} clicked - calling scrollToSection with:`, item.sectionId);
                           scrollToSection(item.sectionId);
                         } else {
                           scrollToSection(item.sectionId);

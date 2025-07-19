@@ -93,6 +93,8 @@ export const Testimonials = () => {
   const dragStartY = useRef<number | null>(null);
   const dragStartOffset = useRef(0);
   const lastUpdateTime = useRef(0);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const isLongPress = useRef(false);
   const cardWidth = 320;
   const gap = 16;
   const seamlessTestimonials = [...testimonials, ...testimonials, ...testimonials];
@@ -185,16 +187,53 @@ export const Testimonials = () => {
     };
   }, [isMobile, isMounted]);
 
+  // Cleanup long press timer on unmount
+  useEffect(() => {
+    return () => {
+      if (longPressTimer.current) {
+        clearTimeout(longPressTimer.current);
+      }
+    };
+  }, []);
+
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
   const handleTouchStart = () => {
     dragStartOffset.current = 0; // Reset drag offset
-    setIsPaused(false); // Resume auto-scroll on tap
+    isLongPress.current = false;
+    
+    // Clear any existing long press timer
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+    }
+    
+    // For mobile, start long press timer
+    if (isMobile) {
+      longPressTimer.current = setTimeout(() => {
+        isLongPress.current = true;
+        setIsPaused(true); // Only pause on long press
+      }, 500); // 500ms for long press detection
+    } else {
+      // Desktop behavior unchanged
+      setIsPaused(false);
+    }
   };
   const handleTouchEnd = () => {
+    // Clear long press timer
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+    
     if (isDragging) {
       setIsDragging(false);
       setIsPaused(false);
+    } else if (isLongPress.current) {
+      // If it was a long press, resume scrolling after a short delay
+      isLongPress.current = false;
+      setTimeout(() => {
+        setIsPaused(false);
+      }, 1000); // Resume after 1 second
     }
   };
 
@@ -315,6 +354,13 @@ export const Testimonials = () => {
           onMouseUp={handleDragEnd}
           onMouseMove={handleDragMove}
           onTouchMove={(e) => {
+            // Clear long press timer on any movement
+            if (longPressTimer.current) {
+              clearTimeout(longPressTimer.current);
+              longPressTimer.current = null;
+              isLongPress.current = false;
+            }
+            
             const dx = dragStartX.current && e.touches[0].clientX - dragStartX.current;
             const dy = dragStartY.current && e.touches[0].clientY - dragStartY.current;
 
