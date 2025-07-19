@@ -476,7 +476,7 @@ export const AboutSection = () => {
                               duration: 0.5,
                               ease: [0.4, 0.0, 0.2, 1],
                             }}
-                            className="overflow-hidden"
+                            className="overflow-hidden mobile-expandable"
                           >
                             <div className="responsive-card pb-4 sm:pb-6 lg:pb-8">
                               <div className="border-t border-border/50 pt-4 lg:pt-6">
@@ -650,6 +650,34 @@ export const AboutSection = () => {
           /* Adjust popup arrow for mobile */
           .mobile-popup span {
             display: none !important;
+          }
+          
+          /* Ensure service dropdown tiles expand downward on mobile */
+          .group .overflow-hidden {
+            overflow: visible !important;
+          }
+          
+          /* Force downward expansion for mobile */
+          .group .motion-div {
+            transform-origin: top !important;
+          }
+          
+          /* Ensure expanded content flows downward */
+          .group .space-y-4 {
+            margin-top: 0 !important;
+            padding-top: 1rem !important;
+          }
+          
+          /* Mobile expandable content - ensure downward expansion */
+          .mobile-expandable {
+            transform-origin: top !important;
+            overflow: visible !important;
+          }
+          
+          /* Ensure the expanded content container flows downward */
+          .mobile-expandable > div {
+            margin-top: 0 !important;
+            padding-top: 1rem !important;
           }
         }
         
