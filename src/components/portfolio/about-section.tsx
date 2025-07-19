@@ -305,6 +305,10 @@ export const AboutSection = () => {
     const viewportBottom = screenHeight - margin;
     const wouldBeCutBySection = sectionBottom > viewportBottom;
     
+    // Check distance to next section (estimate based on viewport position)
+    const distanceToBottom = screenHeight - rect.bottom;
+    const isCloseToNextSection = distanceToBottom < (popupHeight + 100); // 100px buffer
+    
     // Determine horizontal position with priority for screen boundaries
     let horizontalPosition: 'left' | 'right';
     
@@ -334,6 +338,10 @@ export const AboutSection = () => {
     
     // If popup would be cut off by following section, position above
     if (wouldBeCutBySection) {
+      verticalPosition = 'above';
+    }
+    // If screen is too close to next section, force above positioning
+    else if (isCloseToNextSection) {
       verticalPosition = 'above';
     }
     // If popup would go off bottom, position above
@@ -378,6 +386,10 @@ export const AboutSection = () => {
     const hasEnoughSpaceBelow = spaceBelow >= popupHeight + 40; // 40px margin
     const hasEnoughSpaceAbove = spaceAbove >= popupHeight + 40; // 40px margin
     
+    // Check distance to next section
+    const distanceToBottom = screenHeight - rect.bottom;
+    const isCloseToNextSection = distanceToBottom < (popupHeight + 100); // 100px buffer
+    
     // If tile is in an extreme position, force center positioning
     if (rect.left < 50 || rect.right > screenWidth - 50) {
       position.horizontal = rect.left < screenWidth / 2 ? 'right' : 'left';
@@ -385,6 +397,11 @@ export const AboutSection = () => {
     
     if (rect.top < 50 || rect.bottom > screenHeight - 50) {
       position.vertical = rect.top < screenHeight / 2 ? 'below' : 'above';
+    }
+    
+    // If screen is too close to next section, force above positioning
+    if (isCloseToNextSection) {
+      position.vertical = 'above';
     }
     
     // Prioritize space availability over aesthetic positioning
@@ -988,6 +1005,39 @@ export const AboutSection = () => {
             .absolute.bottom-full.left-0,
             .absolute.bottom-full.right-0 {
               margin-top: 20px !important;
+            }
+            
+            /* Enhanced spacing for above-positioned popups */
+            .absolute.bottom-full.left-0,
+            .absolute.bottom-full.right-0 {
+              margin-bottom: 15px !important;
+              margin-top: 10px !important;
+            }
+            
+            /* Ensure above popups have enough space from tile */
+            .absolute.bottom-full.left-0 > div,
+            .absolute.bottom-full.right-0 > div {
+              margin-bottom: 8px !important;
+            }
+            
+            /* Better positioning for above popups when close to next section */
+            .stat-tile:last-child .absolute.bottom-full.left-0,
+            .stat-tile:last-child .absolute.bottom-full.right-0 {
+              margin-bottom: 25px !important;
+            }
+            
+            /* Ensure popups don't get cut off by viewport edges */
+            .absolute.bottom-full.left-0,
+            .absolute.bottom-full.right-0 {
+              max-height: calc(100vh - 60px) !important;
+            }
+            
+            /* Add smooth transition for popup positioning changes */
+            .absolute.top-full.left-0,
+            .absolute.top-full.right-0,
+            .absolute.bottom-full.left-0,
+            .absolute.bottom-full.right-0 {
+              transition: all 0.2s ease-out !important;
             }
           }
           

@@ -211,6 +211,112 @@ export function CaseStudiesSection() {
     },
   };
 
+  // Mobile-specific scroll-triggered animations
+  const mobileScrollVariants = {
+    hidden: {
+      opacity: 0,
+      x: -100,
+      y: 50,
+      scale: 0.9,
+      rotateY: -15,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotateY: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
+
+  // Staggered scroll animations for mobile case study tiles
+  const getMobileScrollVariants = (index: number) => ({
+    hidden: {
+      opacity: 0,
+      x: index % 2 === 0 ? -100 : 100, // Alternate left/right slide
+      y: 50,
+      scale: 0.9,
+      rotateY: index % 2 === 0 ? -15 : 15,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotateY: 0,
+      transition: {
+        duration: 0.8,
+        delay: index * 0.2, // Staggered delay for scroll effect
+        ease: [0.25, 0.46, 0.45, 0.94],
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  });
+
+  // Mobile-specific icon animation variants
+  const mobileIconVariants = {
+    hidden: { 
+      opacity: 0, 
+      scale: 0.5, 
+      rotate: -180 
+    },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      rotate: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        type: "spring",
+        stiffness: 200,
+      }
+    },
+  };
+
+  // Mobile-specific content animation variants
+  const mobileContentVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 20 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        delay: 0.2,
+        ease: "easeOut",
+      }
+    },
+  };
+
+  const mobileTitleVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 15,
+      scale: 0.95
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        delay: 0.3,
+        ease: "easeOut",
+      }
+    },
+  };
+
   return (
     <section id="case-studies" className="relative min-h-screen responsive-py-lg mobile-safe-area overflow-hidden bg-background scroll-mt-20">
       {/* Background Effects */}
@@ -267,7 +373,10 @@ export function CaseStudiesSection() {
             return (
               <motion.div
                 key={study.id}
-                variants={itemVariants}
+                variants={isMobile ? getMobileScrollVariants(index) : itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: isMobile ? "-100px" : "-50px" }}
                 whileHover={{
                   scale: 1.02,
                   transition: { duration: 0.3, ease: "easeOut" },
@@ -290,6 +399,7 @@ export function CaseStudiesSection() {
                         <div className="flex items-center gap-3 mb-3 lg:mb-4">
                           <motion.div
                             className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 group-active:from-primary/30 group-active:to-accent/30 flex items-center justify-center text-primary group-hover:scale-110 group-active:scale-105 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 flex-shrink-0"
+                            variants={isMobile ? mobileIconVariants : undefined}
                             whileHover={{
                               rotate: 5,
                               transition: { duration: 0.3, ease: 'easeOut' },
@@ -302,18 +412,27 @@ export function CaseStudiesSection() {
                           >
                             <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
                           </motion.div>
-                          <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-active:text-transparent group-active:bg-gradient-to-r group-active:from-primary group-active:to-accent group-active:bg-clip-text transition-all duration-300 leading-tight m-0">
+                          <motion.h3 
+                            className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-active:text-transparent group-active:bg-gradient-to-r group-active:from-primary group-active:to-accent group-active:bg-clip-text transition-all duration-300 leading-tight m-0"
+                            variants={isMobile ? mobileTitleVariants : undefined}
+                          >
                             {study.title}
-                          </h3>
+                          </motion.h3>
                         </div>
 
                         {/* Subtitle */}
-                        <p className="text-muted-foreground responsive-text-sm mb-3 lg:mb-4 leading-relaxed font-light line-clamp-3 flex-shrink-0">
+                        <motion.p 
+                          className="text-muted-foreground responsive-text-sm mb-3 lg:mb-4 leading-relaxed font-light line-clamp-3 flex-shrink-0"
+                          variants={isMobile ? mobileContentVariants : undefined}
+                        >
                           {study.subtitle}
-                        </p>
+                        </motion.p>
 
                         {/* Tags */}
-                        <div className="flex flex-wrap responsive-gap-sm mb-3 lg:mb-4 flex-shrink-0">
+                        <motion.div 
+                          className="flex flex-wrap responsive-gap-sm mb-3 lg:mb-4 flex-shrink-0"
+                          variants={isMobile ? mobileContentVariants : undefined}
+                        >
                           {study.tags.map((tag) => (
                             <Badge
                               key={tag}
@@ -322,10 +441,13 @@ export function CaseStudiesSection() {
                               {tag}
                             </Badge>
                           ))}
-                        </div>
+                        </motion.div>
 
                         {/* Bullet Points */}
-                        <div className="space-y-2 sm:space-y-2.5 mb-4 lg:mb-6 flex-grow">
+                        <motion.div 
+                          className="space-y-2 sm:space-y-2.5 mb-4 lg:mb-6 flex-grow"
+                          variants={isMobile ? mobileContentVariants : undefined}
+                        >
                           {study.bullets.map((bullet, bulletIndex) => (
                             <div
                               key={bulletIndex}
@@ -337,10 +459,13 @@ export function CaseStudiesSection() {
                               </span>
                             </div>
                           ))}
-                        </div>
+                        </motion.div>
 
                         {/* CTA */}
-                        <div className="text-primary responsive-text-sm font-medium group-hover:text-accent group-active:text-accent transition-colors duration-300 flex items-center flex-shrink-0 mt-auto min-h-[24px]">
+                        <motion.div 
+                          className="text-primary responsive-text-sm font-medium group-hover:text-accent group-active:text-accent transition-colors duration-300 flex items-center flex-shrink-0 mt-auto min-h-[24px]"
+                          variants={isMobile ? mobileContentVariants : undefined}
+                        >
                           <span>View full case study</span>
                           <motion.span
                             className="ml-2"
@@ -353,7 +478,7 @@ export function CaseStudiesSection() {
                           >
                             →
                           </motion.span>
-                        </div>
+                        </motion.div>
 
                         {/* Floating Particles */}
                         <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse group-active:animate-pulse" />
@@ -453,19 +578,157 @@ export function CaseStudiesSection() {
       <div className="absolute top-1/2 right-0 w-px h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent hidden lg:block" />
 
       <style jsx>{`
-        /* Mobile-specific improvements */
-        @media (max-width: 1023px) {
+        /* Mobile-specific improvements for case studies */
+        @media (max-width: 768px) {
+          .responsive-card {
+            padding: 1rem;
+          }
+          
+          .responsive-gap-sm {
+            gap: 0.75rem;
+          }
+          
+          /* Enhanced scroll animation performance */
+          .motion-div {
+            will-change: transform, opacity !important;
+            backface-visibility: hidden !important;
+            transform-style: preserve-3d !important;
+          }
+          
+          /* Smooth scroll animations */
+          .group {
+            transform: translateZ(0) !important;
+            -webkit-transform: translateZ(0) !important;
+          }
+          
+          /* Optimize animation performance */
+          .responsive-grid-2 {
+            contain: layout style paint !important;
+          }
+          
+          /* Enhanced scroll trigger animations for case studies */
+          .case-study-tile {
+            opacity: 0;
+            transform: translateX(-100px) translateY(50px) scale(0.9) rotateY(-15deg);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          }
+          
+          .case-study-tile.visible {
+            opacity: 1;
+            transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+          }
+          
+          /* Staggered animation delays for case studies */
+          .case-study-tile:nth-child(1) { transition-delay: 0s; }
+          .case-study-tile:nth-child(2) { transition-delay: 0.2s; }
+          .case-study-tile:nth-child(3) { transition-delay: 0.4s; }
+          .case-study-tile:nth-child(4) { transition-delay: 0.6s; }
+          .case-study-tile:nth-child(5) { transition-delay: 0.8s; }
+          .case-study-tile:nth-child(6) { transition-delay: 1s; }
+          
+          /* Spring animation effect for case studies */
+          .case-study-tile.visible {
+            animation: caseStudySpringBounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          }
+          
+          @keyframes caseStudySpringBounce {
+            0% {
+              opacity: 0;
+              transform: translateX(-100px) translateY(50px) scale(0.9) rotateY(-15deg);
+            }
+            50% {
+              opacity: 0.8;
+              transform: translateX(10px) translateY(-5px) scale(1.02) rotateY(2deg);
+            }
+            100% {
+              opacity: 1;
+              transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+            }
+          }
+          
+          /* Right slide animation for even case study tiles */
+          .case-study-tile:nth-child(even) {
+            transform: translateX(100px) translateY(50px) scale(0.9) rotateY(15deg);
+          }
+          
+          .case-study-tile:nth-child(even).visible {
+            animation: caseStudySpringBounceRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          }
+          
+          @keyframes caseStudySpringBounceRight {
+            0% {
+              opacity: 0;
+              transform: translateX(100px) translateY(50px) scale(0.9) rotateY(15deg);
+            }
+            50% {
+              opacity: 0.8;
+              transform: translateX(-10px) translateY(-5px) scale(1.02) rotateY(-2deg);
+            }
+            100% {
+              opacity: 1;
+              transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+            }
+          }
+          
+          /* Icon bounce animation for case studies */
+          .case-study-icon {
+            animation: iconBounce 0.6s ease-out 0.3s both;
+          }
+          
+          @keyframes iconBounce {
+            0% {
+              opacity: 0;
+              transform: scale(0.5) rotate(-180deg);
+            }
+            50% {
+              transform: scale(1.1) rotate(-90deg);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1) rotate(0deg);
+            }
+          }
+          
+          /* Content slide animation for case studies */
+          .case-study-content {
+            animation: contentSlide 0.5s ease-out 0.5s both;
+          }
+          
+          @keyframes contentSlide {
+            0% {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          /* Title scale animation for case studies */
+          .case-study-title {
+            animation: titleScale 0.6s ease-out 0.4s both;
+          }
+          
+          @keyframes titleScale {
+            0% {
+              opacity: 0;
+              transform: translateY(15px) scale(0.95);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+          
+          /* Enhanced touch interactions */
           .touch-target {
             touch-action: manipulation;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
           }
           
-          /* Better visual feedback for touch interactions */
           .touch-target:active {
             transform: scale(0.98);
           }
@@ -477,27 +740,14 @@ export function CaseStudiesSection() {
           }
         }
         
-        /* Mobile-specific spacing and sizing */
-        @media (max-width: 768px) {
+        /* Tablet-specific improvements */
+        @media (min-width: 769px) and (max-width: 1023px) {
           .responsive-card {
             padding: 1.25rem;
           }
           
           .responsive-gap-lg {
-            gap: 1rem;
-          }
-          
-          /* Improve dialog scrolling on mobile */
-          [data-radix-dialog-content] {
-            max-height: 90vh !important;
-            margin: 1rem !important;
-          }
-        }
-        
-        /* Improve dialog backdrop for mobile */
-        @media (max-width: 640px) {
-          [data-radix-dialog-overlay] {
-            background-color: rgba(0, 0, 0, 0.8);
+            gap: 1.25rem;
           }
         }
       `}</style>

@@ -88,6 +88,7 @@ export const Testimonials = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const animationRef = useRef<number | null>(null);
   const dragStartX = useRef<number | null>(null);
   const dragStartY = useRef<number | null>(null);
@@ -117,13 +118,45 @@ export const Testimonials = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, [isMounted]);
 
+  // Simplified mobile auto-scroll initialization
+  useEffect(() => {
+    if (!isMounted || !isMobile) return;
+
+    const handleFirstInteraction = () => {
+      // Start auto-scroll immediately after first interaction
+      setHasInteracted(true);
+      setIsPaused(false);
+      
+      // Remove listener after first interaction
+      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("click", handleFirstInteraction);
+    };
+
+    // Start auto-scroll only after first interaction
+    window.addEventListener("touchstart", handleFirstInteraction, { once: true });
+    window.addEventListener("click", handleFirstInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("click", handleFirstInteraction);
+    };
+  }, [isMobile, isMounted]);
+
+  // Auto-scroll effect - now considers hasInteracted for mobile
   useEffect(() => {
     if (!isMounted) return; // Don't run animation during SSR
     
     const container = scrollRef.current;
+    if (!container) return;
+    
+    // On mobile, only start auto-scroll after first interaction
+    if (isMobile && !hasInteracted) {
+      return;
+    }
+    
     // On mobile, only pause if actively dragging, not on touch
     const shouldPause = isPaused || (isDragging && !isMobile);
-    if (!container || shouldPause) {
+    if (shouldPause) {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
       return;
     }
@@ -146,46 +179,15 @@ export const Testimonials = () => {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isPaused, isDragging, isMobile, isMounted]);
+  }, [isPaused, isDragging, isMobile, isMounted, hasInteracted]);
 
+  // Start auto-scroll immediately on desktop
   useEffect(() => {
-    if (!isMounted || !isMobile) return;
-
-    const handleFirstInteraction = () => {
-      const container = scrollRef.current;
-      if (!container) return;
-
-      const animate = () => {
-        if (!container) return;
-        const maxScroll = container.scrollWidth / 3;
-        let nextScroll = container.scrollLeft + 0.5;
-
-        if (nextScroll >= maxScroll * 2) {
-          container.scrollLeft = maxScroll;
-        } else {
-          container.scrollLeft = nextScroll;
-        }
-
-        animationRef.current = requestAnimationFrame(animate);
-      };
-
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-      animationRef.current = requestAnimationFrame(animate);
-
-      // Remove listener after first interaction
-      window.removeEventListener("touchstart", handleFirstInteraction);
-      window.removeEventListener("click", handleFirstInteraction);
-    };
-
-    // Start auto-scroll only after first interaction
-    window.addEventListener("touchstart", handleFirstInteraction, { once: true });
-    window.addEventListener("click", handleFirstInteraction, { once: true });
-
-    return () => {
-      window.removeEventListener("touchstart", handleFirstInteraction);
-      window.removeEventListener("click", handleFirstInteraction);
-    };
-  }, [isMobile, isMounted]);
+    if (!isMounted || isMobile) return;
+    
+    // On desktop, start auto-scroll immediately
+    setIsPaused(false);
+  }, [isMounted, isMobile]);
 
   // Cleanup long press timer on unmount
   useEffect(() => {
@@ -215,9 +217,10 @@ export const Testimonials = () => {
       }, 500); // 500ms for long press detection
     } else {
       // Desktop behavior unchanged
-      setIsPaused(false);
+      setIsPaused(true);
     }
   };
+  
   const handleTouchEnd = () => {
     // Clear long press timer
     if (longPressTimer.current) {
@@ -234,6 +237,9 @@ export const Testimonials = () => {
       setTimeout(() => {
         setIsPaused(false);
       }, 1000); // Resume after 1 second
+    } else {
+      // For regular touch, resume immediately
+      setIsPaused(false);
     }
   };
 
@@ -440,6 +446,14 @@ export const Testimonials = () => {
           .touch-pan-x {
             touch-action: pan-x pan-y;
             -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+          }
+          
+          /* Ensure auto-scroll works smoothly on mobile */
+          .flex.gap-4.overflow-x-auto {
+            scroll-behavior: auto !important;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x pan-y;
           }
           
           /* Mobile-specific card optimizations */
@@ -459,6 +473,19 @@ export const Testimonials = () => {
           .mobile-compact-avatar {
             min-width: 40px;
             min-height: 40px;
+          }
+          
+          /* Ensure smooth scrolling during auto-scroll */
+          .flex.gap-4.overflow-x-auto.scrollbar-hide {
+            scroll-behavior: auto !important;
+            -webkit-overflow-scrolling: touch;
+          }
+        }
+        
+        /* Desktop auto-scroll behavior */
+        @media (min-width: 769px) {
+          .flex.gap-4.overflow-x-auto {
+            scroll-behavior: auto !important;
           }
         }
       `}</style>
