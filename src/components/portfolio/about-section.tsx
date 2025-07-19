@@ -759,21 +759,21 @@ export const AboutSection = () => {
                             className="fixed inset-0 z-[99999] lg:hidden"
                             onClick={() => setActivePopup(null)}
                           />
-                          <div className={`absolute z-[99999] lg:hidden ${
-                            popupVerticalPosition === 'below' ? 'top-full mt-2' : 'bottom-full mb-2'
-                          } ${
-                            popupPosition === 'right' ? 'left-0' : 'right-0'
-                          }`}>
+                          <div
+                            className={`absolute z-[99999] lg:hidden left-1/2 transform -translate-x-1/2 ${
+                              popupVerticalPosition === 'below' ? 'top-full mt-2' : 'bottom-full mb-2'
+                            }`}
+                            style={{ maxWidth: '90vw', minWidth: '250px' }}
+                          >
                             <div
-                              className={`p-4 rounded-xl bg-black/80 text-white text-sm leading-relaxed max-w-[85vw] min-w-[250px] whitespace-normal break-words shadow-xl border border-cyan-300/30 backdrop-blur-lg ${
-                                popupPosition === 'right' ? 'w-full' : 'w-full'
-                              }`}
+                              className={`p-4 rounded-xl bg-black/80 text-white text-sm leading-relaxed whitespace-normal break-words shadow-xl border border-cyan-300/30 backdrop-blur-lg`}
                               style={{
-                                maxWidth: '280px',
+                                width: '90vw',
+                                maxWidth: '90vw',
                                 minWidth: '250px',
-                                width: 'auto',
                                 zIndex: 99999,
-                                position: 'relative'
+                                position: 'relative',
+                                wordWrap: 'break-word',
                               }}
                             >
                               <button
@@ -927,10 +927,7 @@ export const AboutSection = () => {
             }
             
             /* Ensure popups stay within viewport bounds */
-            .absolute.top-full.left-0,
-            .absolute.top-full.right-0,
-            .absolute.bottom-full.left-0,
-            .absolute.bottom-full.right-0 {
+            .absolute.left-1\/2.transform.-translate-x-1\/2 {
               max-width: calc(100vw - 40px) !important;
               max-height: calc(100vh - 40px) !important;
               overflow: hidden !important;
@@ -939,107 +936,52 @@ export const AboutSection = () => {
             }
             
             /* Constrain popup content width */
-            .absolute.top-full.left-0 > div,
-            .absolute.top-full.right-0 > div,
-            .absolute.bottom-full.left-0 > div,
-            .absolute.bottom-full.right-0 > div {
+            .absolute.left-1\/2.transform.-translate-x-1\/2 > div {
               max-width: calc(100vw - 40px) !important;
-              width: auto !important;
+              width: 90vw !important;
               min-width: 250px !important;
               max-height: calc(100vh - 40px) !important;
               overflow-y: auto !important;
               z-index: 99999 !important;
               position: relative !important;
+              word-wrap: break-word !important;
             }
             
-            /* Ensure left positioning doesn't overflow */
-            .absolute.top-full.left-0 > div,
-            .absolute.bottom-full.left-0 > div {
-              left: 0 !important;
+            /* Ensure centered positioning doesn't overflow */
+            .absolute.left-1\/2.transform.-translate-x-1\/2 {
+              left: 50% !important;
+              transform: translateX(-50%) !important;
               right: auto !important;
-              transform: none !important;
-            }
-            
-            /* Ensure right positioning doesn't overflow */
-            .absolute.top-full.right-0 > div,
-            .absolute.bottom-full.right-0 > div {
-              right: 0 !important;
-              left: auto !important;
-              transform: none !important;
-            }
-            
-            /* Fallback positioning for edge cases */
-            .absolute.top-full.left-0 {
-              left: 10px !important;
-              right: auto !important;
-            }
-            
-            .absolute.top-full.right-0 {
-              right: 10px !important;
-              left: auto !important;
-            }
-            
-            .absolute.bottom-full.left-0 {
-              left: 10px !important;
-              right: auto !important;
-            }
-            
-            .absolute.bottom-full.right-0 {
-              right: 10px !important;
-              left: auto !important;
-            }
-            
-            /* Ensure popups appear above all other content */
-            .stat-tile .relative {
-              z-index: 1 !important;
-            }
-            
-            .stat-tile .relative .absolute {
-              z-index: 99999 !important;
             }
             
             /* Add extra margin for bottom popups to avoid section overlap */
-            .absolute.top-full.left-0,
-            .absolute.top-full.right-0 {
+            .absolute.left-1\/2.transform.-translate-x-1\/2 {
               margin-bottom: 20px !important;
             }
             
-            /* Add extra margin for top popups to avoid section overlap */
-            .absolute.bottom-full.left-0,
-            .absolute.bottom-full.right-0 {
-              margin-top: 20px !important;
-            }
-            
             /* Enhanced spacing for above-positioned popups */
-            .absolute.bottom-full.left-0,
-            .absolute.bottom-full.right-0 {
+            .absolute.left-1\/2.transform.-translate-x-1\/2 {
               margin-bottom: 15px !important;
               margin-top: 10px !important;
             }
             
             /* Ensure above popups have enough space from tile */
-            .absolute.bottom-full.left-0 > div,
-            .absolute.bottom-full.right-0 > div {
+            .absolute.left-1\/2.transform.-translate-x-1\/2 > div {
               margin-bottom: 8px !important;
             }
             
             /* Better positioning for above popups when close to next section */
-            .stat-tile:last-child .absolute.bottom-full.left-0,
-            .stat-tile:last-child .absolute.bottom-full.right-0 {
+            .stat-tile:last-child .absolute.left-1\/2.transform.-translate-x-1\/2 {
               margin-bottom: 25px !important;
             }
             
             /* Ensure popups don't get cut off by viewport edges */
-            .absolute.bottom-full.left-0,
-            .absolute.bottom-full.right-0 {
+            .absolute.left-1\/2.transform.-translate-x-1\/2 {
               max-height: calc(100vh - 60px) !important;
             }
             
             /* Add smooth transition for popup positioning changes */
-            .absolute.top-full.left-0,
-            .absolute.top-full.right-0,
-            .absolute.bottom-full.left-0,
-            .absolute.bottom-full.right-0 {
+            .absolute.left-1\/2.transform.-translate-x-1\/2 {
               transition: all 0.2s ease-out !important;
             }
             
