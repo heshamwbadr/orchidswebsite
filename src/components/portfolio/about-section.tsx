@@ -227,13 +227,50 @@ export const AboutSection = () => {
     if (isMobile) { // lg breakpoint
       event.preventDefault();
       event.stopPropagation();
+      
+      // If clicking on a different card while one is expanded, collapse the current one first
+      if (expandedCard !== null && expandedCard !== index) {
+        setExpandedCard(null);
+        // Small delay to allow smooth collapse before expanding new card
+        setTimeout(() => {
+          setExpandedCard(index);
+          // Scroll to the newly expanded card
+          setTimeout(() => {
+            const cardElement = event.currentTarget.closest('.group');
+            if (cardElement) {
+              cardElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              });
+            }
+          }, 100);
+        }, 300);
+      } else {
+        setExpandedCard(isExpanded ? null : index);
+        // If expanding, scroll to the card
+        if (!isExpanded) {
+          setTimeout(() => {
+            const cardElement = event.currentTarget.closest('.group');
+            if (cardElement) {
+              cardElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              });
+            }
+          }, 100);
+        }
+      }
+      
       // Prevent any potential scroll behavior only on expand/collapse
       const currentScrollY = window.scrollY;
       setTimeout(() => {
         window.scrollTo(0, currentScrollY);
       }, 0);
+    } else {
+      setExpandedCard(isExpanded ? null : index);
     }
-    setExpandedCard(isExpanded ? null : index);
   };
 
   const containerVariants = {
@@ -638,13 +675,14 @@ export const AboutSection = () => {
           /* Mobile popup positioning - prevent going out of screen */
           .mobile-popup {
             position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
+            top: 50vh !important;
+            left: 50vw !important;
             transform: translate(-50%, -50%) !important;
             max-width: 90vw !important;
             width: 280px !important;
             margin: 0 !important;
             z-index: 10000 !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
           }
           
           /* Adjust popup arrow for mobile */
@@ -678,6 +716,33 @@ export const AboutSection = () => {
           .mobile-expandable > div {
             margin-top: 0 !important;
             padding-top: 1rem !important;
+          }
+          
+          /* Mobile card container - ensure proper flow */
+          .space-y-4, .space-y-6 {
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          
+          /* Ensure cards don't shift upward when expanding */
+          .group {
+            position: relative !important;
+            z-index: 1 !important;
+          }
+          
+          /* Expanded card should have higher z-index */
+          .group .expanded {
+            z-index: 2 !important;
+          }
+          
+          /* Smooth transitions for mobile */
+          .group .motion-div {
+            transition: all 0.3s ease-in-out !important;
+          }
+          
+          /* Ensure content below expands smoothly */
+          .group + .group {
+            transition: transform 0.3s ease-in-out !important;
           }
         }
         

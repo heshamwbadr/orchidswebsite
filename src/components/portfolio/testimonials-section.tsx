@@ -150,6 +150,31 @@ export const Testimonials = () => {
     };
   }, [isPaused, isDragging, isMobile, isMounted]);
 
+  // Mobile-specific animation useEffect
+  useEffect(() => {
+    if (!isMobile || !scrollRef.current) return;
+
+    const animate = () => {
+      const container = scrollRef.current;
+      if (!container) return;
+      const maxScroll = container.scrollWidth / 3;
+      let nextScroll = container.scrollLeft + 0.5;
+
+      if (nextScroll >= maxScroll * 2) {
+        container.scrollLeft = maxScroll;
+      } else {
+        container.scrollLeft = nextScroll;
+      }
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, [isMobile, isMounted]);
+
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
   const handleTouchStart = () => {
@@ -157,12 +182,31 @@ export const Testimonials = () => {
     // This allows the carousel to continue auto-scrolling on mobile
   };
   const handleTouchEnd = () => {
-    // Only reset dragging if we were actually dragging
     if (isDragging) {
       setIsDragging(false);
       setIsPaused(false);
     }
-    // Don't add delay for mobile - let auto-scrolling continue immediately
+
+    // ✅ Restart animation after touch ends
+    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+
+    animationRef.current = requestAnimationFrame(() => {
+      const container = scrollRef.current;
+      if (!container) return;
+      const animate = () => {
+        const maxScroll = container.scrollWidth / 3;
+        let nextScroll = container.scrollLeft + 0.5;
+
+        if (nextScroll >= maxScroll * 2) {
+          container.scrollLeft = maxScroll;
+        } else {
+          container.scrollLeft = nextScroll;
+        }
+
+        animationRef.current = requestAnimationFrame(animate);
+      };
+      animate();
+    });
   };
 
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
@@ -205,6 +249,12 @@ export const Testimonials = () => {
     if (!isDragging || dragStartX.current === null) return;
     const container = scrollRef.current;
     if (!container) return;
+    
+    // Set dragStartOffset if not already set (for mobile gestures)
+    if (dragStartOffset.current === 0) {
+      dragStartOffset.current = container.scrollLeft;
+    }
+    
     const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
     const dx = dragStartX.current - clientX;
     let newOffset = dragStartOffset.current + dx;
@@ -267,10 +317,21 @@ export const Testimonials = () => {
           onMouseUp={handleDragEnd}
           onMouseMove={handleDragMove}
           onTouchMove={(e) => {
-            // Only handle drag if we're actually dragging, otherwise let screen scroll
-            if (isDragging) {
-              e.preventDefault();
+            const dx = dragStartX.current && e.touches[0].clientX - dragStartX.current;
+            const dy = dragStartY.current && e.touches[0].clientY - dragStartY.current;
+
+            // Determine if gesture is mostly horizontal
+            if (dx && dy && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 5) {
+              setIsDragging(true);
+              setIsPaused(true);
+              
+              // Initialize dragStartOffset if not already set
+              if (dragStartOffset.current === 0 && scrollRef.current) {
+                dragStartOffset.current = scrollRef.current.scrollLeft;
+              }
+              
               handleDragMove(e);
+              e.preventDefault(); // prevent vertical scroll
             }
           }}
         >
