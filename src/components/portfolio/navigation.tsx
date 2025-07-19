@@ -38,6 +38,24 @@ export const Navigation = () => {
     setIsOpen(false);
   };
 
+  const scrollToContactForm = () => {
+    // On mobile, scroll directly to the contact form
+    const isMobile = window.innerWidth < 768;
+    const targetId = isMobile ? "contact-form" : "contact";
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      // On mobile, add a small delay to ensure the form is visible
+      if (isMobile) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+    setIsOpen(false);
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/80 backdrop-blur-md border-b border-border/50" : "bg-transparent"}`}
@@ -62,7 +80,7 @@ export const Navigation = () => {
               {navigationItems.map((item) => (
                 <button
                   key={item.name}
-                  onClick={() => scrollToSection(item.sectionId)}
+                  onClick={() => item.name === "Contact" ? scrollToContactForm() : scrollToSection(item.sectionId)}
                   className={`relative responsive-text-base font-medium transition-colors duration-300 touch-target px-3 py-2 group no-underline hover:no-underline ${
                     item.name === "Contact"
                       ? "text-primary hover:text-primary/80"
@@ -109,7 +127,7 @@ export const Navigation = () => {
                 {navigationItems.map((item) => (
                   <button
                     key={item.name}
-                    onClick={() => scrollToSection(item.sectionId)}
+                    onClick={() => item.name === "Contact" ? scrollToContactForm() : scrollToSection(item.sectionId)}
                     className={`relative block w-full text-left responsive-px-sm responsive-py-sm responsive-text-base font-medium transition-colors duration-300 rounded-lg touch-target group no-underline hover:no-underline ${
                       item.name === "Contact"
                         ? "text-primary hover:text-primary/80 hover:bg-primary/5"

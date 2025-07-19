@@ -198,6 +198,7 @@ export const ContactSection = () => {
                       key="form"
                       initial={{ opacity: 1 }}
                       onSubmit={handleSubmit}
+                      id="contact-form"
                       className="space-y-4 lg:space-y-6"
                     >
                       {/* Name Field */}

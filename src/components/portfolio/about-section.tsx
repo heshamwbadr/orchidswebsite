@@ -409,7 +409,6 @@ export const AboutSection = () => {
                         }}
                         whileTap={{ scale: 0.99 }}
                         className={`relative z-10 responsive-card cursor-pointer touch-target ${isExpanded ? 'expanded' : ''}`}
-                        style={{ touchAction: isMobile && !isExpanded ? 'none' : 'pan-x pan-y' }}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center responsive-gap-base min-w-0 flex-1">
@@ -445,12 +444,6 @@ export const AboutSection = () => {
                               <p className="responsive-text-sm text-muted-foreground leading-relaxed font-light line-clamp-2">
                                 {pillar.subtitle}
                               </p>
-                              {/* Mobile hint text */}
-                              {isMobile && !isExpanded && (
-                                <p className="text-xs text-muted-foreground/60 mt-1 sm:hidden">
-                                  Tap to explore services
-                                </p>
-                              )}
                             </div>
                           </div>
 
@@ -548,7 +541,7 @@ export const AboutSection = () => {
               <span className="text-lg md:text-2xl font-semibold">Impact Metrics</span>
             </motion.div>
             <div className="w-full">
-              <div className="grid grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-4 sm:gap-6 max-w-[600px] mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-4 sm:gap-6 max-w-[600px] mx-auto lg:mx-0">
                 {impactMetrics.map((metric, idx) => {
                   const popupId = `popup-${idx}`;
                   return (
@@ -566,7 +559,7 @@ export const AboutSection = () => {
                       </div>
                       <div
                         id={popupId}
-                        className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-[-20px] z-20 opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-hover:visible group-focus:visible group-hover:-translate-y-2 group-focus:-translate-y-2 transition-all duration-300 bg-[rgba(10,10,10,0.95)] border border-cyan-300/30 rounded-xl px-5 py-4 text-[0.85rem] leading-snug text-white/90 max-w-[280px] w-max shadow-2xl text-center backdrop-blur-lg break-words hover-popup"
+                        className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-[-20px] z-50 opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-hover:visible group-focus:visible group-hover:-translate-y-2 group-focus:-translate-y-2 transition-all duration-300 bg-[rgba(10,10,10,0.95)] border border-cyan-300/30 rounded-xl px-5 py-4 text-[0.85rem] leading-snug text-white/90 max-w-[280px] w-max shadow-2xl text-center backdrop-blur-lg break-words hover-popup mobile-popup"
                         style={{ overflowWrap: 'break-word' }}
                         aria-hidden="true"
                       >
@@ -590,21 +583,16 @@ export const AboutSection = () => {
           animation: service-glow 2.2s ease-in-out infinite;
         }
         
-        /* Prevent scrolling on mobile dropdown cards - only when collapsed */
+        /* Mobile touch behavior - allow normal scrolling */
         @media (max-width: 1023px) {
-          .touch-target:not(.expanded) {
-            touch-action: none;
+          .touch-target {
+            touch-action: manipulation;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-          }
-          
-          /* Allow scrolling when expanded */
-          .touch-target.expanded {
-            touch-action: pan-x pan-y;
           }
           
           /* Better touch targets for mobile */
@@ -634,6 +622,40 @@ export const AboutSection = () => {
           .responsive-gap-sm {
             gap: 0.75rem;
           }
+          
+          /* Center metric tiles on mobile */
+          .grid {
+            justify-content: center;
+            margin: 0 auto;
+          }
+          
+          /* Ensure popup is always on top */
+          .hover-popup {
+            z-index: 9999 !important;
+            position: relative;
+          }
+          
+          /* Mobile popup positioning - prevent going out of screen */
+          .mobile-popup {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            max-width: 90vw !important;
+            width: 280px !important;
+            margin: 0 !important;
+            z-index: 10000 !important;
+          }
+          
+          /* Adjust popup arrow for mobile */
+          .mobile-popup span {
+            display: none !important;
+          }
+        }
+        
+        /* Ensure popup visibility across all screen sizes */
+        .hover-popup {
+          z-index: 9999 !important;
         }
       `}</style>
     </section>
