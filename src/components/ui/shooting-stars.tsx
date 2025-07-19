@@ -24,23 +24,6 @@ interface ShootingStarsProps {
   className?: string;
 }
 
-const getRandomStartPoint = () => {
-  const side = Math.floor(Math.random() * 4);
-  const offset = Math.random() * window.innerWidth;
-
-  switch (side) {
-    case 0:
-      return { x: offset, y: 0, angle: 45 };
-    case 1:
-      return { x: window.innerWidth, y: offset, angle: 135 };
-    case 2:
-      return { x: offset, y: window.innerHeight, angle: 225 };
-    case 3:
-      return { x: 0, y: offset, angle: 315 };
-    default:
-      return { x: 0, y: 0, angle: 45 };
-  }
-};
 export const ShootingStars: React.FC<ShootingStarsProps> = ({
   minSpeed = 10,
   maxSpeed = 30,
@@ -53,9 +36,52 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
   className,
 }) => {
   const [star, setStar] = useState<ShootingStar | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const [windowDimensions, setWindowDimensions] = useState({ width: 0, height: 0 });
   const svgRef = useRef<SVGSVGElement>(null);
 
+  // Ensure component is mounted before accessing window
   useEffect(() => {
+    setIsMounted(true);
+    setWindowDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+
+    const handleResize = () => {
+      setWindowDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const getRandomStartPoint = () => {
+    if (!isMounted) return { x: 0, y: 0, angle: 45 };
+    
+    const side = Math.floor(Math.random() * 4);
+    const offset = Math.random() * windowDimensions.width;
+
+    switch (side) {
+      case 0:
+        return { x: offset, y: 0, angle: 45 };
+      case 1:
+        return { x: windowDimensions.width, y: offset, angle: 135 };
+      case 2:
+        return { x: offset, y: windowDimensions.height, angle: 225 };
+      case 3:
+        return { x: 0, y: offset, angle: 315 };
+      default:
+        return { x: 0, y: 0, angle: 45 };
+    }
+  };
+
+  useEffect(() => {
+    if (!isMounted) return; // Don't create stars during SSR
+    
     const createStar = () => {
       const { x, y, angle } = getRandomStartPoint();
       const newStar: ShootingStar = {
@@ -76,7 +102,7 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
     createStar();
 
     return () => {};
-  }, [minSpeed, maxSpeed, minDelay, maxDelay]);
+  }, [minSpeed, maxSpeed, minDelay, maxDelay, isMounted]);
 
   useEffect(() => {
     const moveStar = () => {
@@ -93,9 +119,9 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
           const newScale = 1 + newDistance / 100;
           if (
             newX < -20 ||
-            newX > window.innerWidth + 20 ||
+            newX > windowDimensions.width + 20 ||
             newY < -20 ||
-            newY > window.innerHeight + 20
+            newY > windowDimensions.height + 20
           ) {
             return null;
           }
@@ -112,7 +138,7 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
 
     const animationFrame = requestAnimationFrame(moveStar);
     return () => cancelAnimationFrame(animationFrame);
-  }, [star]);
+  }, [star, windowDimensions.width, windowDimensions.height]);
 
   return (
     <svg

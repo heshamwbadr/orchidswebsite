@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Briefcase,
@@ -202,10 +202,29 @@ const impactMetrics = [
 export const AboutSection = () => {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [expandedMetric, setExpandedMetric] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Ensure component is mounted before accessing window
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Detect mobile device only after mounting
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [isMounted]);
 
   const handleCardClick = (index: number, isExpanded: boolean, event: React.MouseEvent) => {
     // Prevent scrolling on mobile when expanding/collapsing cards
-    if (window.innerWidth < 1024) { // lg breakpoint
+    if (isMobile) { // lg breakpoint
       event.preventDefault();
       event.stopPropagation();
       // Prevent any potential scroll behavior
@@ -390,7 +409,7 @@ export const AboutSection = () => {
                         }}
                         whileTap={{ scale: 0.99 }}
                         className="relative z-10 responsive-card cursor-pointer touch-target"
-                        style={{ touchAction: window.innerWidth < 1024 ? 'none' : 'auto' }}
+                        style={{ touchAction: isMobile ? 'none' : 'auto' }}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center responsive-gap-base min-w-0 flex-1">
