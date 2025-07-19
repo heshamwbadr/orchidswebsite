@@ -95,7 +95,7 @@ export const Testimonials = () => {
   const lastUpdateTime = useRef(0);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const isLongPress = useRef(false);
-  const cardWidth = 320;
+  const cardWidth = isMobile ? 320 : 380;
   const gap = 16;
   const seamlessTestimonials = [...testimonials, ...testimonials, ...testimonials];
   const singleLoopWidth = (seamlessTestimonials.length / 3) * (cardWidth + gap);
@@ -328,11 +328,6 @@ export const Testimonials = () => {
       </div>
 
       <div className="relative px-4">
-        <div className="flex justify-between mb-4">
-          <Button onClick={() => scroll("left")}><ChevronLeft /></Button>
-          <Button onClick={() => scroll("right")}><ChevronRight /></Button>
-        </div>
-
         <div
           ref={scrollRef}
           className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x cursor-grab"
@@ -382,32 +377,32 @@ export const Testimonials = () => {
           {seamlessTestimonials.map((t, idx) => (
             <div
               key={`${t.id}-${idx}`}
-              className="flex-shrink-0 snap-start w-[380px]"
-              style={{ minWidth: 380 }}
+              className="flex-shrink-0 snap-start w-[320px] sm:w-[380px]"
+              style={{ minWidth: 320 }}
             >
-              <Card className="p-6 h-full bg-black border border-zinc-800 rounded-xl text-white shadow-md flex flex-col">
+              <Card className="p-4 sm:p-6 h-full bg-black border border-zinc-800 rounded-xl text-white shadow-md flex flex-col mobile-compact-card">
                 {/* Stars */}
-                <div className="mb-4 flex text-cyan-400" aria-label={`${t.rating} out of 5 stars`}>
+                <div className="mb-3 sm:mb-4 flex text-cyan-400" aria-label={`${t.rating} out of 5 stars`}>
                   {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-cyan-400 mr-1" />
+                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-cyan-400 mr-1" />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <blockquote className="text-base leading-relaxed font-medium text-white mb-6 flex-grow">
+                <blockquote className="text-sm sm:text-base leading-relaxed font-medium text-white mb-4 sm:mb-6 flex-grow mobile-compact-text">
                   "{t.quote}"
                 </blockquote>
 
                 {/* Metric Badge */}
-                <div className="mb-4">
-                  <span className="inline-block px-4 py-1 rounded-full border border-cyan-700 bg-gradient-to-br from-cyan-900 to-cyan-700 text-cyan-300 text-sm font-semibold">
+                <div className="mb-3 sm:mb-4">
+                  <span className="inline-block px-3 py-1 sm:px-4 rounded-full border border-cyan-700 bg-gradient-to-br from-cyan-900 to-cyan-700 text-cyan-300 text-xs sm:text-sm font-semibold">
                     {t.metric}
                   </span>
                 </div>
 
                 {/* Avatar and Info */}
                 <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-cyan-800 mr-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-cyan-800 mr-3 mobile-compact-avatar">
                     <Image
                       src={t.image}
                       alt={t.name}
@@ -417,9 +412,9 @@ export const Testimonials = () => {
                     />
                   </div>
                   <div>
-                    <p className="font-semibold text-white text-base leading-tight">{t.name}</p>
-                    <p className="text-cyan-400 text-sm font-medium leading-snug">{t.title}</p>
-                    <p className="text-zinc-400 text-sm mt-1">{t.company} • {t.industry}</p>
+                    <p className="font-semibold text-white text-sm sm:text-base leading-tight">{t.name}</p>
+                    <p className="text-cyan-400 text-xs sm:text-sm font-medium leading-snug">{t.title}</p>
+                    <p className="text-zinc-400 text-xs sm:text-sm mt-1">{t.company} • {t.industry}</p>
                   </div>
                 </div>
               </Card>
@@ -445,6 +440,25 @@ export const Testimonials = () => {
           .touch-pan-x {
             touch-action: pan-x pan-y;
             -webkit-overflow-scrolling: touch;
+          }
+          
+          /* Mobile-specific card optimizations */
+          .mobile-compact-card {
+            min-height: 280px;
+            max-height: 320px;
+          }
+          
+          .mobile-compact-text {
+            line-height: 1.4;
+            -webkit-line-clamp: 4;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+          
+          .mobile-compact-avatar {
+            min-width: 40px;
+            min-height: 40px;
           }
         }
       `}</style>

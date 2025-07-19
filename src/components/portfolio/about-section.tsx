@@ -293,42 +293,112 @@ export const AboutSection = () => {
     const popupWidth = Math.min(280, screenWidth * 0.85); // Slightly smaller to ensure fit
     const popupHeight = 220; // approximate height
     
-    // Check if popup would go off screen on the right
-    const wouldGoOffRight = rect.left + popupWidth > screenWidth - 20; // 20px margin
-    // Check if popup would go off screen on the left
-    const wouldGoOffLeft = rect.right - popupWidth < 20; // 20px margin
-    // Check if popup would go off screen at the bottom
-    const wouldGoOffBottom = rect.bottom + popupHeight > screenHeight - 20; // 20px margin
+    // More comprehensive boundary checking
+    const margin = 20; // Minimum margin from screen edges
+    const wouldGoOffRight = rect.left + popupWidth > screenWidth - margin;
+    const wouldGoOffLeft = rect.right - popupWidth < margin;
+    const wouldGoOffBottom = rect.bottom + popupHeight > screenHeight - margin;
+    const wouldGoOffTop = rect.top - popupHeight < margin;
     
-    // Determine horizontal position with more aggressive boundary checking
+    // Check if popup would be cut off by following section
+    const sectionBottom = rect.bottom + popupHeight;
+    const viewportBottom = screenHeight - margin;
+    const wouldBeCutBySection = sectionBottom > viewportBottom;
+    
+    // Determine horizontal position with priority for screen boundaries
     let horizontalPosition: 'left' | 'right';
     
+    // If popup would go off right edge, position left
+    if (wouldGoOffRight) {
+      horizontalPosition = 'left';
+    }
+    // If popup would go off left edge, position right
+    else if (wouldGoOffLeft) {
+      horizontalPosition = 'right';
+    }
     // If tile is very close to right edge, always position left
-    if (rect.right > screenWidth * 0.8) {
+    else if (rect.right > screenWidth * 0.8) {
       horizontalPosition = 'left';
     }
     // If tile is very close to left edge, always position right
     else if (rect.left < screenWidth * 0.2) {
       horizontalPosition = 'right';
     }
-    // Check specific boundary conditions
-    else if (wouldGoOffRight) {
-      horizontalPosition = 'left';
-    } else if (wouldGoOffLeft) {
-      horizontalPosition = 'right';
-    } else {
-      // Use original logic if no boundary issues
+    // Default to center-based positioning
+    else {
       horizontalPosition = tileCenter < screenCenter ? 'right' : 'left';
+    }
+    
+    // Determine vertical position with priority for screen boundaries and section overlap
+    let verticalPosition: 'above' | 'below';
+    
+    // If popup would be cut off by following section, position above
+    if (wouldBeCutBySection) {
+      verticalPosition = 'above';
+    }
+    // If popup would go off bottom, position above
+    else if (wouldGoOffBottom) {
+      verticalPosition = 'above';
+    }
+    // If popup would go off top, position below
+    else if (wouldGoOffTop) {
+      verticalPosition = 'below';
+    }
+    // If tile is very close to bottom, always position above
+    else if (rect.bottom > screenHeight * 0.8) {
+      verticalPosition = 'above';
+    }
+    // If tile is very close to top, always position below
+    else if (rect.top < screenHeight * 0.2) {
+      verticalPosition = 'below';
+    }
+    // Default to below positioning
+    else {
+      verticalPosition = 'below';
     }
     
     return {
       horizontal: horizontalPosition,
-      vertical: wouldGoOffBottom ? 'above' : 'below'
+      vertical: verticalPosition
     };
   };
 
   const handleMetricClickWithPosition = (index: number, event: React.MouseEvent) => {
     const position = getPopupPosition(event);
+    
+    // Additional fallback check for extreme edge cases
+    const rect = event.currentTarget.getBoundingClientRect();
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    
+    // Check if there's enough space below the tile for the popup
+    const popupHeight = 220; // approximate height
+    const spaceBelow = screenHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    const hasEnoughSpaceBelow = spaceBelow >= popupHeight + 40; // 40px margin
+    const hasEnoughSpaceAbove = spaceAbove >= popupHeight + 40; // 40px margin
+    
+    // If tile is in an extreme position, force center positioning
+    if (rect.left < 50 || rect.right > screenWidth - 50) {
+      position.horizontal = rect.left < screenWidth / 2 ? 'right' : 'left';
+    }
+    
+    if (rect.top < 50 || rect.bottom > screenHeight - 50) {
+      position.vertical = rect.top < screenHeight / 2 ? 'below' : 'above';
+    }
+    
+    // Prioritize space availability over aesthetic positioning
+    if (position.vertical === 'below' && !hasEnoughSpaceBelow && hasEnoughSpaceAbove) {
+      position.vertical = 'above';
+    } else if (position.vertical === 'above' && !hasEnoughSpaceAbove && hasEnoughSpaceBelow) {
+      position.vertical = 'below';
+    }
+    
+    // If neither above nor below has enough space, choose the one with more space
+    if (!hasEnoughSpaceBelow && !hasEnoughSpaceAbove) {
+      position.vertical = spaceAbove > spaceBelow ? 'above' : 'below';
+    }
+    
     setPopupPosition(position.horizontal);
     setPopupVerticalPosition(position.vertical);
     setActivePopup(activePopup === index ? null : index);
@@ -835,138 +905,89 @@ export const AboutSection = () => {
               line-height: 1.5 !important;
               font-size: 0.9rem !important;
             }
-          }
-          
-          /* CSS fallback for popup content */
-          .popup-content {
-            word-break: break-word !important;
-            hyphens: auto !important;
-            white-space: pre-wrap !important;
-            max-width: 90vw !important;
-            font-size: 15px !important;
-            text-align: left !important;
-            line-height: 1.6 !important;
-            padding-inline: 1rem !important;
-            font-weight: 400 !important;
-          }
-          
-          /* Mobile-specific popup content improvements */
-          @media (max-width: 768px) {
-            .popup-content {
-              white-space: normal !important; /* allow wrapping but not per-character */
-              word-break: break-word !important; /* allow breaks on whole words */
-              max-width: 90vw !important;
-              width: 100% !important;
-              padding: 1rem !important;
-              line-height: 1.5 !important;
-              font-size: 1rem !important;
-              hyphens: auto !important;
-              overflow-wrap: break-word !important;
-            }
             
-            /* Mobile popup container styling */
-            .fixed.z-\[10000\].bg-black\/95 {
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
-              border-radius: 12px !important;
-              backdrop-filter: blur(20px) !important;
-            }
-            
-            /* Ensure popup content is readable */
-            .popup-content h3 {
-              font-size: 1.125rem !important;
-              font-weight: 600 !important;
-              line-height: 1.4 !important;
-              margin-bottom: 0.75rem !important;
-            }
-            
-            .popup-content div {
-              font-size: 0.9375rem !important;
-              line-height: 1.6 !important;
-              color: rgba(255, 255, 255, 0.9) !important;
-            }
-            
-            /* Mobile absolute positioned popup styling */
-            .stat-tile .relative .absolute {
-              animation: slideDown 0.3s ease-out !important;
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
-              backdrop-filter: blur(15px) !important;
-            }
-            
-            /* Ensure mobile popup is visible */
-            .absolute.top-full.left-0 {
-              z-index: 9999 !important;
-              position: absolute !important;
-              visibility: visible !important;
-              opacity: 1 !important;
-            }
-            
-            /* Ensure mobile popup is visible for right positioning */
-            .absolute.top-full.right-0 {
-              z-index: 9999 !important;
-              position: absolute !important;
-              visibility: visible !important;
-              opacity: 1 !important;
-              right: 0 !important;
-              left: auto !important;
-            }
-            
-            /* Ensure mobile popup is visible for above positioning */
-            .absolute.bottom-full.left-0,
-            .absolute.bottom-full.right-0 {
-              z-index: 9999 !important;
-              position: absolute !important;
-              visibility: visible !important;
-              opacity: 1 !important;
-            }
-            
-            /* Force right positioning for right-side popups */
-            .absolute.top-full.right-0 > div,
-            .absolute.bottom-full.right-0 > div {
-              right: 0 !important;
-              left: auto !important;
-              transform: translateX(0) !important;
-              max-width: calc(100vw - 40px) !important;
-              overflow: hidden !important;
-            }
-            
-            /* Force left positioning for left-side popups */
-            .absolute.top-full.left-0 > div,
-            .absolute.bottom-full.left-0 > div {
-              left: 0 !important;
-              right: auto !important;
-              transform: translateX(0) !important;
-              max-width: calc(100vw - 40px) !important;
-              overflow: hidden !important;
-            }
-            
-            /* Ensure popup container doesn't overflow viewport */
+            /* Ensure popups stay within viewport bounds */
             .absolute.top-full.left-0,
             .absolute.top-full.right-0,
             .absolute.bottom-full.left-0,
             .absolute.bottom-full.right-0 {
-              max-width: calc(100vw - 20px) !important;
-              overflow: visible !important;
+              max-width: calc(100vw - 40px) !important;
+              max-height: calc(100vh - 40px) !important;
+              overflow: hidden !important;
+              z-index: 9999 !important;
+              position: absolute !important;
             }
             
-            /* Mobile popup container */
+            /* Constrain popup content width */
             .absolute.top-full.left-0 > div,
             .absolute.top-full.right-0 > div,
             .absolute.bottom-full.left-0 > div,
             .absolute.bottom-full.right-0 > div {
-              background: rgba(0, 0, 0, 0.9) !important;
-              border: 1px solid rgba(34, 211, 238, 0.3) !important;
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+              max-width: calc(100vw - 40px) !important;
+              width: auto !important;
+              min-width: 250px !important;
+              max-height: calc(100vh - 40px) !important;
+              overflow-y: auto !important;
+              z-index: 10000 !important;
+              position: relative !important;
             }
             
-            @keyframes slideDown {
-              from {
-                opacity: 0;
-                transform: translateY(-10px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
+            /* Ensure left positioning doesn't overflow */
+            .absolute.top-full.left-0 > div,
+            .absolute.bottom-full.left-0 > div {
+              left: 0 !important;
+              right: auto !important;
+              transform: none !important;
+            }
+            
+            /* Ensure right positioning doesn't overflow */
+            .absolute.top-full.right-0 > div,
+            .absolute.bottom-full.right-0 > div {
+              right: 0 !important;
+              left: auto !important;
+              transform: none !important;
+            }
+            
+            /* Fallback positioning for edge cases */
+            .absolute.top-full.left-0 {
+              left: 10px !important;
+              right: auto !important;
+            }
+            
+            .absolute.top-full.right-0 {
+              right: 10px !important;
+              left: auto !important;
+            }
+            
+            .absolute.bottom-full.left-0 {
+              left: 10px !important;
+              right: auto !important;
+            }
+            
+            .absolute.bottom-full.right-0 {
+              right: 10px !important;
+              left: auto !important;
+            }
+            
+            /* Ensure popups appear above all other content */
+            .stat-tile .relative {
+              z-index: 1 !important;
+            }
+            
+            .stat-tile .relative .absolute {
+              z-index: 9999 !important;
+            }
+            
+            /* Add extra margin for bottom popups to avoid section overlap */
+            .absolute.top-full.left-0,
+            .absolute.top-full.right-0 {
+              margin-bottom: 20px !important;
+            }
+            
+            /* Add extra margin for top popups to avoid section overlap */
+            .absolute.bottom-full.left-0,
+            .absolute.bottom-full.right-0 {
+              margin-top: 20px !important;
             }
           }
           

@@ -218,6 +218,57 @@ const mobileTitleVariants = {
   },
 };
 
+// Mobile-specific scroll-triggered animations
+const mobileScrollVariants = {
+  hidden: {
+    opacity: 0,
+    x: -100,
+    y: 50,
+    scale: 0.9,
+    rotateY: -15,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotateY: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.46, 0.45, 0.94],
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
+
+// Staggered scroll animations for mobile tiles
+const getMobileScrollVariants = (index: number) => ({
+  hidden: {
+    opacity: 0,
+    x: index % 2 === 0 ? -100 : 100, // Alternate left/right slide
+    y: 50,
+    scale: 0.9,
+    rotateY: index % 2 === 0 ? -15 : 15,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotateY: 0,
+    transition: {
+      duration: 0.8,
+      delay: index * 0.15, // Staggered delay for scroll effect
+      ease: [0.25, 0.46, 0.45, 0.94],
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+});
+
 export const WhyMeSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -306,7 +357,10 @@ export const WhyMeSection = () => {
             {differentiators.map((item, index) => (
               <motion.div
                 key={index}
-                variants={getMobileItemVariants(index)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={getMobileScrollVariants(index)}
                 whileHover={{
                   scale: 1.05,
                   transition: { duration: 0.3, ease: "easeOut" },
@@ -634,37 +688,118 @@ export const WhyMeSection = () => {
 
       <style jsx>{`
         /* Mobile-specific improvements */
-        @media (max-width: 1023px) {
-          .touch-target {
-            touch-action: manipulation;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-          }
-          
-          /* Better visual feedback for touch interactions */
-          .touch-target:active {
-            transform: scale(0.98);
-          }
-          
-          /* Improve focus states for accessibility */
-          .touch-target:focus {
-            outline: 2px solid #22d3ee;
-            outline-offset: 2px;
-          }
-        }
-        
-        /* Mobile-specific spacing and sizing */
         @media (max-width: 768px) {
           .responsive-card {
-            padding: 1.25rem;
+            padding: 1rem;
           }
           
-          .responsive-gap-lg {
-            gap: 1rem;
+          .responsive-gap-sm {
+            gap: 0.75rem;
+          }
+          
+          /* Center metric tiles on mobile */
+          .grid {
+            justify-content: center;
+            margin: 0 auto;
+          }
+          
+          /* Ensure popup is always on top */
+          .hover-popup {
+            z-index: 9999 !important;
+            position: relative;
+          }
+          
+          /* Click-based popup styling */
+          .stat-tile {
+            cursor: pointer !important;
+            -webkit-tap-highlight-color: rgba(34, 211, 238, 0.2) !important;
+            transition: all 0.2s ease-in-out !important;
+          }
+          
+          .stat-tile:active {
+            transform: scale(0.95) !important;
+          }
+          
+          /* Enhanced scroll animation performance */
+          .motion-div {
+            will-change: transform, opacity !important;
+            backface-visibility: hidden !important;
+            transform-style: preserve-3d !important;
+          }
+          
+          /* Smooth scroll animations */
+          .group {
+            transform: translateZ(0) !important;
+            -webkit-transform: translateZ(0) !important;
+          }
+          
+          /* Optimize animation performance */
+          .responsive-grid-2 {
+            contain: layout style paint !important;
+          }
+          
+          /* Enhanced scroll trigger animations */
+          .scroll-animate-tile {
+            opacity: 0;
+            transform: translateX(-100px) translateY(50px) scale(0.9) rotateY(-15deg);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          }
+          
+          .scroll-animate-tile.visible {
+            opacity: 1;
+            transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+          }
+          
+          /* Staggered animation delays */
+          .scroll-animate-tile:nth-child(1) { transition-delay: 0s; }
+          .scroll-animate-tile:nth-child(2) { transition-delay: 0.15s; }
+          .scroll-animate-tile:nth-child(3) { transition-delay: 0.3s; }
+          .scroll-animate-tile:nth-child(4) { transition-delay: 0.45s; }
+          .scroll-animate-tile:nth-child(5) { transition-delay: 0.6s; }
+          .scroll-animate-tile:nth-child(6) { transition-delay: 0.75s; }
+          
+          /* Spring animation effect */
+          .scroll-animate-tile.visible {
+            animation: springBounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          }
+          
+          @keyframes springBounce {
+            0% {
+              opacity: 0;
+              transform: translateX(-100px) translateY(50px) scale(0.9) rotateY(-15deg);
+            }
+            50% {
+              opacity: 0.8;
+              transform: translateX(10px) translateY(-5px) scale(1.02) rotateY(2deg);
+            }
+            100% {
+              opacity: 1;
+              transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+            }
+          }
+          
+          /* Right slide animation for even tiles */
+          .scroll-animate-tile:nth-child(even) {
+            transform: translateX(100px) translateY(50px) scale(0.9) rotateY(15deg);
+          }
+          
+          .scroll-animate-tile:nth-child(even).visible {
+            animation: springBounceRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          }
+          
+          @keyframes springBounceRight {
+            0% {
+              opacity: 0;
+              transform: translateX(100px) translateY(50px) scale(0.9) rotateY(15deg);
+            }
+            50% {
+              opacity: 0.8;
+              transform: translateX(-10px) translateY(-5px) scale(1.02) rotateY(-2deg);
+            }
+            100% {
+              opacity: 1;
+              transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+            }
           }
         }
       `}</style>
