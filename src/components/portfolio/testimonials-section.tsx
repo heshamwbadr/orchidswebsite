@@ -458,16 +458,22 @@ export const Testimonials = () => {
           
           /* Mobile-specific card optimizations */
           .mobile-compact-card {
-            min-height: 280px;
-            max-height: 320px;
+            min-height: 340px;
+            max-height: none;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
           }
           
           .mobile-compact-text {
             line-height: 1.4;
-            -webkit-line-clamp: 4;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            display: block;
+            overflow: visible;
+            -webkit-line-clamp: unset;
+            -webkit-box-orient: unset;
+            max-height: none;
+            white-space: normal;
           }
           
           .mobile-compact-avatar {

@@ -756,10 +756,10 @@ export const AboutSection = () => {
                         <>
                           {/* Mobile Backdrop */}
                           <div
-                            className="fixed inset-0 z-40 lg:hidden"
+                            className="fixed inset-0 z-[99999] lg:hidden"
                             onClick={() => setActivePopup(null)}
                           />
-                          <div className={`absolute z-50 lg:hidden ${
+                          <div className={`absolute z-[99999] lg:hidden ${
                             popupVerticalPosition === 'below' ? 'top-full mt-2' : 'bottom-full mb-2'
                           } ${
                             popupPosition === 'right' ? 'left-0' : 'right-0'
@@ -771,7 +771,9 @@ export const AboutSection = () => {
                               style={{
                                 maxWidth: '280px',
                                 minWidth: '250px',
-                                width: 'auto'
+                                width: 'auto',
+                                zIndex: 99999,
+                                position: 'relative'
                               }}
                             >
                               <button
@@ -799,7 +801,7 @@ export const AboutSection = () => {
                       {isPopupActive && (
                         <div
                           id={popupId}
-                          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden lg:flex"
+                          className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden lg:flex"
                           onClick={(e) => {
                             e.stopPropagation();
                             setActivePopup(null);
@@ -808,6 +810,7 @@ export const AboutSection = () => {
                           <div
                             className="max-w-[90vw] max-h-[80vh] overflow-y-auto whitespace-pre-wrap break-words hyphens-auto p-5 text-[15px] leading-relaxed rounded-xl shadow-lg bg-black/95 text-white border border-cyan-300/30 backdrop-blur-lg text-left font-normal"
                             onClick={(e) => e.stopPropagation()}
+                            style={{ zIndex: 99999 }}
                           >
                             <div className="popup-content">
                               {metric.description.split('. ').map((sentence, index, array) => (
@@ -884,7 +887,7 @@ export const AboutSection = () => {
           
           /* Ensure popup is always on top */
           .hover-popup {
-            z-index: 9999 !important;
+            z-index: 99999 !important;
             position: relative;
           }
           
@@ -931,7 +934,7 @@ export const AboutSection = () => {
               max-width: calc(100vw - 40px) !important;
               max-height: calc(100vh - 40px) !important;
               overflow: hidden !important;
-              z-index: 9999 !important;
+              z-index: 99999 !important;
               position: absolute !important;
             }
             
@@ -945,7 +948,7 @@ export const AboutSection = () => {
               min-width: 250px !important;
               max-height: calc(100vh - 40px) !important;
               overflow-y: auto !important;
-              z-index: 10000 !important;
+              z-index: 99999 !important;
               position: relative !important;
             }
             
@@ -992,7 +995,7 @@ export const AboutSection = () => {
             }
             
             .stat-tile .relative .absolute {
-              z-index: 9999 !important;
+              z-index: 99999 !important;
             }
             
             /* Add extra margin for bottom popups to avoid section overlap */
@@ -1038,6 +1041,18 @@ export const AboutSection = () => {
             .absolute.bottom-full.left-0,
             .absolute.bottom-full.right-0 {
               transition: all 0.2s ease-out !important;
+            }
+            
+            /* Force popups to be above all content */
+            .absolute.z-\[99999\] {
+              z-index: 99999 !important;
+              position: absolute !important;
+            }
+            
+            /* Ensure backdrop is also on top */
+            .fixed.z-\[99999\] {
+              z-index: 99999 !important;
+              position: fixed !important;
             }
           }
           
@@ -1167,7 +1182,62 @@ export const AboutSection = () => {
         
         /* Ensure popup visibility across all screen sizes */
         .hover-popup {
-          z-index: 9999 !important;
+          z-index: 99999 !important;
+        }
+        
+        /* Global z-index override for all popup elements */
+        [class*="z-[99999]"] {
+          z-index: 99999 !important;
+        }
+        
+        /* Force all popup containers to be on top */
+        .stat-tile .relative .absolute,
+        .stat-tile .relative .fixed {
+          z-index: 99999 !important;
+          position: absolute !important;
+        }
+        
+        /* Ensure popup content is always visible */
+        .stat-tile .relative .absolute > div,
+        .stat-tile .relative .fixed > div {
+          z-index: 99999 !important;
+          position: relative !important;
+        }
+        
+        /* Override any section z-index that might interfere */
+        section {
+          z-index: auto !important;
+        }
+        
+        /* Ensure popups are above all other content */
+        .absolute.z-\[99999\],
+        .fixed.z-\[99999\] {
+          z-index: 99999 !important;
+          position: absolute !important;
+        }
+        
+        /* Mobile-specific z-index enforcement */
+        @media (max-width: 768px) {
+          .stat-tile .relative .absolute {
+            z-index: 99999 !important;
+            position: absolute !important;
+          }
+          
+          .stat-tile .relative .fixed {
+            z-index: 99999 !important;
+            position: fixed !important;
+          }
+          
+          /* Force all popup elements to be on top */
+          .absolute.top-full,
+          .absolute.bottom-full {
+            z-index: 99999 !important;
+          }
+          
+          /* Ensure backdrop is on top */
+          .fixed.inset-0 {
+            z-index: 99999 !important;
+          }
         }
       `}</style>
     </section>
