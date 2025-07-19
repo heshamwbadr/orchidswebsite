@@ -116,13 +116,6 @@ export const Testimonials = () => {
   }, [isMounted]);
 
   useEffect(() => {
-    if (!isMounted) return; // Don't run during SSR
-    
-    const container = scrollRef.current;
-    if (container) container.scrollLeft = cardWidth + gap;
-  }, [isMounted]);
-
-  useEffect(() => {
     if (!isMounted) return; // Don't run animation during SSR
     
     const container = scrollRef.current;
@@ -150,63 +143,26 @@ export const Testimonials = () => {
     };
   }, [isPaused, isDragging, isMobile, isMounted]);
 
-  // Mobile-specific animation useEffect
-  useEffect(() => {
-    if (!isMobile || !scrollRef.current) return;
-
-    const animate = () => {
-      const container = scrollRef.current;
-      if (!container) return;
-      const maxScroll = container.scrollWidth / 3;
-      let nextScroll = container.scrollLeft + 0.5;
-
-      if (nextScroll >= maxScroll * 2) {
-        container.scrollLeft = maxScroll;
-      } else {
-        container.scrollLeft = nextScroll;
-      }
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-  }, [isMobile, isMounted]);
-
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
   const handleTouchStart = () => {
-    // Don't pause auto-scrolling on mobile touch start
-    // This allows the carousel to continue auto-scrolling on mobile
+    dragStartOffset.current = 0; // Reset drag offset
+    setIsPaused(false); // Resume auto-scroll on tap
   };
   const handleTouchEnd = () => {
     if (isDragging) {
       setIsDragging(false);
       setIsPaused(false);
     }
+  };
 
-    // ✅ Restart animation after touch ends
-    if (animationRef.current) cancelAnimationFrame(animationRef.current);
-
-    animationRef.current = requestAnimationFrame(() => {
-      const container = scrollRef.current;
-      if (!container) return;
-      const animate = () => {
-        const maxScroll = container.scrollWidth / 3;
-        let nextScroll = container.scrollLeft + 0.5;
-
-        if (nextScroll >= maxScroll * 2) {
-          container.scrollLeft = maxScroll;
-        } else {
-          container.scrollLeft = nextScroll;
-        }
-
-        animationRef.current = requestAnimationFrame(animate);
-      };
-      animate();
-    });
+  // Graceful scroll resumption after touch interactions
+  const resumeScrollLater = () => {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => setIsPaused(false), { timeout: 2000 });
+    } else {
+      setTimeout(() => setIsPaused(false), 2000);
+    }
   };
 
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
