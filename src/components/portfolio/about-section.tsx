@@ -226,6 +226,31 @@ export const AboutSection = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, [isMounted]);
 
+  // Auto-close popup on scroll for mobile devices
+  useEffect(() => {
+    if (!isMounted || !isMobile || activePopup === null) return;
+
+    let lastScrollY = window.scrollY;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+      
+      // Close popup if user scrolls down (positive delta)
+      if (scrollDelta > 10) { // 10px threshold to avoid accidental closes
+        setActivePopup(null);
+      }
+      
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isMounted, isMobile, activePopup]);
+
   const handleCardClick = (index: number, isExpanded: boolean, event: React.MouseEvent) => {
     // Prevent scrolling on mobile when expanding/collapsing cards
     if (isMobile) { // lg breakpoint
@@ -751,7 +776,7 @@ export const AboutSection = () => {
                         </div>
                       </div>
                       
-                      {/* Mobile Popup - Absolute positioned below tile */}
+                      {/* Mobile Popup - Fixed positioned to stay within viewport */}
                       {isPopupActive && (
                         <>
                           {/* Mobile Backdrop */}
@@ -760,20 +785,23 @@ export const AboutSection = () => {
                             onClick={() => setActivePopup(null)}
                           />
                           <div
-                            className={`absolute z-[99999] lg:hidden left-1/2 transform -translate-x-1/2 ${
-                              popupVerticalPosition === 'below' ? 'top-full mt-2' : 'bottom-full mb-2'
-                            }`}
-                            style={{ maxWidth: '90vw', minWidth: '250px' }}
+                            className="fixed z-[99999] lg:hidden left-4 right-4 top-1/2 transform -translate-y-1/2"
+                            style={{ 
+                              maxWidth: 'calc(100vw - 32px)',
+                              minWidth: '250px',
+                              maxHeight: 'calc(100vh - 32px)'
+                            }}
                           >
                             <div
-                              className={`p-4 rounded-xl bg-black/80 text-white text-sm leading-relaxed whitespace-normal break-words shadow-xl border border-cyan-300/30 backdrop-blur-lg`}
+                              className="p-4 rounded-xl bg-black/80 text-white text-sm leading-relaxed whitespace-normal break-words shadow-xl border border-cyan-300/30 backdrop-blur-lg overflow-y-auto"
                               style={{
-                                width: '90vw',
-                                maxWidth: '90vw',
+                                width: '100%',
+                                maxWidth: '100%',
                                 minWidth: '250px',
                                 zIndex: 99999,
                                 position: 'relative',
                                 wordWrap: 'break-word',
+                                maxHeight: 'calc(100vh - 64px)'
                               }}
                             >
                               <button
@@ -927,72 +955,51 @@ export const AboutSection = () => {
             }
             
             /* Ensure popups stay within viewport bounds */
-            .absolute.left-1\/2.transform.-translate-x-1\/2 {
-              max-width: calc(100vw - 40px) !important;
-              max-height: calc(100vh - 40px) !important;
+            .fixed.left-4.right-4.top-1\/2.transform.-translate-y-1\/2 {
+              max-width: calc(100vw - 32px) !important;
+              max-height: calc(100vh - 32px) !important;
               overflow: hidden !important;
               z-index: 99999 !important;
-              position: absolute !important;
+              position: fixed !important;
+              left: 16px !important;
+              right: 16px !important;
+              top: 50% !important;
+              transform: translateY(-50%) !important;
             }
             
             /* Constrain popup content width */
-            .absolute.left-1\/2.transform.-translate-x-1\/2 > div {
-              max-width: calc(100vw - 40px) !important;
-              width: 90vw !important;
+            .fixed.left-4.right-4.top-1\/2.transform.-translate-y-1\/2 > div {
+              max-width: 100% !important;
+              width: 100% !important;
               min-width: 250px !important;
-              max-height: calc(100vh - 40px) !important;
+              max-height: calc(100vh - 64px) !important;
               overflow-y: auto !important;
               z-index: 99999 !important;
               position: relative !important;
               word-wrap: break-word !important;
             }
             
-            /* Ensure centered positioning doesn't overflow */
-            .absolute.left-1\/2.transform.-translate-x-1\/2 {
-              left: 50% !important;
-              transform: translateX(-50%) !important;
-              right: auto !important;
-            }
-            
-            /* Add extra margin for bottom popups to avoid section overlap */
-            .absolute.left-1\/2.transform.-translate-x-1\/2 {
-              margin-bottom: 20px !important;
-            }
-            
-            /* Enhanced spacing for above-positioned popups */
-            .absolute.left-1\/2.transform.-translate-x-1\/2 {
-              margin-bottom: 15px !important;
-              margin-top: 10px !important;
-            }
-            
-            /* Ensure above popups have enough space from tile */
-            .absolute.left-1\/2.transform.-translate-x-1\/2 > div {
-              margin-bottom: 8px !important;
-            }
-            
-            /* Better positioning for above popups when close to next section */
-            .stat-tile:last-child .absolute.left-1\/2.transform.-translate-x-1\/2 {
-              margin-bottom: 25px !important;
-            }
-            
-            /* Ensure popups don't get cut off by viewport edges */
-            .absolute.left-1\/2.transform.-translate-x-1\/2 {
-              max-height: calc(100vh - 60px) !important;
+            /* Ensure fixed positioning doesn't overflow */
+            .fixed.left-4.right-4.top-1\/2.transform.-translate-y-1\/2 {
+              left: 16px !important;
+              right: 16px !important;
+              top: 50% !important;
+              transform: translateY(-50%) !important;
             }
             
             /* Add smooth transition for popup positioning changes */
-            .absolute.left-1\/2.transform.-translate-x-1\/2 {
+            .fixed.left-4.right-4.top-1\/2.transform.-translate-y-1\/2 {
               transition: all 0.2s ease-out !important;
             }
             
             /* Force popups to be above all content */
-            .absolute.z-\[99999\] {
+            .fixed.z-\[99999\] {
               z-index: 99999 !important;
-              position: absolute !important;
+              position: fixed !important;
             }
             
             /* Ensure backdrop is also on top */
-            .fixed.z-\[99999\] {
+            .fixed.inset-0 {
               z-index: 99999 !important;
               position: fixed !important;
             }
@@ -1160,25 +1167,30 @@ export const AboutSection = () => {
         
         /* Mobile-specific z-index enforcement */
         @media (max-width: 768px) {
-          .stat-tile .relative .absolute {
-            z-index: 99999 !important;
-            position: absolute !important;
-          }
-          
           .stat-tile .relative .fixed {
             z-index: 99999 !important;
             position: fixed !important;
           }
           
           /* Force all popup elements to be on top */
-          .absolute.top-full,
-          .absolute.bottom-full {
+          .fixed.left-4,
+          .fixed.right-4 {
             z-index: 99999 !important;
           }
           
           /* Ensure backdrop is on top */
           .fixed.inset-0 {
             z-index: 99999 !important;
+          }
+          
+          /* Ensure popup container stays within bounds */
+          .fixed.left-4.right-4.top-1\/2.transform.-translate-y-1\/2 {
+            z-index: 99999 !important;
+            position: fixed !important;
+            left: 16px !important;
+            right: 16px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
           }
         }
       `}</style>

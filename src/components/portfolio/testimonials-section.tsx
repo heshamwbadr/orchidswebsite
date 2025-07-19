@@ -130,15 +130,22 @@ export const Testimonials = () => {
       // Remove listener after first interaction
       window.removeEventListener("touchstart", handleFirstInteraction);
       window.removeEventListener("click", handleFirstInteraction);
+      document.removeEventListener("touchstart", handleFirstInteraction);
+      document.removeEventListener("click", handleFirstInteraction);
     };
 
     // Start auto-scroll only after first interaction
-    window.addEventListener("touchstart", handleFirstInteraction, { once: true });
+    // Add listeners to both window and document for better Safari compatibility
+    window.addEventListener("touchstart", handleFirstInteraction, { once: true, passive: true });
     window.addEventListener("click", handleFirstInteraction, { once: true });
+    document.addEventListener("touchstart", handleFirstInteraction, { once: true, passive: true });
+    document.addEventListener("click", handleFirstInteraction, { once: true });
 
     return () => {
       window.removeEventListener("touchstart", handleFirstInteraction);
       window.removeEventListener("click", handleFirstInteraction);
+      document.removeEventListener("touchstart", handleFirstInteraction);
+      document.removeEventListener("click", handleFirstInteraction);
     };
   }, [isMobile, isMounted]);
 
@@ -163,6 +170,13 @@ export const Testimonials = () => {
 
     const animate = () => {
       if (!container) return;
+      
+      // Safari-specific check for container validity
+      if (!container.scrollWidth || container.scrollWidth === 0) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      
       const maxScroll = container.scrollWidth / 3;
       let nextScroll = container.scrollLeft + 0.5;
 
@@ -175,7 +189,14 @@ export const Testimonials = () => {
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animationRef.current = requestAnimationFrame(animate);
+    // Small delay for Safari to ensure container is ready
+    const startAnimation = () => {
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    // Use setTimeout for Safari compatibility
+    setTimeout(startAnimation, 100);
+
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
@@ -339,7 +360,9 @@ export const Testimonials = () => {
           className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x cursor-grab"
           style={{ 
             WebkitOverflowScrolling: 'touch',
-            touchAction: isMounted ? 'pan-x pan-y' : 'auto' // Only set on client-side
+            touchAction: isMounted ? 'pan-x pan-y' : 'auto', // Only set on client-side
+            WebkitUserSelect: 'none',
+            userSelect: 'none'
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -351,9 +374,6 @@ export const Testimonials = () => {
             handleTouchEnd();
             // Don't prevent default to allow screen scrolling
           }}
-          onMouseDown={handleDragStart}
-          onMouseUp={handleDragEnd}
-          onMouseMove={handleDragMove}
           onTouchMove={(e) => {
             // Clear long press timer on any movement
             if (longPressTimer.current) {
@@ -379,6 +399,9 @@ export const Testimonials = () => {
               e.preventDefault(); // prevent vertical scroll
             }
           }}
+          onMouseDown={handleDragStart}
+          onMouseUp={handleDragEnd}
+          onMouseMove={handleDragMove}
         >
           {seamlessTestimonials.map((t, idx) => (
             <div
@@ -447,13 +470,29 @@ export const Testimonials = () => {
             touch-action: pan-x pan-y;
             -webkit-overflow-scrolling: touch;
             scroll-behavior: smooth;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
           }
           
-          /* Ensure auto-scroll works smoothly on mobile */
+          /* Safari-specific optimizations */
           .flex.gap-4.overflow-x-auto {
             scroll-behavior: auto !important;
             -webkit-overflow-scrolling: touch;
             touch-action: pan-x pan-y;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+          }
+          
+          /* Ensure auto-scroll works smoothly on mobile */
+          .flex.gap-4.overflow-x-auto.scrollbar-hide {
+            scroll-behavior: auto !important;
+            -webkit-overflow-scrolling: touch;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
           }
           
           /* Mobile-specific card optimizations */
@@ -464,6 +503,8 @@ export const Testimonials = () => {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
           }
           
           .mobile-compact-text {
@@ -480,11 +521,19 @@ export const Testimonials = () => {
             min-width: 40px;
             min-height: 40px;
           }
-          
-          /* Ensure smooth scrolling during auto-scroll */
-          .flex.gap-4.overflow-x-auto.scrollbar-hide {
+        }
+        
+        /* Safari-specific fixes */
+        @supports (-webkit-touch-callout: none) {
+          .flex.gap-4.overflow-x-auto {
+            -webkit-overflow-scrolling: touch !important;
             scroll-behavior: auto !important;
-            -webkit-overflow-scrolling: touch;
+          }
+          
+          .touch-pan-x {
+            -webkit-overflow-scrolling: touch !important;
+            -webkit-transform: translateZ(0) !important;
+            transform: translateZ(0) !important;
           }
         }
         
