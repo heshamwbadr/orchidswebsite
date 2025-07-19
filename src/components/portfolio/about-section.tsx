@@ -227,7 +227,7 @@ export const AboutSection = () => {
     if (isMobile) { // lg breakpoint
       event.preventDefault();
       event.stopPropagation();
-      // Prevent any potential scroll behavior
+      // Prevent any potential scroll behavior only on expand/collapse
       const currentScrollY = window.scrollY;
       setTimeout(() => {
         window.scrollTo(0, currentScrollY);
@@ -408,8 +408,8 @@ export const AboutSection = () => {
                           backgroundColor: "rgba(71, 85, 105, 0.1)",
                         }}
                         whileTap={{ scale: 0.99 }}
-                        className="relative z-10 responsive-card cursor-pointer touch-target"
-                        style={{ touchAction: isMobile ? 'none' : 'auto' }}
+                        className={`relative z-10 responsive-card cursor-pointer touch-target ${isExpanded ? 'expanded' : ''}`}
+                        style={{ touchAction: isMobile && !isExpanded ? 'none' : 'pan-x pan-y' }}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center responsive-gap-base min-w-0 flex-1">
@@ -445,6 +445,12 @@ export const AboutSection = () => {
                               <p className="responsive-text-sm text-muted-foreground leading-relaxed font-light line-clamp-2">
                                 {pillar.subtitle}
                               </p>
+                              {/* Mobile hint text */}
+                              {isMobile && !isExpanded && (
+                                <p className="text-xs text-muted-foreground/60 mt-1 sm:hidden">
+                                  Tap to explore services
+                                </p>
+                              )}
                             </div>
                           </div>
 
@@ -452,7 +458,7 @@ export const AboutSection = () => {
                             animate={{ rotate: isExpanded ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
                             className={`
-                              p-1.5 sm:p-2 rounded-lg transition-colors duration-300 flex-shrink-0 ml-2
+                              p-2 sm:p-2.5 rounded-lg transition-colors duration-300 flex-shrink-0 ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center
                               ${isExpanded ? "bg-primary/20" : "group-hover:bg-muted/50"}
                             `}
                           >
@@ -501,16 +507,16 @@ export const AboutSection = () => {
                                         }}
                                         className="group"
                                       >
-                                        <div className="flex items-start gap-3 bg-card/40 backdrop-blur-sm border border-border/40 rounded-lg lg:rounded-xl transition-all duration-300 cursor-default touch-target hover:bg-blue-700/20 p-3 sm:p-4 shadow-sm">
-                                          <span className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full bg-blue-600/20 text-blue-300 shadow-lg animate-service-glow group-hover:scale-110 transition-transform duration-300">
+                                        <div className="flex items-start gap-3 bg-card/40 backdrop-blur-sm border border-border/40 rounded-lg lg:rounded-xl transition-all duration-300 cursor-default touch-target hover:bg-blue-700/20 p-3 sm:p-4 shadow-sm min-h-[80px] sm:min-h-[90px]">
+                                          <span className="flex-shrink-0 w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded-full bg-blue-600/20 text-blue-300 shadow-lg animate-service-glow group-hover:scale-110 transition-transform duration-300">
                                             {ServiceIcon}
                                           </span>
                                           <div className="min-w-0 flex-1">
-                                            <div className="font-semibold text-foreground text-base leading-tight mb-0.5">
+                                            <div className="font-semibold text-foreground text-sm sm:text-base leading-tight mb-1 sm:mb-0.5">
                                               {serviceTitle}
                                             </div>
                                             {serviceDesc && (
-                                              <div className="text-sm text-muted-foreground leading-snug">
+                                              <div className="text-xs sm:text-sm text-muted-foreground leading-snug">
                                                 {serviceDesc}
                                               </div>
                                             )}
@@ -550,7 +556,7 @@ export const AboutSection = () => {
                       key={metric.label}
                       tabIndex={0}
                       aria-describedby={popupId}
-                      className="relative bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-3 sm:p-4 w-full max-w-[120px] md:max-w-[150px] h-[80px] sm:h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile"
+                      className="relative bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-3 sm:p-4 w-full max-w-[120px] md:max-w-[150px] h-[80px] sm:h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile min-h-[80px]"
                     >
                       <div className="text-xl sm:text-2xl md:text-3xl font-light leading-none text-cyan-400 mb-1 sm:mb-2 text-center stat-number">
                         {metric.value}{metric.unit}
@@ -560,7 +566,7 @@ export const AboutSection = () => {
                       </div>
                       <div
                         id={popupId}
-                        className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-[-20px] z-20 opacity-0 group-hover:opacity-100 group-hover:visible group-hover:-translate-y-2 transition-all duration-300 bg-[rgba(10,10,10,0.95)] border border-cyan-300/30 rounded-xl px-5 py-4 text-[0.85rem] leading-snug text-white/90 max-w-[280px] w-max shadow-2xl text-center backdrop-blur-lg break-words hover-popup max-[480px]:hidden"
+                        className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-[-20px] z-20 opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-hover:visible group-focus:visible group-hover:-translate-y-2 group-focus:-translate-y-2 transition-all duration-300 bg-[rgba(10,10,10,0.95)] border border-cyan-300/30 rounded-xl px-5 py-4 text-[0.85rem] leading-snug text-white/90 max-w-[280px] w-max shadow-2xl text-center backdrop-blur-lg break-words hover-popup"
                         style={{ overflowWrap: 'break-word' }}
                         aria-hidden="true"
                       >
@@ -584,9 +590,9 @@ export const AboutSection = () => {
           animation: service-glow 2.2s ease-in-out infinite;
         }
         
-        /* Prevent scrolling on mobile dropdown cards */
+        /* Prevent scrolling on mobile dropdown cards - only when collapsed */
         @media (max-width: 1023px) {
-          .touch-target {
+          .touch-target:not(.expanded) {
             touch-action: none;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -594,6 +600,39 @@ export const AboutSection = () => {
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+          }
+          
+          /* Allow scrolling when expanded */
+          .touch-target.expanded {
+            touch-action: pan-x pan-y;
+          }
+          
+          /* Better touch targets for mobile */
+          .stat-tile {
+            min-height: 80px;
+            touch-action: manipulation;
+          }
+          
+          /* Improve focus states for accessibility */
+          .stat-tile:focus {
+            outline: 2px solid #22d3ee;
+            outline-offset: 2px;
+          }
+          
+          /* Better visual feedback for touch interactions */
+          .touch-target:active {
+            transform: scale(0.98);
+          }
+        }
+        
+        /* Mobile-specific improvements */
+        @media (max-width: 768px) {
+          .responsive-card {
+            padding: 1rem;
+          }
+          
+          .responsive-gap-sm {
+            gap: 0.75rem;
           }
         }
       `}</style>

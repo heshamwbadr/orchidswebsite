@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -167,6 +167,25 @@ const caseStudies = [
 
 export function CaseStudiesSection() {
   const [selectedStudy, setSelectedStudy] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Ensure component is mounted before accessing window
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Detect mobile device only after mounting
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [isMounted]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -253,30 +272,37 @@ export function CaseStudiesSection() {
                   scale: 1.02,
                   transition: { duration: 0.3, ease: "easeOut" },
                 }}
-                className="group h-full"
+                whileTap={{ scale: 0.98 }}
+                className="group h-full touch-target"
+                style={{ touchAction: 'manipulation' }}
               >
                 <Dialog>
                   <DialogTrigger asChild>
-                    <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden cursor-pointer touch-target min-h-[350px] sm:min-h-[400px] flex flex-col">
+                    <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden cursor-pointer touch-target min-h-[380px] sm:min-h-[420px] flex flex-col">
                       {/* Hover Glow Effect */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
 
                       {/* Animated Border Gradient on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm rounded-xl lg:rounded-2xl" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500 blur-sm rounded-xl lg:rounded-2xl" />
 
                       <div className="relative z-10 h-full flex flex-col">
                         {/* Header with Icon */}
                         <div className="flex items-center gap-3 mb-3 lg:mb-4">
                           <motion.div
-                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 flex-shrink-0"
+                            className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 group-active:from-primary/30 group-active:to-accent/30 flex items-center justify-center text-primary group-hover:scale-110 group-active:scale-105 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500 flex-shrink-0"
                             whileHover={{
                               rotate: 5,
                               transition: { duration: 0.3, ease: 'easeOut' },
                             }}
+                            whileTap={{
+                              rotate: 2,
+                              scale: 1.05,
+                              transition: { duration: 0.2, ease: "easeOut" },
+                            }}
                           >
-                            <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                            <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
                           </motion.div>
-                          <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300 leading-tight m-0">
+                          <h3 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-active:text-transparent group-active:bg-gradient-to-r group-active:from-primary group-active:to-accent group-active:bg-clip-text transition-all duration-300 leading-tight m-0">
                             {study.title}
                           </h3>
                         </div>
@@ -291,7 +317,7 @@ export function CaseStudiesSection() {
                           {study.tags.map((tag) => (
                             <Badge
                               key={tag}
-                              className="responsive-text-sm bg-card/60 text-muted-foreground border-border/50 hover:bg-primary/20 hover:text-primary hover:border-primary/50 transition-all duration-300"
+                              className="responsive-text-sm bg-card/60 text-muted-foreground border-border/50 hover:bg-primary/20 hover:text-primary hover:border-primary/50 group-hover:bg-primary/20 group-hover:text-primary group-hover:border-primary/50 group-active:bg-primary/20 group-active:text-primary group-active:border-primary/50 transition-all duration-300"
                             >
                               {tag}
                             </Badge>
@@ -299,14 +325,14 @@ export function CaseStudiesSection() {
                         </div>
 
                         {/* Bullet Points */}
-                        <div className="space-y-1.5 sm:space-y-2 mb-4 lg:mb-6 flex-grow">
+                        <div className="space-y-2 sm:space-y-2.5 mb-4 lg:mb-6 flex-grow">
                           {study.bullets.map((bullet, bulletIndex) => (
                             <div
                               key={bulletIndex}
                               className="flex items-start responsive-text-sm"
                             >
-                              <div className="w-1.5 h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mr-2 sm:mr-3 mt-1.5 flex-shrink-0 group-hover:shadow-sm group-hover:shadow-primary/50 transition-all duration-300" />
-                              <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300 leading-relaxed">
+                              <div className="w-2 h-2 sm:w-1.5 sm:h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mr-2 sm:mr-3 mt-1.5 flex-shrink-0 group-hover:shadow-sm group-hover:shadow-primary/50 group-active:shadow-sm group-active:shadow-primary/50 transition-all duration-300" />
+                              <span className="text-muted-foreground group-hover:text-foreground group-active:text-foreground transition-colors duration-300 leading-relaxed">
                                 {bullet}
                               </span>
                             </div>
@@ -314,7 +340,7 @@ export function CaseStudiesSection() {
                         </div>
 
                         {/* CTA */}
-                        <div className="text-primary responsive-text-sm font-medium group-hover:text-accent transition-colors duration-300 flex items-center flex-shrink-0 mt-auto">
+                        <div className="text-primary responsive-text-sm font-medium group-hover:text-accent group-active:text-accent transition-colors duration-300 flex items-center flex-shrink-0 mt-auto min-h-[24px]">
                           <span>View full case study</span>
                           <motion.span
                             className="ml-2"
@@ -330,8 +356,8 @@ export function CaseStudiesSection() {
                         </div>
 
                         {/* Floating Particles */}
-                        <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse" />
-                        <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse delay-300" />
+                        <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse group-active:animate-pulse" />
+                        <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse group-active:animate-pulse delay-300" />
                       </div>
                     </div>
                   </DialogTrigger>
@@ -343,8 +369,8 @@ export function CaseStudiesSection() {
                     <div className="responsive-card space-y-6 lg:space-y-8">
                       {/* Dialog Header */}
                       <div className="flex items-center gap-3 mb-3 lg:mb-4">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 flex items-center justify-center text-primary flex-shrink-0">
-                          <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 flex items-center justify-center text-primary flex-shrink-0">
+                          <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
                         </div>
                         <h2 className="responsive-text-lg sm:responsive-text-xl font-semibold text-foreground mb-0">
                           {study.title}
@@ -396,11 +422,11 @@ export function CaseStudiesSection() {
                           </p>
 
                           {/* Metrics Grid */}
-                          <div className="responsive-grid-3 responsive-gap-base pl-5">
+                          <div className="responsive-grid-2 sm:responsive-grid-3 responsive-gap-base pl-5">
                             {study.metrics.map((metric, index) => (
                               <div
                                 key={index}
-                                className="text-center responsive-card bg-card/40 border border-border/50 rounded-xl backdrop-blur-sm"
+                                className="text-center responsive-card bg-card/40 border border-border/50 rounded-xl backdrop-blur-sm min-h-[80px] sm:min-h-[100px] flex flex-col justify-center"
                               >
                                 <div className="responsive-text-xl sm:responsive-text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text mb-1">
                                   {metric.value}
@@ -425,6 +451,56 @@ export function CaseStudiesSection() {
       {/* Decorative Elements */}
       <div className="absolute top-1/2 left-0 w-px h-32 bg-gradient-to-b from-transparent via-primary/50 to-transparent hidden lg:block" />
       <div className="absolute top-1/2 right-0 w-px h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent hidden lg:block" />
+
+      <style jsx>{`
+        /* Mobile-specific improvements */
+        @media (max-width: 1023px) {
+          .touch-target {
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+          
+          /* Better visual feedback for touch interactions */
+          .touch-target:active {
+            transform: scale(0.98);
+          }
+          
+          /* Improve focus states for accessibility */
+          .touch-target:focus {
+            outline: 2px solid #22d3ee;
+            outline-offset: 2px;
+          }
+        }
+        
+        /* Mobile-specific spacing and sizing */
+        @media (max-width: 768px) {
+          .responsive-card {
+            padding: 1.25rem;
+          }
+          
+          .responsive-gap-lg {
+            gap: 1rem;
+          }
+          
+          /* Improve dialog scrolling on mobile */
+          [data-radix-dialog-content] {
+            max-height: 90vh !important;
+            margin: 1rem !important;
+          }
+        }
+        
+        /* Improve dialog backdrop for mobile */
+        @media (max-width: 640px) {
+          [data-radix-dialog-overlay] {
+            background-color: rgba(0, 0, 0, 0.8);
+          }
+        }
+      `}</style>
     </section>
   );
 }

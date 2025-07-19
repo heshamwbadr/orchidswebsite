@@ -93,8 +93,11 @@ export const Testimonials = () => {
   const dragStartY = useRef<number | null>(null);
   const dragStartOffset = useRef(0);
   const lastUpdateTime = useRef(0);
-  const cardWidth = 320;
-  const gap = 16;
+  const touchStartTime = useRef(0);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const cardWidth = isMobile ? 300 : 320; // Smaller cards on mobile
+  const gap = isMobile ? 12 : 16; // Smaller gap on mobile
   const seamlessTestimonials = [...testimonials, ...testimonials, ...testimonials];
   const singleLoopWidth = (seamlessTestimonials.length / 3) * (cardWidth + gap);
 
@@ -120,20 +123,20 @@ export const Testimonials = () => {
     
     const container = scrollRef.current;
     if (container) container.scrollLeft = cardWidth + gap;
-  }, [isMounted]);
+  }, [isMounted, cardWidth, gap]);
 
   useEffect(() => {
     if (!isMounted) return; // Don't run animation during SSR
     
     const container = scrollRef.current;
-    // On mobile, only pause if actively dragging, not on touch
-    const shouldPause = isPaused || (isDragging && !isMobile);
-    if (!container || shouldPause) return;
+    if (!container || isPaused || isDragging) return;
 
     const animate = () => {
-      if (!container) return;
+      if (!container || isPaused || isDragging) return;
+      
       const maxScroll = container.scrollWidth / 3;
-      let nextScroll = container.scrollLeft + 0.5;
+      const scrollSpeed = isMobile ? 0.3 : 0.5; // Slower on mobile for better UX
+      let nextScroll = container.scrollLeft + scrollSpeed;
 
       if (nextScroll >= maxScroll * 2) {
         container.scrollLeft = maxScroll;
@@ -150,33 +153,62 @@ export const Testimonials = () => {
     };
   }, [isPaused, isDragging, isMobile, isMounted]);
 
-  const handleMouseEnter = () => setIsPaused(true);
-  const handleMouseLeave = () => setIsPaused(false);
-  const handleTouchStart = () => {
-    // Don't pause auto-scrolling on mobile touch start
-    // This allows the carousel to continue auto-scrolling on mobile
+  const handleMouseEnter = () => {
+    if (!isMobile) setIsPaused(true);
   };
-  const handleTouchEnd = () => {
-    // Only reset dragging if we were actually dragging
-    if (isDragging) {
-      setIsDragging(false);
+  
+  const handleMouseLeave = () => {
+    if (!isMobile) setIsPaused(false);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isMounted) return;
+    
+    const touch = e.touches[0];
+    touchStartTime.current = Date.now();
+    touchStartX.current = touch.clientX;
+    touchStartY.current = touch.clientY;
+    
+    // Pause auto-scroll on touch start
+    setIsPaused(true);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isMounted) return;
+    
+    const touchEndTime = Date.now();
+    const touchDuration = touchEndTime - touchStartTime.current;
+    
+    // If it was a quick tap (less than 200ms), treat as tap, not drag
+    if (touchDuration < 200) {
       setIsPaused(false);
+      return;
     }
-    // Don't add delay for mobile - let auto-scrolling continue immediately
+    
+    // Resume auto-scroll after a short delay
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 1000);
   };
 
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    // For touch events, only start dragging if it's a clear horizontal gesture
+    if (!isMounted) return;
+    
+    // For touch events, check if it's a horizontal gesture
     if ('touches' in e) {
       const touch = e.touches[0];
-      const touchStartY = touch.clientY;
-      const touchStartX = touch.clientX;
+      const deltaX = Math.abs(touch.clientX - touchStartX.current);
+      const deltaY = Math.abs(touch.clientY - touchStartY.current);
       
-      // Store initial touch position for gesture detection
-      dragStartX.current = touchStartX;
-      dragStartY.current = touchStartY;
-      
-      // Don't immediately start dragging on touch
+      // Only start dragging if it's clearly a horizontal gesture
+      if (deltaX > deltaY && deltaX > 10) {
+        setIsDragging(true);
+        setIsPaused(true);
+        dragStartX.current = touch.clientX;
+        if (scrollRef.current) {
+          dragStartOffset.current = scrollRef.current.scrollLeft;
+        }
+      }
       return;
     }
     
@@ -192,13 +224,18 @@ export const Testimonials = () => {
 
   const handleDragEnd = () => {
     setIsDragging(false);
-    setIsPaused(false);
     dragStartX.current = null;
+    
     const container = scrollRef.current;
     if (container) {
       const snap = Math.round(container.scrollLeft / (cardWidth + gap)) * (cardWidth + gap);
       container.scrollTo({ left: snap, behavior: "smooth" });
     }
+    
+    // Resume auto-scroll after drag ends
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 500);
   };
 
   const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
@@ -233,34 +270,53 @@ export const Testimonials = () => {
 
   return (
     <section id="testimonials" className="scroll-mt-20">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold">What Clients Say</h2>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+      <div className="text-center mb-8 sm:mb-12">
+        <h2 className="responsive-text-4xl sm:responsive-text-5xl font-bold text-foreground mb-2 sm:mb-4">
+          What Clients{" "}
+          <span className="text-transparent bg-gradient-to-r from-primary via-accent to-primary bg-clip-text">
+            Say
+          </span>
+        </h2>
+        <p className="responsive-text-lg sm:responsive-text-xl text-muted-foreground max-w-2xl mx-auto font-light">
           Trusted by leaders across industries.
         </p>
       </div>
 
-      <div className="relative px-4">
-        <div className="flex justify-between mb-4">
-          <Button onClick={() => scroll("left")}><ChevronLeft /></Button>
-          <Button onClick={() => scroll("right")}><ChevronRight /></Button>
+      <div className="relative px-4 sm:px-6">
+        {/* Navigation Buttons - Hidden on mobile for cleaner UX */}
+        <div className="hidden sm:flex justify-between mb-4">
+          <Button 
+            onClick={() => scroll("left")}
+            className="bg-card/60 border-border/50 hover:bg-primary/20 hover:border-primary/50 transition-all duration-300"
+            size="sm"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
+          <Button 
+            onClick={() => scroll("right")}
+            className="bg-card/60 border-border/50 hover:bg-primary/20 hover:border-primary/50 transition-all duration-300"
+            size="sm"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </Button>
         </div>
 
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x cursor-grab"
+          className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide touch-pan-x cursor-grab"
           style={{ 
             WebkitOverflowScrolling: 'touch',
-            touchAction: isMounted ? 'pan-x pan-y' : 'auto' // Only set on client-side
+            touchAction: isMounted ? 'pan-x pan-y' : 'auto',
+            scrollSnapType: 'x mandatory'
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onTouchStart={(e) => {
-            handleTouchStart();
+            handleTouchStart(e);
             // Don't prevent default to allow screen scrolling
           }}
           onTouchEnd={(e) => {
-            handleTouchEnd();
+            handleTouchEnd(e);
             // Don't prevent default to allow screen scrolling
           }}
           onMouseDown={handleDragStart}
@@ -277,32 +333,35 @@ export const Testimonials = () => {
           {seamlessTestimonials.map((t, idx) => (
             <div
               key={`${t.id}-${idx}`}
-              className="flex-shrink-0 snap-start w-[380px]"
-              style={{ minWidth: 380 }}
+              className="flex-shrink-0 snap-start"
+              style={{ 
+                minWidth: isMobile ? 280 : 320,
+                width: isMobile ? 280 : 320
+              }}
             >
-              <Card className="p-6 h-full bg-black border border-zinc-800 rounded-xl text-white shadow-md flex flex-col">
+              <Card className="p-4 sm:p-6 h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl text-foreground shadow-lg hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 flex flex-col touch-target">
                 {/* Stars */}
-                <div className="mb-4 flex text-cyan-400" aria-label={`${t.rating} out of 5 stars`}>
+                <div className="mb-3 sm:mb-4 flex text-primary" aria-label={`${t.rating} out of 5 stars`}>
                   {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-cyan-400 mr-1" />
+                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-primary mr-1" />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <blockquote className="text-base leading-relaxed font-medium text-white mb-6 flex-grow">
+                <blockquote className="responsive-text-sm sm:responsive-text-base leading-relaxed font-medium text-foreground mb-4 sm:mb-6 flex-grow line-clamp-4 sm:line-clamp-5">
                   "{t.quote}"
                 </blockquote>
 
                 {/* Metric Badge */}
-                <div className="mb-4">
-                  <span className="inline-block px-4 py-1 rounded-full border border-cyan-700 bg-gradient-to-br from-cyan-900 to-cyan-700 text-cyan-300 text-sm font-semibold">
+                <div className="mb-3 sm:mb-4">
+                  <span className="inline-block px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs sm:text-sm font-semibold">
                     {t.metric}
                   </span>
                 </div>
 
                 {/* Avatar and Info */}
                 <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-cyan-800 mr-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary/20 mr-3 flex-shrink-0">
                     <Image
                       src={t.image}
                       alt={t.name}
@@ -311,10 +370,10 @@ export const Testimonials = () => {
                       className="object-cover w-full h-full"
                     />
                   </div>
-                  <div>
-                    <p className="font-semibold text-white text-base leading-tight">{t.name}</p>
-                    <p className="text-cyan-400 text-sm font-medium leading-snug">{t.title}</p>
-                    <p className="text-zinc-400 text-sm mt-1">{t.company} • {t.industry}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-foreground responsive-text-sm sm:responsive-text-base leading-tight truncate">{t.name}</p>
+                    <p className="text-primary responsive-text-xs sm:responsive-text-sm font-medium leading-snug truncate">{t.title}</p>
+                    <p className="text-muted-foreground responsive-text-xs sm:responsive-text-sm mt-1 truncate">{t.company} • {t.industry}</p>
                   </div>
                 </div>
               </Card>
@@ -340,7 +399,49 @@ export const Testimonials = () => {
           .touch-pan-x {
             touch-action: pan-x pan-y;
             -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
           }
+          
+          .touch-target {
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+          
+          /* Better visual feedback for touch interactions */
+          .touch-target:active {
+            transform: scale(0.98);
+          }
+          
+          /* Improve focus states for accessibility */
+          .touch-target:focus {
+            outline: 2px solid #22d3ee;
+            outline-offset: 2px;
+          }
+        }
+        
+        /* Line clamp utilities */
+        .line-clamp-4 {
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        .line-clamp-5 {
+          display: -webkit-box;
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        /* Smooth scrolling for better UX */
+        * {
+          scroll-behavior: smooth;
         }
       `}</style>
     </section>

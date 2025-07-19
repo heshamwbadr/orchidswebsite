@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import {
   Trophy,
   Zap,
@@ -112,6 +113,26 @@ const itemVariants = {
 };
 
 export const WhyMeSection = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Ensure component is mounted before accessing window
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Detect mobile device only after mounting
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [isMounted]);
+
   const handleDiscussVision = () => {
     openCalendlyPopup();
   };
@@ -184,22 +205,29 @@ export const WhyMeSection = () => {
                   scale: 1.05,
                   transition: { duration: 0.3, ease: "easeOut" },
                 }}
-                className="group h-full"
+                whileTap={{ scale: 0.98 }}
+                className="group h-full touch-target"
+                style={{ touchAction: 'manipulation' }}
               >
-                <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden">
+                <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden min-h-[280px] sm:min-h-[320px]">
                   {/* Hover Glow Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
 
                   {/* Animated Border Gradient on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm rounded-2xl" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500 blur-sm rounded-2xl" />
 
                   <div className="relative z-10 h-full flex flex-col">
                     {/* Icon Section */}
                     <motion.div
-                      className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 mb-4 lg:mb-6 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500"
+                      className="w-14 h-14 sm:w-16 sm:h-16 lg:w-16 lg:h-16 mb-4 lg:mb-6 rounded-xl bg-gradient-to-br from-muted/50 to-secondary/50 group-hover:from-primary/20 group-hover:to-accent/20 group-active:from-primary/30 group-active:to-accent/30 flex items-center justify-center text-primary group-hover:scale-110 group-active:scale-105 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-500"
                       whileHover={{
                         rotate: 5,
                         transition: { duration: 0.3, ease: "easeOut" },
+                      }}
+                      whileTap={{
+                        rotate: 2,
+                        scale: 1.05,
+                        transition: { duration: 0.2, ease: "easeOut" },
                       }}
                     >
                       {item.icon}
@@ -207,11 +235,11 @@ export const WhyMeSection = () => {
 
                     {/* Content */}
                     <div className="space-y-3 lg:space-y-4 flex-grow flex flex-col">
-                      <h3 className="responsive-text-2xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300">
+                      <h3 className="responsive-text-xl sm:responsive-text-2xl font-semibold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-active:text-transparent group-active:bg-gradient-to-r group-active:from-primary group-active:to-accent group-active:bg-clip-text transition-all duration-300">
                         {item.title}
                       </h3>
 
-                      <p className="text-muted-foreground leading-relaxed font-light flex-grow responsive-text-base">
+                      <p className="text-muted-foreground leading-relaxed font-light flex-grow responsive-text-sm sm:responsive-text-base">
                         {item.description}
                       </p>
 
@@ -222,8 +250,8 @@ export const WhyMeSection = () => {
                             key={pointIndex}
                             className="flex items-start responsive-text-sm"
                           >
-                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mr-3 mt-1.5 flex-shrink-0 group-hover:shadow-sm group-hover:shadow-primary/50 transition-all duration-300" />
-                            <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300 leading-relaxed">
+                            <div className="w-2 h-2 sm:w-1.5 sm:h-1.5 bg-gradient-to-r from-primary to-accent rounded-full mr-3 mt-1.5 flex-shrink-0 group-hover:shadow-sm group-hover:shadow-primary/50 group-active:shadow-sm group-active:shadow-primary/50 transition-all duration-300" />
+                            <span className="text-muted-foreground group-hover:text-foreground group-active:text-foreground transition-colors duration-300 leading-relaxed">
                               {point}
                             </span>
                           </div>
@@ -232,8 +260,8 @@ export const WhyMeSection = () => {
                     </div>
 
                     {/* Floating Particles */}
-                    <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse" />
-                    <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse delay-300" />
+                    <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse group-active:animate-pulse" />
+                    <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse group-active:animate-pulse delay-300" />
                   </div>
                 </div>
               </motion.div>
@@ -472,10 +500,11 @@ export const WhyMeSection = () => {
           >
             <button
               onClick={handleDiscussVision}
-              className="responsive-button group inline-flex items-center bg-gradient-to-r from-primary via-accent to-primary text-primary-foreground rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 hover:from-primary hover:to-accent touch-target"
+              className="responsive-button group inline-flex items-center bg-gradient-to-r from-primary via-accent to-primary text-primary-foreground rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 hover:from-primary hover:to-accent touch-target min-h-[48px] sm:min-h-[56px] px-6 sm:px-8 py-3 sm:py-4"
+              style={{ touchAction: 'manipulation' }}
             >
-              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 group-hover:rotate-12 transition-transform duration-300" />
-              <span className="text-transparent bg-gradient-to-r from-primary-foreground to-primary-foreground bg-clip-text responsive-text-lg">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 group-hover:rotate-12 group-active:rotate-6 transition-transform duration-300" />
+              <span className="text-transparent bg-gradient-to-r from-primary-foreground to-primary-foreground bg-clip-text responsive-text-base sm:responsive-text-lg font-medium">
                 Let's discuss your vision
               </span>
             </button>
@@ -486,6 +515,43 @@ export const WhyMeSection = () => {
         <div className="absolute top-1/2 left-0 w-px h-32 bg-gradient-to-b from-transparent via-primary/50 to-transparent hidden lg:block" />
         <div className="absolute top-1/2 right-0 w-px h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent hidden lg:block" />
       </div>
+
+      <style jsx>{`
+        /* Mobile-specific improvements */
+        @media (max-width: 1023px) {
+          .touch-target {
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+          
+          /* Better visual feedback for touch interactions */
+          .touch-target:active {
+            transform: scale(0.98);
+          }
+          
+          /* Improve focus states for accessibility */
+          .touch-target:focus {
+            outline: 2px solid #22d3ee;
+            outline-offset: 2px;
+          }
+        }
+        
+        /* Mobile-specific spacing and sizing */
+        @media (max-width: 768px) {
+          .responsive-card {
+            padding: 1.25rem;
+          }
+          
+          .responsive-gap-lg {
+            gap: 1rem;
+          }
+        }
+      `}</style>
     </section>
   );
 };
