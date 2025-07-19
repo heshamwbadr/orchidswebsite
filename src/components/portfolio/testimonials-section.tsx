@@ -87,6 +87,7 @@ export const Testimonials = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const animationRef = useRef<number | null>(null);
   const dragStartX = useRef<number | null>(null);
   const dragStartY = useRef<number | null>(null);
@@ -97,22 +98,33 @@ export const Testimonials = () => {
   const seamlessTestimonials = [...testimonials, ...testimonials, ...testimonials];
   const singleLoopWidth = (seamlessTestimonials.length / 3) * (cardWidth + gap);
 
-  // Detect mobile device
+  // Ensure component is mounted before accessing window
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Detect mobile device only after mounting
+  useEffect(() => {
+    if (!isMounted) return;
+    
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
+    if (!isMounted) return; // Don't run during SSR
+    
     const container = scrollRef.current;
     if (container) container.scrollLeft = cardWidth + gap;
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
+    if (!isMounted) return; // Don't run animation during SSR
+    
     const container = scrollRef.current;
     // On mobile, only pause if actively dragging, not on touch
     const shouldPause = isPaused || (isDragging && !isMobile);
@@ -136,7 +148,7 @@ export const Testimonials = () => {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isPaused, isDragging, isMobile]);
+  }, [isPaused, isDragging, isMobile, isMounted]);
 
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
@@ -239,7 +251,7 @@ export const Testimonials = () => {
           className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x cursor-grab"
           style={{ 
             WebkitOverflowScrolling: 'touch',
-            touchAction: 'pan-x pan-y' // Allow both horizontal and vertical scrolling
+            touchAction: isMounted ? 'pan-x pan-y' : 'auto' // Only set on client-side
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
