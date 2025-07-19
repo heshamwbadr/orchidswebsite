@@ -204,6 +204,10 @@ export const AboutSection = () => {
   const [expandedMetric, setExpandedMetric] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [activePopup, setActivePopup] = useState<number | null>(null);
+  const [tapped, setTapped] = useState<number | null>(null);
+  const [popupPosition, setPopupPosition] = useState<'left' | 'right'>('right');
+  const [popupVerticalPosition, setPopupVerticalPosition] = useState<'above' | 'below'>('below');
 
   // Ensure component is mounted before accessing window
   useEffect(() => {
@@ -228,6 +232,9 @@ export const AboutSection = () => {
       event.preventDefault();
       event.stopPropagation();
       
+      // Store the card element reference
+      const cardElement = event.currentTarget?.closest('.group');
+      
       // If clicking on a different card while one is expanded, collapse the current one first
       if (expandedCard !== null && expandedCard !== index) {
         setExpandedCard(null);
@@ -236,7 +243,6 @@ export const AboutSection = () => {
           setExpandedCard(index);
           // Scroll to the newly expanded card
           setTimeout(() => {
-            const cardElement = event.currentTarget.closest('.group');
             if (cardElement) {
               cardElement.scrollIntoView({ 
                 behavior: 'smooth', 
@@ -251,7 +257,6 @@ export const AboutSection = () => {
         // If expanding, scroll to the card
         if (!isExpanded) {
           setTimeout(() => {
-            const cardElement = event.currentTarget.closest('.group');
             if (cardElement) {
               cardElement.scrollIntoView({ 
                 behavior: 'smooth', 
@@ -271,6 +276,62 @@ export const AboutSection = () => {
     } else {
       setExpandedCard(isExpanded ? null : index);
     }
+  };
+
+  const handleMetricClick = (index: number) => {
+    setActivePopup(activePopup === index ? null : index);
+  };
+
+  const getPopupPosition = (event: React.MouseEvent): { horizontal: 'left' | 'right'; vertical: 'above' | 'below' } => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    const tileCenter = rect.left + rect.width / 2;
+    const screenCenter = screenWidth / 2;
+    
+    // Calculate popup dimensions (approximate)
+    const popupWidth = Math.min(280, screenWidth * 0.85); // Slightly smaller to ensure fit
+    const popupHeight = 220; // approximate height
+    
+    // Check if popup would go off screen on the right
+    const wouldGoOffRight = rect.left + popupWidth > screenWidth - 20; // 20px margin
+    // Check if popup would go off screen on the left
+    const wouldGoOffLeft = rect.right - popupWidth < 20; // 20px margin
+    // Check if popup would go off screen at the bottom
+    const wouldGoOffBottom = rect.bottom + popupHeight > screenHeight - 20; // 20px margin
+    
+    // Determine horizontal position with more aggressive boundary checking
+    let horizontalPosition: 'left' | 'right';
+    
+    // If tile is very close to right edge, always position left
+    if (rect.right > screenWidth * 0.8) {
+      horizontalPosition = 'left';
+    }
+    // If tile is very close to left edge, always position right
+    else if (rect.left < screenWidth * 0.2) {
+      horizontalPosition = 'right';
+    }
+    // Check specific boundary conditions
+    else if (wouldGoOffRight) {
+      horizontalPosition = 'left';
+    } else if (wouldGoOffLeft) {
+      horizontalPosition = 'right';
+    } else {
+      // Use original logic if no boundary issues
+      horizontalPosition = tileCenter < screenCenter ? 'right' : 'left';
+    }
+    
+    return {
+      horizontal: horizontalPosition,
+      vertical: wouldGoOffBottom ? 'above' : 'below'
+    };
+  };
+
+  const handleMetricClickWithPosition = (index: number, event: React.MouseEvent) => {
+    const position = getPopupPosition(event);
+    setPopupPosition(position.horizontal);
+    setPopupVerticalPosition(position.vertical);
+    setActivePopup(activePopup === index ? null : index);
   };
 
   const containerVariants = {
@@ -415,7 +476,7 @@ export const AboutSection = () => {
                       scale: 1.01,
                       transition: { duration: 0.3 },
                     }}
-                    className="group relative"
+                    className={`group relative ${isExpanded ? 'expanded' : ''}`}
                   >
                     <motion.div
                       variants={cardVariants}
@@ -513,7 +574,8 @@ export const AboutSection = () => {
                               duration: 0.5,
                               ease: [0.4, 0.0, 0.2, 1],
                             }}
-                            className="overflow-hidden mobile-expandable"
+                            className="overflow-hidden mobile-expandable relative"
+                            style={{ transformOrigin: 'top' }}
                           >
                             <div className="responsive-card pb-4 sm:pb-6 lg:pb-8">
                               <div className="border-t border-border/50 pt-4 lg:pt-6">
@@ -581,28 +643,94 @@ export const AboutSection = () => {
               <div className="grid grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-4 sm:gap-6 max-w-[600px] mx-auto lg:mx-0">
                 {impactMetrics.map((metric, idx) => {
                   const popupId = `popup-${idx}`;
+                  const isPopupActive = activePopup === idx;
+                  const isTapped = tapped === idx;
                   return (
-                    <div
-                      key={metric.label}
-                      tabIndex={0}
-                      aria-describedby={popupId}
-                      className="relative bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-3 sm:p-4 w-full max-w-[120px] md:max-w-[150px] h-[80px] sm:h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile min-h-[80px]"
-                    >
-                      <div className="text-xl sm:text-2xl md:text-3xl font-light leading-none text-cyan-400 mb-1 sm:mb-2 text-center stat-number">
-                        {metric.value}{metric.unit}
-                      </div>
-                      <div className="text-[10px] sm:text-xs md:text-sm text-white/70 font-normal leading-tight mt-1 sm:mt-2 text-center stat-label px-1">
-                        {metric.label}
-                      </div>
+                    <div key={metric.label} className="relative">
                       <div
-                        id={popupId}
-                        className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-[-20px] z-50 opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-hover:visible group-focus:visible group-hover:-translate-y-2 group-focus:-translate-y-2 transition-all duration-300 bg-[rgba(10,10,10,0.95)] border border-cyan-300/30 rounded-xl px-5 py-4 text-[0.85rem] leading-snug text-white/90 max-w-[280px] w-max shadow-2xl text-center backdrop-blur-lg break-words hover-popup mobile-popup"
-                        style={{ overflowWrap: 'break-word' }}
-                        aria-hidden="true"
+                        tabIndex={0}
+                        aria-describedby={popupId}
+                        onClick={(event) => handleMetricClickWithPosition(idx, event)}
+                        onTouchStart={() => setTapped(idx)}
+                        onTouchEnd={() => setTapped(null)}
+                        className={`bg-[rgba(20,20,20,0.8)] border border-white/10 rounded-2xl p-3 sm:p-4 w-full max-w-[120px] md:max-w-[150px] h-[80px] sm:h-[90px] md:h-[110px] flex flex-col justify-between items-center transition-all duration-300 backdrop-blur-lg hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-xl group focus:outline-none focus:ring-2 focus:ring-cyan-300 stat-tile min-h-[80px] cursor-pointer transition-transform ${isTapped ? 'scale-95' : 'scale-100'}`}
                       >
-                        {metric.description}
-                        <span className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-cyan-300/30"></span>
+                        <div className="text-xl sm:text-2xl md:text-3xl font-light leading-none text-cyan-400 mb-1 sm:mb-2 text-center stat-number">
+                          {metric.value}{metric.unit}
+                        </div>
+                        <div className="text-[10px] sm:text-xs md:text-sm text-white/70 font-normal leading-tight mt-1 sm:mt-2 text-center stat-label px-1">
+                          {metric.label}
+                        </div>
                       </div>
+                      
+                      {/* Mobile Popup - Absolute positioned below tile */}
+                      {isPopupActive && (
+                        <>
+                          {/* Mobile Backdrop */}
+                          <div
+                            className="fixed inset-0 z-40 lg:hidden"
+                            onClick={() => setActivePopup(null)}
+                          />
+                          <div className={`absolute z-50 lg:hidden ${
+                            popupVerticalPosition === 'below' ? 'top-full mt-2' : 'bottom-full mb-2'
+                          } ${
+                            popupPosition === 'right' ? 'left-0' : 'right-0'
+                          }`}>
+                            <div
+                              className={`p-4 rounded-xl bg-black/80 text-white text-sm leading-relaxed max-w-[85vw] min-w-[250px] whitespace-normal break-words shadow-xl border border-cyan-300/30 backdrop-blur-lg ${
+                                popupPosition === 'right' ? 'w-full' : 'w-full'
+                              }`}
+                              style={{
+                                maxWidth: '280px',
+                                minWidth: '250px',
+                                width: 'auto'
+                              }}
+                            >
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActivePopup(null);
+                                }}
+                                className="absolute top-2 right-2 text-white/70 hover:text-white text-lg transition-colors"
+                                aria-label="Close"
+                              >
+                                ×
+                              </button>
+                              <div className="pr-6">
+                                <h3 className="text-base font-semibold mb-2 text-cyan-300">{metric.label}</h3>
+                                <div className="text-sm leading-relaxed text-white/90">
+                                  {metric.description}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      
+                      {/* Desktop Modal */}
+                      {isPopupActive && (
+                        <div
+                          id={popupId}
+                          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden lg:flex"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActivePopup(null);
+                          }}
+                        >
+                          <div
+                            className="max-w-[90vw] max-h-[80vh] overflow-y-auto whitespace-pre-wrap break-words hyphens-auto p-5 text-[15px] leading-relaxed rounded-xl shadow-lg bg-black/95 text-white border border-cyan-300/30 backdrop-blur-lg text-left font-normal"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="popup-content">
+                              {metric.description.split('. ').map((sentence, index, array) => (
+                                <p key={index} className="mb-2 last:mb-0">
+                                  {sentence}{index < array.length - 1 ? '.' : ''}
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -672,21 +800,216 @@ export const AboutSection = () => {
             position: relative;
           }
           
-          /* Mobile popup positioning - prevent going out of screen */
-          .mobile-popup {
-            position: fixed !important;
-            top: 50vh !important;
-            left: 50vw !important;
-            transform: translate(-50%, -50%) !important;
-            max-width: 90vw !important;
-            width: 280px !important;
-            margin: 0 !important;
-            z-index: 10000 !important;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
+          /* Click-based popup styling */
+          .stat-tile {
+            cursor: pointer !important;
+            -webkit-tap-highlight-color: rgba(34, 211, 238, 0.2) !important;
+            transition: all 0.2s ease-in-out !important;
           }
           
-          /* Adjust popup arrow for mobile */
-          .mobile-popup span {
+          .stat-tile:active {
+            transform: scale(0.95) !important;
+          }
+          
+          /* Popup modal styling */
+          .fixed.inset-0 {
+            animation: fadeIn 0.2s ease-out !important;
+          }
+          
+          .fixed.inset-0 > div {
+            animation: slideIn 0.3s ease-out !important;
+          }
+          
+          /* Mobile-specific popup improvements */
+          @media (max-width: 768px) {
+            .fixed.inset-0 > div {
+              width: 90vw !important;
+              max-width: 90vw !important;
+              margin: 0 !important;
+              text-align: left !important;
+            }
+            
+            .popup-content {
+              text-align: left !important;
+              line-height: 1.5 !important;
+              font-size: 0.9rem !important;
+            }
+          }
+          
+          /* CSS fallback for popup content */
+          .popup-content {
+            word-break: break-word !important;
+            hyphens: auto !important;
+            white-space: pre-wrap !important;
+            max-width: 90vw !important;
+            font-size: 15px !important;
+            text-align: left !important;
+            line-height: 1.6 !important;
+            padding-inline: 1rem !important;
+            font-weight: 400 !important;
+          }
+          
+          /* Mobile-specific popup content improvements */
+          @media (max-width: 768px) {
+            .popup-content {
+              white-space: normal !important; /* allow wrapping but not per-character */
+              word-break: break-word !important; /* allow breaks on whole words */
+              max-width: 90vw !important;
+              width: 100% !important;
+              padding: 1rem !important;
+              line-height: 1.5 !important;
+              font-size: 1rem !important;
+              hyphens: auto !important;
+              overflow-wrap: break-word !important;
+            }
+            
+            /* Mobile popup container styling */
+            .fixed.z-\[10000\].bg-black\/95 {
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+              border-radius: 12px !important;
+              backdrop-filter: blur(20px) !important;
+            }
+            
+            /* Ensure popup content is readable */
+            .popup-content h3 {
+              font-size: 1.125rem !important;
+              font-weight: 600 !important;
+              line-height: 1.4 !important;
+              margin-bottom: 0.75rem !important;
+            }
+            
+            .popup-content div {
+              font-size: 0.9375rem !important;
+              line-height: 1.6 !important;
+              color: rgba(255, 255, 255, 0.9) !important;
+            }
+            
+            /* Mobile absolute positioned popup styling */
+            .stat-tile .relative .absolute {
+              animation: slideDown 0.3s ease-out !important;
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+              backdrop-filter: blur(15px) !important;
+            }
+            
+            /* Ensure mobile popup is visible */
+            .absolute.top-full.left-0 {
+              z-index: 9999 !important;
+              position: absolute !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+            }
+            
+            /* Ensure mobile popup is visible for right positioning */
+            .absolute.top-full.right-0 {
+              z-index: 9999 !important;
+              position: absolute !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+              right: 0 !important;
+              left: auto !important;
+            }
+            
+            /* Ensure mobile popup is visible for above positioning */
+            .absolute.bottom-full.left-0,
+            .absolute.bottom-full.right-0 {
+              z-index: 9999 !important;
+              position: absolute !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+            }
+            
+            /* Force right positioning for right-side popups */
+            .absolute.top-full.right-0 > div,
+            .absolute.bottom-full.right-0 > div {
+              right: 0 !important;
+              left: auto !important;
+              transform: translateX(0) !important;
+              max-width: calc(100vw - 40px) !important;
+              overflow: hidden !important;
+            }
+            
+            /* Force left positioning for left-side popups */
+            .absolute.top-full.left-0 > div,
+            .absolute.bottom-full.left-0 > div {
+              left: 0 !important;
+              right: auto !important;
+              transform: translateX(0) !important;
+              max-width: calc(100vw - 40px) !important;
+              overflow: hidden !important;
+            }
+            
+            /* Ensure popup container doesn't overflow viewport */
+            .absolute.top-full.left-0,
+            .absolute.top-full.right-0,
+            .absolute.bottom-full.left-0,
+            .absolute.bottom-full.right-0 {
+              max-width: calc(100vw - 20px) !important;
+              overflow: visible !important;
+            }
+            
+            /* Mobile popup container */
+            .absolute.top-full.left-0 > div,
+            .absolute.top-full.right-0 > div,
+            .absolute.bottom-full.left-0 > div,
+            .absolute.bottom-full.right-0 > div {
+              background: rgba(0, 0, 0, 0.9) !important;
+              border: 1px solid rgba(34, 211, 238, 0.3) !important;
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+            }
+            
+            @keyframes slideDown {
+              from {
+                opacity: 0;
+                transform: translateY(-10px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+          }
+          
+          /* Slide up animation for mobile bottom sheet */
+          @keyframes slideUp {
+            from {
+              opacity: 0;
+              transform: translateY(30%);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .animate-slideUp {
+            animation: slideUp 0.35s ease-out both;
+          }
+          
+          /* Ensure popup is always visible and properly positioned */
+          .mobile-popup {
+            pointer-events: auto !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+          }
+          
+          /* Better touch interaction for mobile popups */
+          .stat-tile:hover .mobile-popup,
+          .stat-tile:focus .mobile-popup {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(-50%, -50%) !important;
+          }
+          
+          /* Ensure popup content is properly styled */
+          .popup-content {
+            word-break: break-word !important;
+            hyphens: auto !important;
+            line-height: 1.5 !important;
+          }
+          
+          /* Hide popup arrow on mobile */
+          .popup-arrow {
             display: none !important;
           }
           
@@ -710,12 +1033,28 @@ export const AboutSection = () => {
           .mobile-expandable {
             transform-origin: top !important;
             overflow: visible !important;
+            position: relative !important;
+            top: auto !important;
+            bottom: auto !important;
           }
           
           /* Ensure the expanded content container flows downward */
           .mobile-expandable > div {
             margin-top: 0 !important;
             padding-top: 1rem !important;
+            position: relative !important;
+          }
+          
+          /* Remove any absolute positioning that might cause upward expansion */
+          .group .motion-div {
+            position: relative !important;
+            transform: none !important;
+          }
+          
+          /* Ensure proper flow for expanded content */
+          .group.expanded {
+            overflow: visible !important;
+            height: auto !important;
           }
           
           /* Mobile card container - ensure proper flow */
@@ -728,11 +1067,19 @@ export const AboutSection = () => {
           .group {
             position: relative !important;
             z-index: 1 !important;
+            overflow: hidden !important;
+            transition: max-height 0.5s ease-in-out !important;
           }
           
           /* Expanded card should have higher z-index */
           .group .expanded {
             z-index: 2 !important;
+            max-height: 2000px !important; /* Large enough for content */
+          }
+          
+          /* Collapsed state */
+          .group:not(.expanded) {
+            max-height: 200px !important; /* Adjust based on your header height */
           }
           
           /* Smooth transitions for mobile */
