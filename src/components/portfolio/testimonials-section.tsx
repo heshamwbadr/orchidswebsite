@@ -121,7 +121,10 @@ export const Testimonials = () => {
     const container = scrollRef.current;
     // On mobile, only pause if actively dragging, not on touch
     const shouldPause = isPaused || (isDragging && !isMobile);
-    if (!container || shouldPause) return;
+    if (!container || shouldPause) {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      return;
+    }
 
     const animate = () => {
       if (!container) return;
@@ -142,6 +145,45 @@ export const Testimonials = () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
   }, [isPaused, isDragging, isMobile, isMounted]);
+
+  useEffect(() => {
+    if (!isMounted || !isMobile) return;
+
+    const handleFirstInteraction = () => {
+      const container = scrollRef.current;
+      if (!container) return;
+
+      const animate = () => {
+        if (!container) return;
+        const maxScroll = container.scrollWidth / 3;
+        let nextScroll = container.scrollLeft + 0.5;
+
+        if (nextScroll >= maxScroll * 2) {
+          container.scrollLeft = maxScroll;
+        } else {
+          container.scrollLeft = nextScroll;
+        }
+
+        animationRef.current = requestAnimationFrame(animate);
+      };
+
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      animationRef.current = requestAnimationFrame(animate);
+
+      // Remove listener after first interaction
+      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("click", handleFirstInteraction);
+    };
+
+    // Start auto-scroll only after first interaction
+    window.addEventListener("touchstart", handleFirstInteraction, { once: true });
+    window.addEventListener("click", handleFirstInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("click", handleFirstInteraction);
+    };
+  }, [isMobile, isMounted]);
 
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);

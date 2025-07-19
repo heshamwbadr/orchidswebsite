@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navigationItems = [
-  { name: "Here's How I Help You Win", sectionId: "about" },
+  { name: "Here's How I Help You Win", sectionId: "about-subheader" },
   { name: "Why Leaders Trust me?", sectionId: "trust" },
   { name: "Portfolio", sectionId: "case-studies" },
   { name: "Testimonials", sectionId: "testimonials" },
@@ -31,18 +31,63 @@ export const Navigation = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      // Get the navbar height for proper offset
-      const navbarHeight = 80; // Approximate navbar height
-      const elementPosition = element.offsetTop - navbarHeight;
+    console.log('=== NAVIGATION DEBUG ===');
+    console.log('Attempting to scroll to section:', sectionId);
+    console.log('Navigation item clicked:', sectionId);
+    
+    // Add a small delay to ensure DOM is ready
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      console.log('Found element:', element);
+      console.log('Element tag name:', element?.tagName);
+      console.log('Element ID:', element?.id);
       
-      // Use smooth scrolling with proper offset
-      window.scrollTo({
-        top: elementPosition,
-        behavior: "smooth"
-      });
-    }
+      if (element) {
+        // Get the navbar height for proper offset
+        const navbarHeight = 80; // Approximate navbar height
+        const elementPosition = element.offsetTop - navbarHeight;
+        
+        console.log('Element position:', element.offsetTop);
+        console.log('Navbar height:', navbarHeight);
+        console.log('Final scroll position:', elementPosition);
+        console.log('Current scroll position:', window.scrollY);
+        
+        // Use smooth scrolling with proper offset
+        window.scrollTo({
+          top: elementPosition,
+          behavior: "smooth"
+        });
+        
+        console.log('Scroll command executed');
+      } else {
+        console.error('Element not found with ID:', sectionId);
+        console.log('Available elements with similar IDs:');
+        
+        // Check for similar elements
+        const allElements = document.querySelectorAll('[id*="about"], [id*="signature"]');
+        allElements.forEach(el => {
+          console.log('Found element:', el.id, el.tagName);
+        });
+        
+        // Fallback: try to scroll to the about section
+        if (sectionId === "about-signature") {
+          console.log('Trying fallback to about section...');
+          const aboutSection = document.getElementById("about");
+          if (aboutSection) {
+            const navbarHeight = 80;
+            const elementPosition = aboutSection.offsetTop - navbarHeight;
+            window.scrollTo({
+              top: elementPosition,
+              behavior: "smooth"
+            });
+            console.log('Fallback: scrolled to about section');
+          } else {
+            console.error('About section also not found!');
+          }
+        }
+      }
+    }, 100); // Small delay to ensure DOM is ready
+    
     setIsOpen(false);
   };
 
@@ -148,7 +193,17 @@ export const Navigation = () => {
               {navigationItems.map((item) => (
                 <button
                   key={item.name}
-                  onClick={() => item.name === "Contact" ? scrollToContactForm() : scrollToSection(item.sectionId)}
+                  onClick={() => {
+                    console.log('Navigation button clicked:', item.name);
+                    if (item.name === "Contact") {
+                      scrollToContactForm();
+                    } else if (item.name === "Here's How I Help You Win") {
+                      console.log('Here\'s How I Help You Win clicked - calling scrollToSection with:', item.sectionId);
+                      scrollToSection(item.sectionId);
+                    } else {
+                      scrollToSection(item.sectionId);
+                    }
+                  }}
                   className={`relative responsive-text-base font-medium transition-colors duration-300 touch-target px-3 py-2 group no-underline hover:no-underline ${
                     item.name === "Contact"
                       ? "text-primary hover:text-primary/80"
@@ -165,8 +220,6 @@ export const Navigation = () => {
               ))}
             </div>
           </div>
-
-          {/* Desktop CTA Button - Right Side */}
 
           {/* Mobile Menu Button */}
           <button
@@ -207,7 +260,17 @@ export const Navigation = () => {
                   {navigationItems.map((item) => (
                     <button
                       key={item.name}
-                      onClick={() => item.name === "Contact" ? scrollToContactForm() : scrollToSection(item.sectionId)}
+                      onClick={() => {
+                        console.log('Mobile navigation button clicked:', item.name);
+                        if (item.name === "Contact") {
+                          scrollToContactForm();
+                        } else if (item.name === "Here's How I Help You Win") {
+                          console.log('Mobile: Here\'s How I Help You Win clicked - calling scrollToSection with:', item.sectionId);
+                          scrollToSection(item.sectionId);
+                        } else {
+                          scrollToSection(item.sectionId);
+                        }
+                      }}
                       className={`mobile-nav-item responsive-text-base font-medium transition-all duration-300 group no-underline hover:no-underline ${
                         item.name === "Contact"
                           ? "text-primary hover:text-primary/80 hover:bg-primary/5 active:bg-primary/10"

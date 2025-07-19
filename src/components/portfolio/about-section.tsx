@@ -428,12 +428,13 @@ export const AboutSection = () => {
         >
           <div className="flex justify-center mb-4">
             <img
+              id="about-signature"
               src="https://clever-pika-899e4f.netlify.app/signaturetransparent1.png"
               alt="Hesham Badr Signature"
               className="h-16 sm:h-20 lg:h-20 xl:h-24 w-auto object-contain"
             />
           </div>
-          <p className="responsive-text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p id="about-subheader" className="responsive-text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Behind every bold transformation is someone who connects the dots. I bring AI, strategy, and people together to turn vision into measurable change.
           </p>
         </motion.div>
