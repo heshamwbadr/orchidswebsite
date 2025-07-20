@@ -81,77 +81,90 @@ const testimonials = [
 
 export const Testimonials = () => {
   const [isMounted, setIsMounted] = useState(false);
-  const [isTouching, setIsTouching] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Ensure component is mounted before accessing window
+  // Ensure component is mounted
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Handle touch events for mobile
-  const handleTouchStart = () => {
-    setIsTouching(true);
-    if (carouselRef.current) {
-      carouselRef.current.classList.add('touching');
+  // Detect mobile device
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, [isMounted]);
+
+  // Handle touch events
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+
+    setIsInteracting(true);
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isMobile || !touchStartX.current || !touchStartY.current) return;
+
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
+    const deltaX = Math.abs(touchX - touchStartX.current);
+    const deltaY = Math.abs(touchY - touchStartY.current);
+
+    if (deltaX > deltaY && deltaX > 10) {
+      // Horizontal scroll detected
+      setIsInteracting(true);
     }
   };
 
   const handleTouchEnd = () => {
-    setIsTouching(false);
-    if (carouselRef.current) {
-      carouselRef.current.classList.remove('touching');
-    }
-  };
+    if (!isMobile) return;
 
-  // Handle scroll events for desktop
-  const handleScroll = () => {
-    setIsScrolling(true);
-    if (carouselRef.current) {
-      carouselRef.current.classList.add('manual-scroll');
-    }
-    
-    // Clear existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-    
-    // Reset after scrolling stops
+    setIsInteracting(false);
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    // Resume animation after a delay
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     scrollTimeoutRef.current = setTimeout(() => {
-      setIsScrolling(false);
-      if (carouselRef.current) {
-        carouselRef.current.classList.remove('manual-scroll');
-      }
-    }, 1500); // Resume auto-scroll 1.5s after user stops scrolling
+      setIsInteracting(false);
+    }, 1500);
   };
 
-  // Handle mouse enter/leave for desktop
-  const handleMouseEnter = () => {
-    if (carouselRef.current) {
-      carouselRef.current.classList.add('hovered');
-    }
+  // Handle scroll for desktop
+  const handleScroll = () => {
+    if (isMobile) return;
+
+    setIsInteracting(true);
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    scrollTimeoutRef.current = setTimeout(() => {
+      setIsInteracting(false);
+    }, 1500);
   };
 
-  const handleMouseLeave = () => {
-    if (carouselRef.current) {
-      carouselRef.current.classList.remove('hovered');
-    }
-  };
-
-  // Cleanup timeout on unmount
+  // Cleanup timeout
   useEffect(() => {
     return () => {
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
   }, []);
 
-  // Fallback avatar for image loading errors
-  const fallbackAvatar = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiMzNzM3MzciLz4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyMCIgcj0iOCIgZmlsbD0iIzY2NjY2NiIvPgo8cGF0aCBkPSJNOCAzNmMwLTggNy4xNi0xMiAxNi0xMnMxNiA0IDE2IDEySDh6IiBmaWxsPSIjNjY2NjY2Ii8+Cjwvc3ZnPgo=";
+  // Fallback avatar
+  const fallbackAvatar =
+    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiMzNzM3MzciLz4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyMCIgcj0iOCIgZmlsbD0iIzY2NjY2NiIvPgo8cGF0aCBkPSJNOCAzNmMwLTggNy4xNi0xMiAxNi0xMnMxNiA0IDE2IDEySDh6IiBmaWxsPSIjNjY2NjY2Ii8+Cjwvc3ZnPgo=";
 
   return (
     <section id="testimonials" className="scroll-mt-20">
@@ -162,19 +175,17 @@ export const Testimonials = () => {
         </p>
       </div>
 
-      <div 
+      <div
         ref={carouselRef}
-        className="carousel-container"
+        className={`carousel-container ${isMobile ? "mobile" : "desktop"}`}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onScroll={handleScroll}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         <div ref={trackRef} className="carousel-track">
-          {/* First set */}
           {testimonials.map((t) => (
-            <div key={`first-${t.id}`} className="testimonial-card">
+            <div key={t.id} className="testimonial-card">
               <div className="metric-badge">{t.metric}</div>
               <blockquote className="quote">"{t.quote}"</blockquote>
               <div className="author-info">
@@ -184,73 +195,25 @@ export const Testimonials = () => {
                     alt={t.name}
                     width={48}
                     height={48}
+                    sizes="(max-width: 768px) 48px, 64px"
                     className="avatar"
+                    priority={t.id <= 2} // Prioritize first two images
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = fallbackAvatar;
+                      target.classList.add("loaded");
+                    }}
+                    onLoad={(e) => {
+                      e.currentTarget.classList.add("loaded");
                     }}
                   />
                 </div>
                 <div className="author-details">
                   <h4>{t.name}</h4>
                   <p className="author-title">{t.title}</p>
-                  <p className="company-info">{t.company} • {t.industry}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-          
-          {/* Second set */}
-          {testimonials.map((t) => (
-            <div key={`second-${t.id}`} className="testimonial-card">
-              <div className="metric-badge">{t.metric}</div>
-              <blockquote className="quote">"{t.quote}"</blockquote>
-              <div className="author-info">
-                <div className="avatar-container">
-                  <Image
-                    src={t.image}
-                    alt={t.name}
-                    width={48}
-                    height={48}
-                    className="avatar"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = fallbackAvatar;
-                    }}
-                  />
-                </div>
-                <div className="author-details">
-                  <h4>{t.name}</h4>
-                  <p className="author-title">{t.title}</p>
-                  <p className="company-info">{t.company} • {t.industry}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-          
-          {/* Third set */}
-          {testimonials.map((t) => (
-            <div key={`third-${t.id}`} className="testimonial-card">
-              <div className="metric-badge">{t.metric}</div>
-              <blockquote className="quote">"{t.quote}"</blockquote>
-              <div className="author-info">
-                <div className="avatar-container">
-                  <Image
-                    src={t.image}
-                    alt={t.name}
-                    width={48}
-                    height={48}
-                    className="avatar"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = fallbackAvatar;
-                    }}
-                  />
-                </div>
-                <div className="author-details">
-                  <h4>{t.name}</h4>
-                  <p className="author-title">{t.title}</p>
-                  <p className="company-info">{t.company} • {t.industry}</p>
+                  <p className="company-info">
+                    {t.company} • {t.industry}
+                  </p>
                 </div>
               </div>
             </div>
@@ -261,90 +224,78 @@ export const Testimonials = () => {
       <style jsx>{`
         .carousel-container {
           position: relative;
-          overflow-x: auto;
-          overflow-y: hidden;
-          padding: 0 16px;
-          cursor: grab;
+          padding: 0 1rem;
           max-width: 1200px;
           margin: 0 auto;
+          overflow-x: auto;
           scrollbar-width: none;
           -ms-overflow-style: none;
-          scroll-behavior: smooth;
         }
-        
+
         .carousel-container::-webkit-scrollbar {
           display: none;
         }
-        
-        .carousel-container:active {
-          cursor: grabbing;
-        }
-        
+
         .carousel-track {
           display: flex;
-          gap: 16px;
-          animation: scroll 45s linear infinite;
-          width: calc(300% + 32px);
+          gap: 1rem;
           will-change: transform;
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
           min-width: max-content;
         }
-        
+
         .testimonial-card {
-          flex: 0 0 320px;
+          flex: 0 0 clamp(280px, 90vw, 320px);
           background: #000;
           border: 1px solid #27272a;
           border-radius: 12px;
-          padding: 24px;
+          padding: 1.5rem;
           display: flex;
           flex-direction: column;
-          height: 380px;
-          position: relative;
+          height: auto;
+          min-height: 340px;
           user-select: none;
           -webkit-user-select: none;
         }
-        
+
         .metric-badge {
           display: inline-block;
-          padding: 8px 16px;
+          padding: 0.5rem 1rem;
           border-radius: 9999px;
           border: 1px solid #0e7490;
           background: linear-gradient(to bottom right, #164e63, #0e7490);
           color: #67e8f9;
           font-size: 0.75rem;
           font-weight: 600;
-          margin-bottom: 16px;
+          margin-bottom: 1rem;
           align-self: flex-start;
         }
-        
+
         .quote {
           font-size: 0.875rem;
           line-height: 1.5;
           font-weight: 500;
           color: white;
-          margin-bottom: 24px;
+          margin-bottom: 1.5rem;
           flex-grow: 1;
         }
-        
+
         .author-info {
           display: flex;
           align-items: center;
           margin-top: auto;
         }
-        
+
         .avatar-container {
           width: 48px;
           height: 48px;
           border-radius: 50%;
           border: 2px solid #155e75;
-          margin-right: 12px;
+          margin-right: 0.75rem;
           flex-shrink: 0;
           background: #374151;
           overflow: hidden;
-          position: relative;
         }
-        
+
         .avatar {
           object-fit: cover;
           width: 100%;
@@ -352,188 +303,139 @@ export const Testimonials = () => {
           opacity: 0;
           transition: opacity 0.3s ease-in-out;
         }
-        
+
         .avatar.loaded {
           opacity: 1;
         }
-        
+
         .author-details h4 {
           font-weight: 600;
           color: white;
           font-size: 0.875rem;
-          line-height: 1.2;
-          margin-bottom: 2px;
+          margin-bottom: 0.125rem;
         }
-        
+
         .author-title {
           color: #22d3ee;
           font-size: 0.75rem;
           font-weight: 500;
-          line-height: 1.2;
-          margin-bottom: 4px;
+          margin-bottom: 0.25rem;
         }
-        
+
         .company-info {
           color: #a1a1aa;
           font-size: 0.75rem;
         }
-        
-        /* Desktop scrollable behavior */
-        @media (min-width: 769px) {
-          .carousel-container {
-            scroll-snap-type: x proximity;
-            cursor: grab;
-          }
-          
-          .carousel-container:active {
-            cursor: grabbing;
-          }
-          
+
+        /* Mobile behavior */
+        .carousel-container.mobile {
+          scroll-snap-type: x mandatory;
+          touch-action: pan-x;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .carousel-container.mobile .carousel-track {
+          animation: ${isInteracting ? "none" : "scroll 30s linear infinite"};
+        }
+
+        .carousel-container.mobile .testimonial-card {
+          scroll-snap-align: start;
+        }
+
+        /* Desktop behavior */
+        .carousel-container.desktop {
+          cursor: grab;
+          scroll-behavior: smooth;
+          scroll-snap-type: x proximity;
+        }
+
+        .carousel-container.desktop:active {
+          cursor: grabbing;
+        }
+
+        .carousel-container.desktop .carousel-track {
+          animation: ${isInteracting ? "none" : "scroll 30s linear infinite"};
+        }
+
+        /* Responsive styles */
+        @media (min-width: 768px) {
           .testimonial-card {
-            flex: 0 0 380px;
-            padding: 32px;
-            height: 420px;
-            scroll-snap-align: start;
+            flex: 0 0 360px;
+            padding: 2rem;
+            min-height: 380px;
           }
-          
+
           .quote {
             font-size: 1rem;
           }
-          
+
           .metric-badge {
             font-size: 0.875rem;
-            padding: 10px 20px;
-            margin-bottom: 20px;
+            padding: 0.625rem 1.25rem;
           }
-          
+
           .author-details h4 {
             font-size: 1rem;
           }
-          
-          .author-title {
-            font-size: 0.875rem;
-          }
-          
+
+          .author-title,
           .company-info {
             font-size: 0.875rem;
           }
-          
-          /* Pause animation on hover and manual scroll */
-          .carousel-container:hover .carousel-track,
-          .carousel-container.manual-scroll .carousel-track {
-            animation-play-state: paused;
-          }
-          
-          /* Resume animation when not hovering and not manually scrolling */
-          .carousel-container:not(:hover):not(.manual-scroll) .carousel-track {
-            animation-play-state: running;
-          }
         }
-        
-        /* Mobile touch handling */
-        @media (max-width: 768px) {
-          .carousel-track {
-            animation-duration: 60s;
-            touch-action: pan-x;
-            -webkit-overflow-scrolling: touch;
-          }
-          
-          .carousel-container {
-            scroll-snap-type: x mandatory;
-          }
-          
+
+        @media (min-width: 1024px) {
           .testimonial-card {
-            scroll-snap-align: start;
-          }
-          
-          /* Pause animation when actively touching */
-          .carousel-container.touching .carousel-track {
-            animation-play-state: paused;
-          }
-          
-          /* Don't pause on hover for touch devices */
-          .carousel-container:hover .carousel-track {
-            animation-play-state: running;
+            flex: 0 0 380px;
+            min-height: 400px;
           }
         }
-        
+
         @keyframes scroll {
           0% {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(calc(-100% / 3));
+            transform: translateX(calc(-${testimonials.length * (320 + 16)}px));
           }
         }
-        
-        /* Smooth scrolling fallback */
-        .carousel-container.manual-scroll .carousel-track {
-          transition: transform 0.3s ease-out;
-        }
-        
-        /* Safari-specific fixes */
+
+        /* Safari fixes */
         @supports (-webkit-touch-callout: none) {
           .carousel-track {
-            -webkit-overflow-scrolling: touch !important;
-            -webkit-transform: translateZ(0) !important;
-            transform: translateZ(0) !important;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
           }
         }
-        
-        /* Scroll indicator for desktop */
-        .carousel-container::after {
-          content: '';
+
+        /* Scroll indicators */
+        .carousel-container.desktop::before,
+        .carousel-container.desktop::after {
+          content: "";
           position: absolute;
           top: 0;
-          right: 0;
           bottom: 0;
-          width: 20px;
-          background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1));
+          width: 2rem;
           pointer-events: none;
-          opacity: 0;
           transition: opacity 0.3s ease;
+          opacity: 0;
         }
-        
-        .carousel-container:hover::after {
-          opacity: 1;
-        }
-        
-        /* Left scroll indicator */
-        .carousel-container::before {
-          content: '';
-          position: absolute;
-          top: 0;
+
+        .carousel-container.desktop::before {
           left: 0;
-          bottom: 0;
-          width: 20px;
-          background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.1));
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          z-index: 1;
+          background: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent);
         }
-        
-        .carousel-container:hover::before {
+
+        .carousel-container.desktop::after {
+          right: 0;
+          background: linear-gradient(to left, rgba(0, 0, 0, 0.1), transparent);
+        }
+
+        .carousel-container.desktop:hover::before,
+        .carousel-container.desktop:hover::after {
           opacity: 1;
         }
       `}</style>
-
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          // Add fade-in effect for images
-          document.addEventListener('DOMContentLoaded', function() {
-            const images = document.querySelectorAll('.avatar');
-            images.forEach(img => {
-              img.addEventListener('load', function() {
-                this.classList.add('loaded');
-              });
-              img.addEventListener('error', function() {
-                this.classList.add('loaded');
-              });
-            });
-          });
-        `
-      }} />
     </section>
   );
 };
