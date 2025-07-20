@@ -113,7 +113,23 @@ export default function RootLayout({
                   "jobTitle": "AI Transformation Consultant & Founder",
                   "description": "Trusted advisor and certified AI consultant helping businesses achieve AI-led transformation, strategy execution, and agentic AI enablement.",
                   "url": "https://hesham.badr.neuronovate.consulting",
-                  "image": "https://clever-pika-899e4f.netlify.app/mypictransparent.png",
+                  "image": "/pics/mypictransparent.png",
+                  "alumniOf": {
+                    "@type": "Organization",
+                    "name": "University of Sydney"
+                  },
+                  "knowsAbout": [
+                    "AI",
+                    "Automation", 
+                    "Strategy",
+                    "Digital Transformation",
+                    "Business Process Optimization",
+                    "AI Strategy Execution",
+                    "Agentic AI",
+                    "AI Leadership",
+                    "Enterprise AI",
+                    "AI Consulting"
+                  ],
                   "sameAs": [
                     "https://www.linkedin.com/in/hesham-badr",
                     "https://www.neuronovate.consulting"
@@ -129,8 +145,16 @@ export default function RootLayout({
                   "url": "https://www.neuronovate.consulting",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://clever-pika-899e4f.netlify.app/signaturetransparent1.png"
+                    "url": "/pics/signaturetransparent1.png"
                   },
+                  "contactPoint": [
+                    {
+                      "@type": "ContactPoint",
+                      "email": "info@neuronovate.consulting",
+                      "contactType": "customer support",
+                      "areaServed": ["AU", "ES", "global"]
+                    }
+                  ],
                   "founder": {
                     "@id": "https://hesham.badr.neuronovate.consulting#hesham"
                   },
@@ -139,6 +163,45 @@ export default function RootLayout({
                     "https://www.linkedin.com/company/neuronovate",
                     "https://www.hesham.badr.neuronovate.consulting"
                   ]
+                },
+                {
+                  "@type": "Service",
+                  "@id": "https://www.neuronovate.consulting#service-consulting",
+                  "name": "Management Consulting",
+                  "provider": {
+                    "@id": "https://www.neuronovate.consulting#neuronovate"
+                  },
+                  "description": "Strategic advisory across transformation, operating model design, cost optimization, and organizational alignment.",
+                  "areaServed": ["Australia", "Spain", "Remote"],
+                  "serviceType": "Business Consulting",
+                  "category": "Management",
+                  "url": "https://www.neuronovate.consulting/service-Catalogue"
+                },
+                {
+                  "@type": "Service",
+                  "@id": "https://www.neuronovate.consulting#service-automation",
+                  "name": "AI & Automation Deployment",
+                  "provider": {
+                    "@id": "https://www.neuronovate.consulting#neuronovate"
+                  },
+                  "description": "Design and implementation of AI-powered workflows, intelligent automation, and process digitization solutions.",
+                  "areaServed": ["Australia", "Spain", "Remote"],
+                  "serviceType": "AI & Automation Services",
+                  "category": "Technology",
+                  "url": "https://www.neuronovate.consulting/service-Catalogue"
+                },
+                {
+                  "@type": "Service",
+                  "@id": "https://www.neuronovate.consulting#service-training",
+                  "name": "Training & Capability Building",
+                  "provider": {
+                    "@id": "https://www.neuronovate.consulting#neuronovate"
+                  },
+                  "description": "Tailored training in Lean Six Sigma, AI fluency, digital transformation, and leadership development.",
+                  "areaServed": ["Australia", "Spain", "Remote"],
+                  "serviceType": "Professional Training",
+                  "category": "Learning & Development",
+                  "url": "https://www.neuronovate.consulting/service-Catalogue"
                 }
               ]
             })

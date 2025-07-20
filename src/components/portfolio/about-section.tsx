@@ -541,7 +541,7 @@ export const AboutSection = () => {
           <div className="flex justify-center mb-4">
             <img
               id="about-signature"
-              src="https://clever-pika-899e4f.netlify.app/signaturetransparent1.png"
+              src="/pics/signaturetransparent1.png"
               alt="Hesham Badr Signature"
               className="h-16 sm:h-20 lg:h-20 xl:h-24 w-auto object-contain"
             />
@@ -760,8 +760,8 @@ export const AboutSection = () => {
                   const isTapped = tapped === idx;
                   return (
                     <div key={metric.label} className="relative">
-                      <div
-                        tabIndex={0}
+                      <button
+                        type="button"
                         aria-describedby={popupId}
                         onClick={(event) => handleMetricClickWithPosition(idx, event)}
                         onTouchStart={() => setTapped(idx)}
@@ -774,7 +774,7 @@ export const AboutSection = () => {
                         <div className="text-[10px] sm:text-xs md:text-sm text-white/70 font-normal leading-tight mt-1 sm:mt-2 text-center stat-label px-1">
                           {metric.label}
                         </div>
-                      </div>
+                      </button>
                       
                       {/* Mobile Popup - Fixed positioned to stay within viewport */}
                       {isPopupActive && (

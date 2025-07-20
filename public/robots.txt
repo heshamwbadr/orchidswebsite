@@ -4,6 +4,9 @@
 User-agent: *
 Allow: /
 
+# Allow image indexing for SEO
+Allow: /pics/
+
 # Sitemap
 Sitemap: https://hesham.badr.neuronovate.consulting/sitemap.xml
 
