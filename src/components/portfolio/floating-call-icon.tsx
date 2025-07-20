@@ -60,7 +60,7 @@ export const FloatingCallButton = () => {
             {/* Main button with subtle bounce */}
             <motion.button
               onClick={handleClick}
-              id="floating-cta"
+              id="floating-cta-button"
               className="floating-cta-btn relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target pointer-events-auto"
               aria-label="Schedule a call - Opens Calendly popup"
               title="Schedule a 30-minute consultation"
