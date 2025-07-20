@@ -397,12 +397,21 @@ export const AboutSection = () => {
   };
 
   const handleMetricClickWithPosition = (index: number, event: React.MouseEvent) => {
-    const position = getPopupPosition(event);
-    
-    // Additional fallback check for extreme edge cases
+    // Cache getBoundingClientRect result to avoid forced reflow
     const rect = event.currentTarget.getBoundingClientRect();
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
+    
+    // Create a synthetic event with cached rect for getPopupPosition
+    const syntheticEvent = {
+      ...event,
+      currentTarget: {
+        ...event.currentTarget,
+        getBoundingClientRect: () => rect
+      }
+    } as React.MouseEvent;
+    
+    const position = getPopupPosition(syntheticEvent);
     
     // Check if there's enough space below the tile for the popup
     const popupHeight = 220; // approximate height
