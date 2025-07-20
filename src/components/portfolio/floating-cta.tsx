@@ -3,11 +3,11 @@
 import React from "react";
 import { Phone } from "lucide-react";
 import { motion } from "framer-motion";
-import { openCalendlyPopup } from "@/lib/calendly";
+import { openCalendlyPopupSafe } from "@/lib/calendly";
 
 export const FloatingCallToAction = () => {
   const handleCallClick = () => {
-    openCalendlyPopup();
+    openCalendlyPopupSafe();
   };
 
   return (
