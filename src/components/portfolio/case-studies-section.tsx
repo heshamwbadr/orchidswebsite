@@ -387,7 +387,11 @@ export function CaseStudiesSection() {
               >
                 <Dialog>
                   <DialogTrigger asChild>
-                    <div className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden cursor-pointer touch-target min-h-[380px] sm:min-h-[420px] flex flex-col">
+                    <button 
+                      type="button"
+                      className="relative h-full bg-gradient-to-br from-card/60 via-card/40 to-secondary/60 backdrop-blur-xl border border-border/50 rounded-xl lg:rounded-2xl responsive-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden cursor-pointer touch-target min-h-[380px] sm:min-h-[420px] flex flex-col text-left w-full"
+                      aria-label={`View case study: ${study.title}`}
+                    >
                       {/* Hover Glow Effect */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
 
@@ -484,7 +488,7 @@ export function CaseStudiesSection() {
                         <div className="absolute top-4 right-4 w-2 h-2 bg-primary/60 rounded-full opacity-60 group-hover:animate-pulse group-active:animate-pulse" />
                         <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent/60 rounded-full opacity-40 group-hover:animate-pulse group-active:animate-pulse delay-300" />
                       </div>
-                    </div>
+                    </button>
                   </DialogTrigger>
 
                   <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto bg-card/95 border-border/50 text-foreground mx-4 sm:mx-auto">
