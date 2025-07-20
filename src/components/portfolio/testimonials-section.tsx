@@ -89,6 +89,9 @@ export const Testimonials = () => {
   const touchStartY = useRef<number | null>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Create infinite loop by duplicating testimonials
+  const infiniteTestimonials = [...testimonials, ...testimonials, ...testimonials];
+
   // Ensure component is mounted
   useEffect(() => {
     setIsMounted(true);
@@ -184,8 +187,8 @@ export const Testimonials = () => {
         onScroll={handleScroll}
       >
         <div ref={trackRef} className="carousel-track">
-          {testimonials.map((t) => (
-            <div key={t.id} className="testimonial-card">
+          {infiniteTestimonials.map((t, index) => (
+            <div key={`${t.id}-${index}`} className="testimonial-card">
               <div className="metric-badge">{t.metric}</div>
               <blockquote className="quote">"{t.quote}"</blockquote>
               <div className="author-info">
@@ -197,7 +200,7 @@ export const Testimonials = () => {
                     height={48}
                     sizes="(max-width: 768px) 48px, 64px"
                     className="avatar"
-                    priority={t.id <= 2} // Prioritize first two images
+                    priority={index < 4} // Prioritize first 4 images (2 sets)
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = fallbackAvatar;
