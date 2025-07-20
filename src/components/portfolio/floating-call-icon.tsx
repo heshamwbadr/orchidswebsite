@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone } from "lucide-react";
 import { openCalendlyPopupSafe } from "@/lib/calendly";
@@ -22,14 +22,14 @@ export const FloatingCallButton = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (typeof window !== "undefined" && window.dataLayer) {
       window.dataLayer.push({
         event: "floating_cta_click",
       });
     }
     openCalendlyPopupSafe();
-  };
+  }, []);
 
   return (
     <>

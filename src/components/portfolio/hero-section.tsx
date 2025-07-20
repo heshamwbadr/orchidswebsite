@@ -237,9 +237,21 @@ const TrustCarousel: React.FC = () => {
 
 export const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
+  const [neuralElements, setNeuralElements] = useState<Array<{cx: number, cy: number, x1: number, y1: number, x2: number, y2: number}>>([]);
 
   useEffect(() => {
     setMounted(true);
+    
+    // Generate neural elements once, not on every render
+    const elements = Array.from({ length: 20 }).map(() => ({
+      cx: Math.random() * 1000,
+      cy: Math.random() * 1000,
+      x1: Math.random() * 1000,
+      y1: Math.random() * 1000,
+      x2: Math.random() * 1000,
+      y2: Math.random() * 1000,
+    }));
+    setNeuralElements(elements);
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -299,42 +311,41 @@ export const HeroSection = () => {
             </defs>
 
             {/* Neural Network Pattern */}
-            {mounted &&
-              Array.from({ length: 20 }).map((_, i) => (
-                <g key={i}>
-                  <circle
-                    cx={Math.random() * 1000}
-                    cy={Math.random() * 1000}
-                    r="2"
-                    fill="url(#neural-gradient)"
-                    opacity={0.8}
-                  >
-                    <animate
-                      attributeName="opacity"
-                      values="0.4;1;0.4"
-                      dur={`${3 + Math.random() * 4}s`}
-                      repeatCount="indefinite"
-                    />
-                  </circle>
+            {mounted && neuralElements.map((element, i) => (
+              <g key={i}>
+                <circle
+                  cx={element.cx}
+                  cy={element.cy}
+                  r="2"
+                  fill="url(#neural-gradient)"
+                  opacity={0.8}
+                >
+                  <animate
+                    attributeName="opacity"
+                    values="0.4;1;0.4"
+                    dur={`${3 + (i % 4)}s`}
+                    repeatCount="indefinite"
+                  />
+                </circle>
 
-                  <line
-                    x1={Math.random() * 1000}
-                    y1={Math.random() * 1000}
-                    x2={Math.random() * 1000}
-                    y2={Math.random() * 1000}
-                    stroke="url(#neural-gradient)"
-                    strokeWidth="1"
-                    opacity={0.3}
-                  >
-                    <animate
-                      attributeName="opacity"
-                      values="0.2;0.6;0.2"
-                      dur={`${4 + Math.random() * 3}s`}
-                      repeatCount="indefinite"
-                    />
-                  </line>
-                </g>
-              ))}
+                <line
+                  x1={element.x1}
+                  y1={element.y1}
+                  x2={element.x2}
+                  y2={element.y2}
+                  stroke="url(#neural-gradient)"
+                  strokeWidth="1"
+                  opacity={0.3}
+                >
+                  <animate
+                    attributeName="opacity"
+                    values="0.2;0.6;0.2"
+                    dur={`${4 + (i % 3)}s`}
+                    repeatCount="indefinite"
+                  />
+                </line>
+              </g>
+            ))}
           </svg>
         </div>
       </div>
@@ -456,7 +467,9 @@ export const HeroSection = () => {
           >
             <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex flex-col items-center justify-center lg:justify-center">
               <img
-                src="/pics/mypictransparent.webp"
+                src="/pics/mypictransparent-576.webp"
+                srcSet="/pics/mypictransparent-576.webp 576w, /pics/mypictransparent.webp 1200w"
+                sizes="(max-width: 768px) 576px, 1200px"
                 alt="Hesham Badr - AI & Digital Transformation Strategist"
                 className="w-full h-auto max-h-[60vh] sm:max-h-[70vh] lg:max-h-none object-contain"
                 style={{
@@ -473,7 +486,9 @@ export const HeroSection = () => {
         <div className="block lg:hidden mt-8 sm:mt-12 w-full flex flex-col items-center justify-center">
           <div className="relative">
           <img
-            src="/pics/mypictransparent.webp"
+            src="/pics/mypictransparent-576.webp"
+            srcSet="/pics/mypictransparent-576.webp 576w, /pics/mypictransparent.webp 1200w"
+            sizes="(max-width: 768px) 576px, 1200px"
             alt="Hesham Badr - AI & Digital Transformation Strategist"
               className="w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full shadow-xl border-2 border-primary/20 object-cover"
               style={{

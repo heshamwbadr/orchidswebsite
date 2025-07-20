@@ -1,10 +1,26 @@
 "use client";
+import Script from "next/script";
 import { useEffect } from "react";
 import { loadCalendlyScript } from "@/lib/calendly";
 
 export function CalendlyPreload() {
   useEffect(() => {
-    loadCalendlyScript();
+    // Load Calendly script after page load to avoid blocking critical requests
+    const timer = setTimeout(() => {
+      loadCalendlyScript();
+    }, 2000); // Delay loading by 2 seconds
+
+    return () => clearTimeout(timer);
   }, []);
-  return null;
+  
+  return (
+    <>
+      {/* Preload Calendly script with low priority */}
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+        id="calendly-script"
+      />
+    </>
+  );
 } 

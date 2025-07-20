@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -16,14 +16,14 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 50);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -198,7 +198,9 @@ export const Navigation = () => {
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity duration-300 touch-target p-2 -ml-2"
           >
             <img
-                              src="/pics/signaturetransparent1.webp"
+                              src="/pics/signaturetransparent1-171.webp"
+                srcSet="/pics/signaturetransparent1-171.webp 171w, /pics/signaturetransparent1.webp 400w"
+                sizes="(max-width: 768px) 171px, 400px"
               alt="Hesham Badr Signature"
               className="h-10 sm:h-12 lg:h-14 xl:h-16 w-auto object-contain"
             />

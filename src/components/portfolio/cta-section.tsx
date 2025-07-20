@@ -422,7 +422,9 @@ export const CTASection = () => {
                 className="flex items-center justify-center"
               >
                 <img
-                  src="/pics/mypictransparent.webp"
+                  src="/pics/mypictransparent-576.webp"
+                  srcSet="/pics/mypictransparent-576.webp 576w, /pics/mypictransparent.webp 1200w"
+                  sizes="(max-width: 768px) 576px, 1200px"
                   alt="Professional headshot"
                   className="responsive-image-contain w-full h-auto max-w-full"
                   style={{ transform: "scale(0.7) sm:scale(0.8)" }}

@@ -1,7 +1,7 @@
 // TestimonialsCarousel.tsx
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
 
 const testimonials = [
@@ -90,7 +90,10 @@ export const Testimonials = () => {
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Create infinite loop by duplicating testimonials
-  const infiniteTestimonials = [...testimonials, ...testimonials, ...testimonials];
+  const infiniteTestimonials = useMemo(() => 
+    [...testimonials, ...testimonials, ...testimonials], 
+    []
+  );
 
   // Ensure component is mounted
   useEffect(() => {
@@ -98,28 +101,28 @@ export const Testimonials = () => {
   }, []);
 
   // Detect mobile device
+  const checkMobile = useCallback(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
   useEffect(() => {
     if (!isMounted) return;
-
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, [isMounted]);
+  }, [isMounted, checkMobile]);
 
   // Handle touch events
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!isMobile) return;
 
     setIsInteracting(true);
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
-  };
+  }, [isMobile]);
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isMobile || !touchStartX.current || !touchStartY.current) return;
 
     const touchX = e.touches[0].clientX;
@@ -131,9 +134,9 @@ export const Testimonials = () => {
       // Horizontal scroll detected
       setIsInteracting(true);
     }
-  };
+  }, [isMobile]);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     if (!isMobile) return;
 
     setIsInteracting(false);
@@ -145,10 +148,10 @@ export const Testimonials = () => {
     scrollTimeoutRef.current = setTimeout(() => {
       setIsInteracting(false);
     }, 1500);
-  };
+  }, [isMobile]);
 
   // Handle scroll for desktop
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (isMobile) return;
 
     setIsInteracting(true);
@@ -156,7 +159,7 @@ export const Testimonials = () => {
     scrollTimeoutRef.current = setTimeout(() => {
       setIsInteracting(false);
     }, 1500);
-  };
+  }, [isMobile]);
 
   // Cleanup timeout
   useEffect(() => {

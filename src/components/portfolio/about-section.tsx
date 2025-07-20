@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Briefcase,
@@ -215,24 +215,25 @@ export const AboutSection = () => {
   }, []);
 
   // Detect mobile device only after mounting
+  const checkMobile = useCallback(() => {
+    setIsMobile(window.innerWidth < 1024);
+  }, []);
+
   useEffect(() => {
     if (!isMounted) return;
     
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, [isMounted]);
+  }, [isMounted, checkMobile]);
 
   // Auto-close popup on scroll for mobile devices
-  useEffect(() => {
+  const handleScroll = useCallback(() => {
     if (!isMounted || !isMobile || activePopup === null) return;
 
     let lastScrollY = window.scrollY;
     
-    const handleScroll = () => {
+    return () => {
       const currentScrollY = window.scrollY;
       const scrollDelta = currentScrollY - lastScrollY;
       
@@ -243,15 +244,19 @@ export const AboutSection = () => {
       
       lastScrollY = currentScrollY;
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, [isMounted, isMobile, activePopup]);
 
-  const handleCardClick = (index: number, isExpanded: boolean, event: React.MouseEvent) => {
+  useEffect(() => {
+    if (!isMounted || !isMobile || activePopup === null) return;
+
+    const scrollHandler = handleScroll();
+    if (scrollHandler) {
+      window.addEventListener('scroll', scrollHandler, { passive: true });
+      return () => window.removeEventListener('scroll', scrollHandler);
+    }
+  }, [isMounted, isMobile, activePopup, handleScroll]);
+
+  const handleCardClick = useCallback((index: number, isExpanded: boolean, event: React.MouseEvent) => {
     // Prevent scrolling on mobile when expanding/collapsing cards
     if (isMobile) { // lg breakpoint
       event.preventDefault();
@@ -301,11 +306,11 @@ export const AboutSection = () => {
     } else {
       setExpandedCard(isExpanded ? null : index);
     }
-  };
+  }, [isMobile, expandedCard]);
 
-  const handleMetricClick = (index: number) => {
+  const handleMetricClick = useCallback((index: number) => {
     setActivePopup(activePopup === index ? null : index);
-  };
+  }, [activePopup]);
 
   const getPopupPosition = (event: React.MouseEvent): { horizontal: 'left' | 'right'; vertical: 'above' | 'below' } => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -550,7 +555,9 @@ export const AboutSection = () => {
           <div className="flex justify-center mb-4">
             <img
               id="about-signature"
-                              src="/pics/signaturetransparent1.webp"
+                              src="/pics/signaturetransparent1-171.webp"
+                srcSet="/pics/signaturetransparent1-171.webp 171w, /pics/signaturetransparent1.webp 400w"
+                sizes="(max-width: 768px) 171px, 400px"
               alt="Hesham Badr Signature"
               className="h-16 sm:h-20 lg:h-20 xl:h-24 w-auto object-contain"
             />

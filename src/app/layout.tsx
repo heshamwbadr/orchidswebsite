@@ -3,8 +3,7 @@ import "./globals.css";
 import Script from "next/script";
 import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
 import { CalendlyPreload } from "@/components/CalendlyPreload";
-import { useEffect } from "react";
-import { loadCalendlyScript } from "@/lib/calendly";
+import { GTMLoader } from "@/components/GTMLoader";
 
 export const metadata: Metadata = {
   title: "Hesham Badr | Certified AI Transformation Consultant & Strategy Partner",
@@ -51,20 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <Script id="gtm-datalayer" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-          `}
-        </Script>
-        <Script id="gtm-head" strategy="beforeInteractive">
-          {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-TJZF93FB');
-          `}
-        </Script>
+        {/* GTM loaded conditionally to reduce unused JavaScript */}
         <meta name="google-site-verification" content="B2jZGoMehuT2xfbKUL3J1qTxonbEcN43peLfP3CrN60" />
         <title>Hesham Badr | AI Strategy & Transformation Consultant</title>
         <meta name="description" content="Helping leaders cut through the AI noise and drive real outcomes. Strategy, automation, and transformation from boardroom to frontline." />
@@ -79,10 +65,7 @@ export default function RootLayout({
         <meta name="twitter:title" content="Hesham Badr | AI Strategy & Transformation Consultant" />
         <meta name="twitter:description" content="Helping leaders cut through the AI noise and drive real outcomes." />
         <meta name="twitter:image" content="/og-image.png" />
-        <link
-          href="https://assets.calendly.com/assets/external/widget.css"
-          rel="stylesheet"
-        />
+        {/* Calendly CSS loaded dynamically to avoid blocking critical requests */}
         <meta name="author" content="Hesham Badr" />
         <meta
           name="keywords"
@@ -218,6 +201,7 @@ export default function RootLayout({
           ></iframe>
         </noscript>
         <CalendlyPreload />
+        <GTMLoader />
         <div className="relative min-h-screen">{children}</div>
         <FloatingCallButton />
         <Script

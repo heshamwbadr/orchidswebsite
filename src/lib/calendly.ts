@@ -51,7 +51,22 @@ export const loadCalendlyScript = (): Promise<void> => {
       return;
     }
 
-    // Load Calendly script
+    // Check if Next.js Script component already loaded the script
+    const existingScript = document.querySelector('script[id="calendly-script"]');
+    if (existingScript) {
+      // Wait for it to load
+      const checkCalendly = () => {
+        if (window.Calendly) {
+          resolve();
+        } else {
+          setTimeout(checkCalendly, 100);
+        }
+      };
+      checkCalendly();
+      return;
+    }
+
+    // Fallback: Load Calendly script manually if Next.js Script didn't load it
     const script = document.createElement("script");
     script.src = "https://assets.calendly.com/assets/external/widget.js";
     script.async = true;
@@ -74,11 +89,17 @@ export const loadCalendlyScript = (): Promise<void> => {
 
     document.head.appendChild(script);
 
-    // Also load CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
+    // Load CSS non-blocking
+    if (!document.querySelector('link[href*="calendly.com"]')) {
+      const link = document.createElement("link");
+      link.href = "https://assets.calendly.com/assets/external/widget.css";
+      link.rel = "stylesheet";
+      link.media = "print"; // Load in background
+      link.onload = () => {
+        link.media = "all"; // Apply styles when loaded
+      };
+      document.head.appendChild(link);
+    }
   });
 };
 
