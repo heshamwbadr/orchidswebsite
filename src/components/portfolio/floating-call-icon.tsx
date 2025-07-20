@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone } from "lucide-react";
-import { openCalendlyPopupSafe } from "@/lib/calendly";
+import { useCalendly } from "@/components/CalendlyLazyLoader";
 
 declare global {
   interface Window {
@@ -13,6 +13,7 @@ declare global {
 
 export const FloatingCallButton = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { openPopup } = useCalendly();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,8 +29,8 @@ export const FloatingCallButton = () => {
         event: "floating_cta_click",
       });
     }
-    openCalendlyPopupSafe();
-  }, []);
+    openPopup();
+  }, [openPopup]);
 
   return (
     <>

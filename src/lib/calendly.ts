@@ -106,6 +106,13 @@ export const loadCalendlyScript = (): Promise<void> => {
 // Enhanced function that ensures Calendly is loaded before opening popup
 export const openCalendlyPopupSafe = async (): Promise<void> => {
   try {
+    // Check if Calendly is already available
+    if (typeof window !== "undefined" && window.Calendly) {
+      openCalendlyPopup();
+      return;
+    }
+
+    // Load Calendly dynamically
     await loadCalendlyScript();
     openCalendlyPopup();
   } catch (error) {

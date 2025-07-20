@@ -3,14 +3,16 @@
 import React from "react";
 import { Phone } from "lucide-react";
 import { motion } from "framer-motion";
-import { openCalendlyPopupSafe } from "@/lib/calendly";
 import { triggerGTM } from "@/components/GTMLoader";
+import { useCalendly } from "@/components/CalendlyLazyLoader";
 
 export const FloatingCallToAction = () => {
+  const { openPopup } = useCalendly();
+
   const handleCallClick = () => {
     // Trigger GTM loading for conversion tracking
     triggerGTM();
-    openCalendlyPopupSafe();
+    openPopup();
   };
 
   return (

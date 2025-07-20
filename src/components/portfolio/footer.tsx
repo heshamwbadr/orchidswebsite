@@ -184,7 +184,7 @@ export const Footer = () => {
                 </motion.a>
 
                 <motion.button
-                  onClick={openCalendlyPopup}
+                  onClick={handleScheduleConsultation}
                   className="group flex items-center responsive-gap-base text-muted-foreground hover:text-secondary transition-all duration-300 responsive-py-sm touch-target w-full text-left"
                   whileHover={{ x: 8 }}
                 >

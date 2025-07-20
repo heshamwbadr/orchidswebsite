@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Script from "next/script";
 import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
-import { CalendlyPreload } from "@/components/CalendlyPreload";
 import { GTMLoader } from "@/components/GTMLoader";
+import { CalendlyLazyLoader } from "@/components/CalendlyLazyLoader";
 
 export const metadata: Metadata = {
   title: "Hesham Badr | Certified AI Transformation Consultant & Strategy Partner",
@@ -200,14 +200,10 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        <CalendlyPreload />
+        <CalendlyLazyLoader />
         <GTMLoader />
         <div className="relative min-h-screen">{children}</div>
         <FloatingCallButton />
-        <Script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
