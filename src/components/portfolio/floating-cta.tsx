@@ -3,17 +3,17 @@
 import React from "react";
 import { Phone } from "lucide-react";
 import { motion } from "framer-motion";
-import { openCalendlyPopupSafe } from "@/lib/calendly";
+import { openCalendlyPopup } from "@/lib/calendly";
 
 export const FloatingCallToAction = () => {
   const handleCallClick = () => {
-    openCalendlyPopupSafe();
+    openCalendlyPopup();
   };
 
   return (
     <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">
       {/* Pulse rings */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
         {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
@@ -36,7 +36,7 @@ export const FloatingCallToAction = () => {
       {/* Main button */}
       <motion.button
         onClick={handleCallClick}
-        className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target"
+        className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target pointer-events-auto"
         whileHover={{
           scale: 1.1,
           boxShadow:
@@ -74,7 +74,7 @@ export const FloatingCallToAction = () => {
 
       {/* Glow effect */}
       <motion.div
-        className="absolute inset-0 rounded-full opacity-50 blur-xl bg-gradient-to-r from-secondary to-primary"
+        className="absolute inset-0 rounded-full opacity-50 blur-xl bg-gradient-to-r from-secondary to-primary pointer-events-none"
         animate={{
           scale: [0.8, 1.2, 0.8],
           opacity: [0.3, 0.6, 0.3],
