@@ -51,6 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <meta name="google-site-verification" content="B2jZGoMehuT2xfbKUL3J1qTxonbEcN43peLfP3CrN60" />
         <title>Hesham Badr | AI Strategy & Transformation Consultant</title>
         <meta name="description" content="Helping leaders cut through the AI noise and drive real outcomes. Strategy, automation, and transformation from boardroom to frontline." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
