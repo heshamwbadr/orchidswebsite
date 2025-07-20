@@ -456,7 +456,7 @@ export const HeroSection = () => {
           >
             <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex flex-col items-center justify-center lg:justify-center">
               <img
-                src="/pics/mypictransparent.png"
+                src="/pics/mypictransparent.webp"
                 alt="Hesham Badr - AI & Digital Transformation Strategist"
                 className="w-full h-auto max-h-[60vh] sm:max-h-[70vh] lg:max-h-none object-contain"
                 style={{
@@ -473,7 +473,7 @@ export const HeroSection = () => {
         <div className="block lg:hidden mt-8 sm:mt-12 w-full flex flex-col items-center justify-center">
           <div className="relative">
           <img
-            src="/pics/mypictransparent.png"
+            src="/pics/mypictransparent.webp"
             alt="Hesham Badr - AI & Digital Transformation Strategist"
               className="w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full shadow-xl border-2 border-primary/20 object-cover"
               style={{

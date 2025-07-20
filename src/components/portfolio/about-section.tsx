@@ -550,7 +550,7 @@ export const AboutSection = () => {
           <div className="flex justify-center mb-4">
             <img
               id="about-signature"
-              src="/pics/signaturetransparent1.png"
+                              src="/pics/signaturetransparent1.webp"
               alt="Hesham Badr Signature"
               className="h-16 sm:h-20 lg:h-20 xl:h-24 w-auto object-contain"
             />
