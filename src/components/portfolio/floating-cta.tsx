@@ -11,7 +11,7 @@ export const FloatingCallToAction = () => {
   };
 
   return (
-    <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">
+    <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-[5000]">
       {/* Pulse rings */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(3)].map((_, i) => (
