@@ -51,6 +51,20 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <Script id="gtm-datalayer" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+          `}
+        </Script>
+        <Script id="gtm-head" strategy="beforeInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-TJZF93FB');
+          `}
+        </Script>
         <meta name="google-site-verification" content="B2jZGoMehuT2xfbKUL3J1qTxonbEcN43peLfP3CrN60" />
         <title>Hesham Badr | AI Strategy & Transformation Consultant</title>
         <meta name="description" content="Helping leaders cut through the AI noise and drive real outcomes. Strategy, automation, and transformation from boardroom to frontline." />
@@ -132,6 +146,14 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground antialiased overflow-x-hidden">
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-TJZF93FB"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
         <CalendlyPreload />
         <div className="relative min-h-screen">{children}</div>
         <FloatingCallButton />

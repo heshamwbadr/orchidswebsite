@@ -5,6 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Phone } from "lucide-react";
 import { openCalendlyPopupSafe } from "@/lib/calendly";
 
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
+
 export const FloatingCallButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -15,6 +21,15 @@ export const FloatingCallButton = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleClick = () => {
+    if (typeof window !== "undefined" && window.dataLayer) {
+      window.dataLayer.push({
+        event: "floating_cta_click",
+      });
+    }
+    openCalendlyPopupSafe();
+  };
 
   return (
     <>
@@ -44,8 +59,9 @@ export const FloatingCallButton = () => {
 
             {/* Main button with subtle bounce */}
             <motion.button
-              onClick={openCalendlyPopupSafe}
-              className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target pointer-events-auto"
+              onClick={handleClick}
+              id="floating-cta"
+              className="floating-cta-btn relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target pointer-events-auto"
               aria-label="Schedule a call - Opens Calendly popup"
               title="Schedule a 30-minute consultation"
               animate={{ y: [0, -8, 0] }}
