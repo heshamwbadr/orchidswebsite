@@ -270,7 +270,7 @@ export const HeroSection = () => {
           className="h-full w-full object-cover opacity-20 sm:opacity-30 [mask-image:radial-gradient(ellipse_at_center,white_40%,transparent_70%)]"
         >
           <source
-            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/94fd3199-4d32-48fc-865e-b29a5a13ccb2/generated_videos/professional-abstract-ai-and-technology--f174aa81-20250711224003.mp4"
+            src="/hero-background-video.mp4"
             type="video/mp4"
           />
         </video>
