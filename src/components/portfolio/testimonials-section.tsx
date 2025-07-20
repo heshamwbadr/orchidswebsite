@@ -3,9 +3,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Star, Building2, User, ChevronLeft, ChevronRight } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 const testimonials = [
   {
@@ -71,7 +68,7 @@ const testimonials = [
   {
     id: 6,
     quote:
-      "Hesham consistently demonstrated a natural ability to break down complex problems and articulate clear, data-backed recommendations for executive decision-making. What stood out most was his ability to influence collaboratively, guiding stakeholders through ambiguity and aligning diverse views without friction.",
+      "Hesham consistently demonstrated a natural ability to break down complex problems and articulate clear, data-backed recommendations for executive decision-making. What stood out most was his ability to influence collaboratively.",
     name: "Waleed Zafar",
     title: "Strategy & Design Lead",
     company: "Westpac",
@@ -83,267 +80,78 @@ const testimonials = [
 ];
 
 export const Testimonials = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const animationRef = useRef<number | null>(null);
-  const dragStartX = useRef<number | null>(null);
-  const dragStartY = useRef<number | null>(null);
-  const dragStartOffset = useRef(0);
-  const lastUpdateTime = useRef(0);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
-  const isLongPress = useRef(false);
-  const cardWidth = isMobile ? 320 : 380;
-  const gap = 16;
-  const seamlessTestimonials = [...testimonials, ...testimonials, ...testimonials];
-  const singleLoopWidth = (seamlessTestimonials.length / 3) * (cardWidth + gap);
+  const [isTouching, setIsTouching] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Ensure component is mounted before accessing window
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Detect mobile device only after mounting
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, [isMounted]);
+  // Handle touch events for mobile
+  const handleTouchStart = () => {
+    setIsTouching(true);
+    if (carouselRef.current) {
+      carouselRef.current.classList.add('touching');
+    }
+  };
 
-  // Simplified mobile auto-scroll initialization
-  useEffect(() => {
-    if (!isMounted || !isMobile) return;
+  const handleTouchEnd = () => {
+    setIsTouching(false);
+    if (carouselRef.current) {
+      carouselRef.current.classList.remove('touching');
+    }
+  };
 
-    const handleFirstInteraction = () => {
-      // Start auto-scroll immediately after first interaction
-      setHasInteracted(true);
-      setIsPaused(false);
-      
-      // Remove listener after first interaction
-      window.removeEventListener("touchstart", handleFirstInteraction);
-      window.removeEventListener("click", handleFirstInteraction);
-      document.removeEventListener("touchstart", handleFirstInteraction);
-      document.removeEventListener("click", handleFirstInteraction);
-    };
-
-    // Start auto-scroll only after first interaction
-    // Add listeners to both window and document for better Safari compatibility
-    window.addEventListener("touchstart", handleFirstInteraction, { once: true, passive: true });
-    window.addEventListener("click", handleFirstInteraction, { once: true });
-    document.addEventListener("touchstart", handleFirstInteraction, { once: true, passive: true });
-    document.addEventListener("click", handleFirstInteraction, { once: true });
-
-    return () => {
-      window.removeEventListener("touchstart", handleFirstInteraction);
-      window.removeEventListener("click", handleFirstInteraction);
-      document.removeEventListener("touchstart", handleFirstInteraction);
-      document.removeEventListener("click", handleFirstInteraction);
-    };
-  }, [isMobile, isMounted]);
-
-  // Auto-scroll effect - now considers hasInteracted for mobile
-  useEffect(() => {
-    if (!isMounted) return; // Don't run animation during SSR
-    
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    // On mobile, only start auto-scroll after first interaction
-    if (isMobile && !hasInteracted) {
-      return;
+  // Handle scroll events for desktop
+  const handleScroll = () => {
+    setIsScrolling(true);
+    if (carouselRef.current) {
+      carouselRef.current.classList.add('manual-scroll');
     }
     
-    // On mobile, only pause if actively dragging, not on touch
-    const shouldPause = isPaused || (isDragging && !isMobile);
-    if (shouldPause) {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-      return;
+    // Clear existing timeout
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
     }
-
-    const animate = () => {
-      if (!container) return;
-      
-      // Safari-specific check for container validity
-      if (!container.scrollWidth || container.scrollWidth === 0) {
-        animationRef.current = requestAnimationFrame(animate);
-        return;
-      }
-      
-      const maxScroll = container.scrollWidth / 3;
-      let nextScroll = container.scrollLeft + 0.5;
-
-      if (nextScroll >= maxScroll * 2) {
-        container.scrollLeft = maxScroll;
-      } else {
-        container.scrollLeft = nextScroll;
-      }
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    // Small delay for Safari to ensure container is ready
-    const startAnimation = () => {
-      animationRef.current = requestAnimationFrame(animate);
-    };
     
-    // Use setTimeout for Safari compatibility
-    setTimeout(startAnimation, 100);
+    // Reset after scrolling stops
+    scrollTimeoutRef.current = setTimeout(() => {
+      setIsScrolling(false);
+      if (carouselRef.current) {
+        carouselRef.current.classList.remove('manual-scroll');
+      }
+    }, 1500); // Resume auto-scroll 1.5s after user stops scrolling
+  };
 
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-  }, [isPaused, isDragging, isMobile, isMounted, hasInteracted]);
+  // Handle mouse enter/leave for desktop
+  const handleMouseEnter = () => {
+    if (carouselRef.current) {
+      carouselRef.current.classList.add('hovered');
+    }
+  };
 
-  // Start auto-scroll immediately on desktop
-  useEffect(() => {
-    if (!isMounted || isMobile) return;
-    
-    // On desktop, start auto-scroll immediately
-    setIsPaused(false);
-  }, [isMounted, isMobile]);
+  const handleMouseLeave = () => {
+    if (carouselRef.current) {
+      carouselRef.current.classList.remove('hovered');
+    }
+  };
 
-  // Cleanup long press timer on unmount
+  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      if (longPressTimer.current) {
-        clearTimeout(longPressTimer.current);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
       }
     };
   }, []);
 
-  const handleMouseEnter = () => setIsPaused(true);
-  const handleMouseLeave = () => setIsPaused(false);
-  const handleTouchStart = () => {
-    dragStartOffset.current = 0; // Reset drag offset
-    isLongPress.current = false;
-    
-    // Clear any existing long press timer
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-    }
-    
-    // For mobile, start long press timer
-    if (isMobile) {
-      longPressTimer.current = setTimeout(() => {
-        isLongPress.current = true;
-        setIsPaused(true); // Only pause on long press
-      }, 500); // 500ms for long press detection
-    } else {
-      // Desktop behavior unchanged
-      setIsPaused(true);
-    }
-  };
-  
-  const handleTouchEnd = () => {
-    // Clear long press timer
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-    
-    if (isDragging) {
-      setIsDragging(false);
-      setIsPaused(false);
-    } else if (isLongPress.current) {
-      // If it was a long press, resume scrolling after a short delay
-      isLongPress.current = false;
-      setTimeout(() => {
-        setIsPaused(false);
-      }, 1000); // Resume after 1 second
-    } else {
-      // For regular touch, resume immediately
-      setIsPaused(false);
-    }
-  };
-
-  // Graceful scroll resumption after touch interactions
-  const resumeScrollLater = () => {
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(() => setIsPaused(false), { timeout: 2000 });
-    } else {
-      setTimeout(() => setIsPaused(false), 2000);
-    }
-  };
-
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    // For touch events, only start dragging if it's a clear horizontal gesture
-    if ('touches' in e) {
-      const touch = e.touches[0];
-      const touchStartY = touch.clientY;
-      const touchStartX = touch.clientX;
-      
-      // Store initial touch position for gesture detection
-      dragStartX.current = touchStartX;
-      dragStartY.current = touchStartY;
-      
-      // Don't immediately start dragging on touch
-      return;
-    }
-    
-    // For mouse events, start dragging immediately
-    setIsDragging(true);
-    setIsPaused(true);
-    const clientX = (e as React.MouseEvent).clientX;
-    dragStartX.current = clientX;
-    if (scrollRef.current) {
-      dragStartOffset.current = scrollRef.current.scrollLeft;
-    }
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    setIsPaused(false);
-    dragStartX.current = null;
-    const container = scrollRef.current;
-    if (container) {
-      const snap = Math.round(container.scrollLeft / (cardWidth + gap)) * (cardWidth + gap);
-      container.scrollTo({ left: snap, behavior: "smooth" });
-    }
-  };
-
-  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging || dragStartX.current === null) return;
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    // Set dragStartOffset if not already set (for mobile gestures)
-    if (dragStartOffset.current === 0) {
-      dragStartOffset.current = container.scrollLeft;
-    }
-    
-    const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
-    const dx = dragStartX.current - clientX;
-    let newOffset = dragStartOffset.current + dx;
-    const maxScroll = container.scrollWidth / 3;
-
-    if (newOffset < 0) {
-      newOffset += maxScroll;
-      container.scrollLeft = maxScroll;
-    } else if (newOffset >= maxScroll * 2) {
-      newOffset -= maxScroll;
-    }
-
-    container.scrollLeft = newOffset;
-  };
-
-  const scroll = (direction: 'left' | 'right') => {
-    const container = scrollRef.current;
-    if (!container) return;
-    const scrollAmount = direction === 'left' ? -(cardWidth + gap) : (cardWidth + gap);
-    let newScroll = container.scrollLeft + scrollAmount;
-    const maxScroll = container.scrollWidth / 3;
-    if (newScroll < 0) newScroll += maxScroll;
-    if (newScroll >= maxScroll * 2) newScroll -= maxScroll;
-    container.scrollTo({ left: newScroll, behavior: "smooth" });
-  };
+  // Fallback avatar for image loading errors
+  const fallbackAvatar = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiMzNzM3MzciLz4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyMCIgcj0iOCIgZmlsbD0iIzY2NjY2NiIvPgo8cGF0aCBkPSJNOCAzNmMwLTggNy4xNi0xMiAxNi0xMnMxNiA0IDE2IDEySDh6IiBmaWxsPSIjNjY2NjY2Ii8+Cjwvc3ZnPgo=";
 
   return (
     <section id="testimonials" className="scroll-mt-20">
@@ -354,196 +162,378 @@ export const Testimonials = () => {
         </p>
       </div>
 
-      <div className="relative px-4">
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x cursor-grab"
-          style={{ 
-            WebkitOverflowScrolling: 'touch',
-            touchAction: isMounted ? 'pan-x pan-y' : 'auto', // Only set on client-side
-            WebkitUserSelect: 'none',
-            userSelect: 'none'
-          }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onTouchStart={(e) => {
-            handleTouchStart();
-            // Don't prevent default to allow screen scrolling
-          }}
-          onTouchEnd={(e) => {
-            handleTouchEnd();
-            // Don't prevent default to allow screen scrolling
-          }}
-          onTouchMove={(e) => {
-            // Clear long press timer on any movement
-            if (longPressTimer.current) {
-              clearTimeout(longPressTimer.current);
-              longPressTimer.current = null;
-              isLongPress.current = false;
-            }
-            
-            const dx = dragStartX.current && e.touches[0].clientX - dragStartX.current;
-            const dy = dragStartY.current && e.touches[0].clientY - dragStartY.current;
-
-            // Determine if gesture is mostly horizontal
-            if (dx && dy && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 5) {
-              setIsDragging(true);
-              setIsPaused(true);
-              
-              // Initialize dragStartOffset if not already set
-              if (dragStartOffset.current === 0 && scrollRef.current) {
-                dragStartOffset.current = scrollRef.current.scrollLeft;
-              }
-              
-              handleDragMove(e);
-              e.preventDefault(); // prevent vertical scroll
-            }
-          }}
-          onMouseDown={handleDragStart}
-          onMouseUp={handleDragEnd}
-          onMouseMove={handleDragMove}
-        >
-          {seamlessTestimonials.map((t, idx) => (
-            <div
-              key={`${t.id}-${idx}`}
-              className="flex-shrink-0 snap-start w-[320px] sm:w-[380px]"
-              style={{ minWidth: 320 }}
-            >
-              <Card className="p-4 sm:p-6 h-full bg-black border border-zinc-800 rounded-xl text-white shadow-md flex flex-col mobile-compact-card">
-                {/* Stars */}
-                <div className="mb-3 sm:mb-4 flex text-cyan-400" aria-label={`${t.rating} out of 5 stars`}>
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-cyan-400 mr-1" />
-                  ))}
+      <div 
+        ref={carouselRef}
+        className="carousel-container"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onScroll={handleScroll}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div ref={trackRef} className="carousel-track">
+          {/* First set */}
+          {testimonials.map((t) => (
+            <div key={`first-${t.id}`} className="testimonial-card">
+              <div className="metric-badge">{t.metric}</div>
+              <blockquote className="quote">"{t.quote}"</blockquote>
+              <div className="author-info">
+                <div className="avatar-container">
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    width={48}
+                    height={48}
+                    className="avatar"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = fallbackAvatar;
+                    }}
+                  />
                 </div>
-
-                {/* Quote */}
-                <blockquote className="text-sm sm:text-base leading-relaxed font-medium text-white mb-4 sm:mb-6 flex-grow mobile-compact-text">
-                  "{t.quote}"
-                </blockquote>
-
-                {/* Metric Badge */}
-                <div className="mb-3 sm:mb-4">
-                  <span className="inline-block px-3 py-1 sm:px-4 rounded-full border border-cyan-700 bg-gradient-to-br from-cyan-900 to-cyan-700 text-cyan-300 text-xs sm:text-sm font-semibold">
-                    {t.metric}
-                  </span>
+                <div className="author-details">
+                  <h4>{t.name}</h4>
+                  <p className="author-title">{t.title}</p>
+                  <p className="company-info">{t.company} • {t.industry}</p>
                 </div>
-
-                {/* Avatar and Info */}
-                <div className="flex items-center">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-cyan-800 mr-3 mobile-compact-avatar">
-                    <Image
-                      src={t.image}
-                      alt={t.name}
-                      width={48}
-                      height={48}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-white text-sm sm:text-base leading-tight">{t.name}</p>
-                    <p className="text-cyan-400 text-xs sm:text-sm font-medium leading-snug">{t.title}</p>
-                    <p className="text-zinc-400 text-xs sm:text-sm mt-1">{t.company} • {t.industry}</p>
-                  </div>
+              </div>
+            </div>
+          ))}
+          
+          {/* Second set */}
+          {testimonials.map((t) => (
+            <div key={`second-${t.id}`} className="testimonial-card">
+              <div className="metric-badge">{t.metric}</div>
+              <blockquote className="quote">"{t.quote}"</blockquote>
+              <div className="author-info">
+                <div className="avatar-container">
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    width={48}
+                    height={48}
+                    className="avatar"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = fallbackAvatar;
+                    }}
+                  />
                 </div>
-              </Card>
+                <div className="author-details">
+                  <h4>{t.name}</h4>
+                  <p className="author-title">{t.title}</p>
+                  <p className="company-info">{t.company} • {t.industry}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          {/* Third set */}
+          {testimonials.map((t) => (
+            <div key={`third-${t.id}`} className="testimonial-card">
+              <div className="metric-badge">{t.metric}</div>
+              <blockquote className="quote">"{t.quote}"</blockquote>
+              <div className="author-info">
+                <div className="avatar-container">
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    width={48}
+                    height={48}
+                    className="avatar"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = fallbackAvatar;
+                    }}
+                  />
+                </div>
+                <div className="author-details">
+                  <h4>{t.name}</h4>
+                  <p className="author-title">{t.title}</p>
+                  <p className="company-info">{t.company} • {t.industry}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
+        .carousel-container {
+          position: relative;
+          overflow-x: auto;
+          overflow-y: hidden;
+          padding: 0 16px;
+          cursor: grab;
+          max-width: 1200px;
+          margin: 0 auto;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          scroll-behavior: smooth;
+        }
+        
+        .carousel-container::-webkit-scrollbar {
           display: none;
         }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .cursor-grab:active {
+        
+        .carousel-container:active {
           cursor: grabbing;
         }
         
-        /* Mobile touch behavior */
+        .carousel-track {
+          display: flex;
+          gap: 16px;
+          animation: scroll 45s linear infinite;
+          width: calc(300% + 32px);
+          will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          min-width: max-content;
+        }
+        
+        .testimonial-card {
+          flex: 0 0 320px;
+          background: #000;
+          border: 1px solid #27272a;
+          border-radius: 12px;
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          height: 380px;
+          position: relative;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+        
+        .metric-badge {
+          display: inline-block;
+          padding: 8px 16px;
+          border-radius: 9999px;
+          border: 1px solid #0e7490;
+          background: linear-gradient(to bottom right, #164e63, #0e7490);
+          color: #67e8f9;
+          font-size: 0.75rem;
+          font-weight: 600;
+          margin-bottom: 16px;
+          align-self: flex-start;
+        }
+        
+        .quote {
+          font-size: 0.875rem;
+          line-height: 1.5;
+          font-weight: 500;
+          color: white;
+          margin-bottom: 24px;
+          flex-grow: 1;
+        }
+        
+        .author-info {
+          display: flex;
+          align-items: center;
+          margin-top: auto;
+        }
+        
+        .avatar-container {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          border: 2px solid #155e75;
+          margin-right: 12px;
+          flex-shrink: 0;
+          background: #374151;
+          overflow: hidden;
+          position: relative;
+        }
+        
+        .avatar {
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+        }
+        
+        .avatar.loaded {
+          opacity: 1;
+        }
+        
+        .author-details h4 {
+          font-weight: 600;
+          color: white;
+          font-size: 0.875rem;
+          line-height: 1.2;
+          margin-bottom: 2px;
+        }
+        
+        .author-title {
+          color: #22d3ee;
+          font-size: 0.75rem;
+          font-weight: 500;
+          line-height: 1.2;
+          margin-bottom: 4px;
+        }
+        
+        .company-info {
+          color: #a1a1aa;
+          font-size: 0.75rem;
+        }
+        
+        /* Desktop scrollable behavior */
+        @media (min-width: 769px) {
+          .carousel-container {
+            scroll-snap-type: x proximity;
+            cursor: grab;
+          }
+          
+          .carousel-container:active {
+            cursor: grabbing;
+          }
+          
+          .testimonial-card {
+            flex: 0 0 380px;
+            padding: 32px;
+            height: 420px;
+            scroll-snap-align: start;
+          }
+          
+          .quote {
+            font-size: 1rem;
+          }
+          
+          .metric-badge {
+            font-size: 0.875rem;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+          }
+          
+          .author-details h4 {
+            font-size: 1rem;
+          }
+          
+          .author-title {
+            font-size: 0.875rem;
+          }
+          
+          .company-info {
+            font-size: 0.875rem;
+          }
+          
+          /* Pause animation on hover and manual scroll */
+          .carousel-container:hover .carousel-track,
+          .carousel-container.manual-scroll .carousel-track {
+            animation-play-state: paused;
+          }
+          
+          /* Resume animation when not hovering and not manually scrolling */
+          .carousel-container:not(:hover):not(.manual-scroll) .carousel-track {
+            animation-play-state: running;
+          }
+        }
+        
+        /* Mobile touch handling */
         @media (max-width: 768px) {
-          .touch-pan-x {
-            touch-action: pan-x pan-y;
+          .carousel-track {
+            animation-duration: 60s;
+            touch-action: pan-x;
             -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
           }
           
-          /* Safari-specific optimizations */
-          .flex.gap-4.overflow-x-auto {
-            scroll-behavior: auto !important;
-            -webkit-overflow-scrolling: touch;
-            touch-action: pan-x pan-y;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
+          .carousel-container {
+            scroll-snap-type: x mandatory;
           }
           
-          /* Ensure auto-scroll works smoothly on mobile */
-          .flex.gap-4.overflow-x-auto.scrollbar-hide {
-            scroll-behavior: auto !important;
-            -webkit-overflow-scrolling: touch;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+          .testimonial-card {
+            scroll-snap-align: start;
           }
           
-          /* Mobile-specific card optimizations */
-          .mobile-compact-card {
-            min-height: 340px;
-            max-height: none;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+          /* Pause animation when actively touching */
+          .carousel-container.touching .carousel-track {
+            animation-play-state: paused;
           }
           
-          .mobile-compact-text {
-            line-height: 1.4;
-            display: block;
-            overflow: visible;
-            -webkit-line-clamp: unset;
-            -webkit-box-orient: unset;
-            max-height: none;
-            white-space: normal;
+          /* Don't pause on hover for touch devices */
+          .carousel-container:hover .carousel-track {
+            animation-play-state: running;
           }
-          
-          .mobile-compact-avatar {
-            min-width: 40px;
-            min-height: 40px;
+        }
+        
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
           }
+          100% {
+            transform: translateX(calc(-100% / 3));
+          }
+        }
+        
+        /* Smooth scrolling fallback */
+        .carousel-container.manual-scroll .carousel-track {
+          transition: transform 0.3s ease-out;
         }
         
         /* Safari-specific fixes */
         @supports (-webkit-touch-callout: none) {
-          .flex.gap-4.overflow-x-auto {
-            -webkit-overflow-scrolling: touch !important;
-            scroll-behavior: auto !important;
-          }
-          
-          .touch-pan-x {
+          .carousel-track {
             -webkit-overflow-scrolling: touch !important;
             -webkit-transform: translateZ(0) !important;
             transform: translateZ(0) !important;
           }
         }
         
-        /* Desktop auto-scroll behavior */
-        @media (min-width: 769px) {
-          .flex.gap-4.overflow-x-auto {
-            scroll-behavior: auto !important;
-          }
+        /* Scroll indicator for desktop */
+        .carousel-container::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 20px;
+          background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1));
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        
+        .carousel-container:hover::after {
+          opacity: 1;
+        }
+        
+        /* Left scroll indicator */
+        .carousel-container::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 20px;
+          background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.1));
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          z-index: 1;
+        }
+        
+        .carousel-container:hover::before {
+          opacity: 1;
         }
       `}</style>
+
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          // Add fade-in effect for images
+          document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.avatar');
+            images.forEach(img => {
+              img.addEventListener('load', function() {
+                this.classList.add('loaded');
+              });
+              img.addEventListener('error', function() {
+                this.classList.add('loaded');
+              });
+            });
+          });
+        `
+      }} />
     </section>
   );
 };
