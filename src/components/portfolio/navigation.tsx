@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { safeScrollToElement, createThrottledScrollHandler } from "@/lib/dom-utils";
 
 const navigationItems = [
   { name: "Here's How I Help You Win", sectionId: "about" },
@@ -20,10 +21,12 @@ export const Navigation = () => {
     setScrolled(window.scrollY > 50);
   }, []);
 
+  const throttledScrollHandler = createThrottledScrollHandler(handleScroll, 16);
+
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+    window.addEventListener("scroll", throttledScrollHandler, { passive: true });
+    return () => window.removeEventListener("scroll", throttledScrollHandler);
+  }, [throttledScrollHandler]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -43,21 +46,8 @@ export const Navigation = () => {
       console.log('Element ID:', element?.id);
       
       if (element) {
-        // Get the navbar height for proper offset
-        const navbarHeight = 80; // Approximate navbar height
-        const elementPosition = element.offsetTop - navbarHeight;
-        
-        console.log('Element position:', element.offsetTop);
-        console.log('Navbar height:', navbarHeight);
-        console.log('Final scroll position:', elementPosition);
-        console.log('Current scroll position:', window.scrollY);
-        
-        // Use smooth scrolling with proper offset
-        window.scrollTo({
-          top: elementPosition,
-          behavior: "smooth"
-        });
-        
+        // Use safe scroll with cached measurements
+        safeScrollToElement(element, 80); // 80px navbar offset
         console.log('Scroll command executed');
       } else {
         console.error('Element not found with ID:', sectionId);
@@ -74,12 +64,7 @@ export const Navigation = () => {
           console.log('Trying fallback to about section...');
           const aboutSection = document.getElementById("about");
           if (aboutSection) {
-            const navbarHeight = 80;
-            const elementPosition = aboutSection.offsetTop - navbarHeight;
-            window.scrollTo({
-              top: elementPosition,
-              behavior: "smooth"
-            });
+            safeScrollToElement(aboutSection, 80);
             console.log('Fallback: scrolled to about section');
           } else {
             console.error('About section also not found!');
@@ -91,12 +76,7 @@ export const Navigation = () => {
           console.log('Trying fallback to trust section...');
           const trustSection = document.getElementById("trust");
           if (trustSection) {
-            const navbarHeight = 80;
-            const elementPosition = trustSection.offsetTop - navbarHeight;
-            window.scrollTo({
-              top: elementPosition,
-              behavior: "smooth"
-            });
+            safeScrollToElement(trustSection, 80);
             console.log('Fallback: scrolled to trust section');
           } else {
             console.error('Trust section also not found!');
@@ -115,23 +95,13 @@ export const Navigation = () => {
     const element = document.getElementById(targetId);
     
     if (element) {
-      // Get the navbar height for proper offset
-      const navbarHeight = 80; // Approximate navbar height
-      const elementPosition = element.offsetTop - navbarHeight;
-      
-      // Use smooth scrolling with proper offset
-      window.scrollTo({
-        top: elementPosition,
-        behavior: "smooth"
-      });
+      // Use safe scroll with cached measurements
+      safeScrollToElement(element, 80);
       
       // On mobile, add a small delay to ensure the form is visible
       if (isMobile) {
         setTimeout(() => {
-          window.scrollTo({
-            top: elementPosition,
-            behavior: "smooth"
-          });
+          safeScrollToElement(element, 80);
         }, 100);
       }
     }

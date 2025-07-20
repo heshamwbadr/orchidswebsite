@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Image, { ImageProps } from "next/image";
 import { useOutsideClick } from "@/hooks/use-outside-click";
+import { getScrollPosition, createThrottledScrollHandler } from "@/lib/dom-utils";
 
 interface CarouselProps {
   items: JSX.Element[];
@@ -51,11 +52,13 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
   const checkScrollability = () => {
     if (carouselRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth);
+      const scrollData = getScrollPosition(carouselRef.current, 'carousel');
+      setCanScrollLeft(scrollData.scrollLeft > 0);
+      setCanScrollRight(scrollData.scrollLeft < scrollData.scrollWidth - scrollData.clientWidth);
     }
   };
+
+  const throttledCheckScrollability = createThrottledScrollHandler(checkScrollability, 16);
 
   const scrollLeft = () => {
     if (carouselRef.current) {
@@ -94,7 +97,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
         <div
           className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none] md:py-20"
           ref={carouselRef}
-          onScroll={checkScrollability}
+          onScroll={throttledCheckScrollability}
         >
           <div
             className={cn(

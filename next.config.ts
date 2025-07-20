@@ -1,6 +1,61 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Modern browser optimization
+  experimental: {
+    // Enable modern JavaScript features
+    optimizePackageImports: [
+      'lucide-react',
+      '@radix-ui/react-icons',
+      'framer-motion',
+      'react-hook-form',
+      'date-fns',
+      'clsx',
+      'tailwind-merge',
+      'class-variance-authority'
+    ],
+  },
+  
+  // Modern browser targeting
+  compiler: {
+    // Remove console.logs in production
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
+  // Optimize for modern browsers
+  webpack: (config, { dev, isServer }) => {
+    // Modern browser targeting
+    if (!dev && !isServer) {
+      config.target = ['web', 'es2020'];
+    }
+    
+    // Optimize bundle splitting
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        ...config.optimization.splitChunks,
+        chunks: 'all',
+        cacheGroups: {
+          ...config.optimization.splitChunks?.cacheGroups,
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 5,
+          },
+        },
+      },
+    };
+    
+    return config;
+  },
+  
   images: {
     remotePatterns: [
       {

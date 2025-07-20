@@ -4,15 +4,43 @@ import React from "react";
 import { Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { triggerGTM } from "@/components/GTMLoader";
-import { useCalendly } from "@/components/CalendlyLazyLoader";
+import { openCalendlyPopupSafe } from "@/lib/calendly";
 
 export const FloatingCallToAction = () => {
-  const { openPopup } = useCalendly();
-
-  const handleCallClick = () => {
+  const handleCallClick = async () => {
     // Trigger GTM loading for conversion tracking
     triggerGTM();
-    openPopup();
+    
+    try {
+      // Try to open Calendly popup in same tab
+      await openCalendlyPopupSafe();
+    } catch (error) {
+      console.warn("Calendly popup failed, trying alternative method:", error);
+      
+      // Alternative: Try to load and open in same tab
+      if (typeof window !== "undefined") {
+        // Force load Calendly script
+        const script = document.createElement("script");
+        script.src = "https://assets.calendly.com/assets/external/widget.js";
+        script.async = true;
+        
+        script.onload = () => {
+          // Wait for Calendly to initialize
+          const checkAndOpen = () => {
+            if (window.Calendly) {
+              window.Calendly.initPopupWidget({
+                url: "https://calendly.com/hesham-badr-neuronovate/30min",
+              });
+            } else {
+              setTimeout(checkAndOpen, 100);
+            }
+          };
+          checkAndOpen();
+        };
+        
+        document.head.appendChild(script);
+      }
+    }
   };
 
   return (
