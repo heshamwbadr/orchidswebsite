@@ -24,15 +24,7 @@ const nextConfig: NextConfig = {
     optimizeCss: true,
   },
 
-  // Enable modern bundling with Turbopack
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
-  },
+
   
   // Modern browser targeting
   compiler: {
