@@ -5,7 +5,7 @@ import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
 import { GTMLoader } from "@/components/GTMLoader";
 import { CalendlyLazyLoader } from "@/components/CalendlyLazyLoader";
 import { Inter } from "next/font/google";
-import ClientFontLoader from '@/components/ui/client-font-loader';
+
 
 const inter = Inter({ subsets: ["latin"], weight: ["200","300","400","500","600"] });
 
@@ -75,19 +75,7 @@ export default function RootLayout({
           name="keywords"
           content="AI transformation, digital transformation, strategy consulting, artificial intelligence, business transformation"
         />
-        {/* Optimize font loading to reduce render blocking */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap"
-          media="print"
-          id="font-stylesheet"
-        />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -197,7 +185,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground antialiased overflow-x-hidden">
-        <ClientFontLoader />
+
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-TJZF93FB"

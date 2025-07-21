@@ -34,55 +34,55 @@ const nextConfig: NextConfig = {
     reactRemoveProperties: process.env.NODE_ENV === 'production',
   },
   
-  // Temporarily disabled for diagnostics
-  // webpack: (config, { dev, isServer }) => {
-  //   // Modern browser targeting - remove unnecessary polyfills
-  //   if (!dev && !isServer) {
-  //     config.target = ['web', 'es2020'];
+  // Optimize for modern browsers
+  webpack: (config, { dev, isServer }) => {
+    // Modern browser targeting - remove unnecessary polyfills
+    if (!dev && !isServer) {
+      config.target = ['web', 'es2020'];
       
-  //     // Remove unnecessary polyfills for modern browsers
-  //     config.resolve.alias = {
-  //       ...config.resolve.alias,
-  //       // Skip polyfills for modern browsers
-  //       'core-js/modules/es.array.at': false,
-  //       'core-js/modules/es.array.flat': false,
-  //       'core-js/modules/es.array.flat-map': false,
-  //       'core-js/modules/es.object.from-entries': false,
-  //       'core-js/modules/es.object.has-own': false,
-  //       'core-js/modules/es.string.trim-end': false,
-  //       'core-js/modules/es.string.trim-start': false,
-  //     };
-  //   }
+      // Remove unnecessary polyfills for modern browsers
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        // Skip polyfills for modern browsers
+        'core-js/modules/es.array.at': false,
+        'core-js/modules/es.array.flat': false,
+        'core-js/modules/es.array.flat-map': false,
+        'core-js/modules/es.object.from-entries': false,
+        'core-js/modules/es.object.has-own': false,
+        'core-js/modules/es.string.trim-end': false,
+        'core-js/modules/es.string.trim-start': false,
+      };
+    }
     
-  //   // Optimize bundle splitting
-  //   config.optimization = {
-  //     ...config.optimization,
-  //     splitChunks: {
-  //       ...config.optimization.splitChunks,
-  //       chunks: 'all',
-  //       maxSize: 244000, // 244KB chunks for better loading
-  //       cacheGroups: {
-  //         ...config.optimization.splitChunks?.cacheGroups,
-  //         vendor: {
-  //           test: /[\/]node_modules[\/]/,
-  //           name: 'vendors',
-  //           chunks: 'all',
-  //           priority: 10,
-  //           maxSize: 244000,
-  //         },
-  //         common: {
-  //           name: 'common',
-  //           minChunks: 2,
-  //           chunks: 'all',
-  //           priority: 5,
-  //           maxSize: 244000,
-  //         },
-  //       },
-  //     },
-  //   };
+    // Optimize bundle splitting
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        ...config.optimization.splitChunks,
+        chunks: 'all',
+        maxSize: 244000, // 244KB chunks for better loading
+        cacheGroups: {
+          ...config.optimization.splitChunks?.cacheGroups,
+          vendor: {
+            test: /[\/]node_modules[\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+            maxSize: 244000,
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 5,
+            maxSize: 244000,
+          },
+        },
+      },
+    };
     
-  //   return config;
-  // },
+    return config;
+  },
   
   images: {
     remotePatterns: [
