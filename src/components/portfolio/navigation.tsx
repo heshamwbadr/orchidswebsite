@@ -207,6 +207,7 @@ export const Navigation = () => {
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden p-2 rounded-lg hover:bg-muted/10 transition-colors duration-300 touch-target"
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
           >
             {isOpen ? (
               <X className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
