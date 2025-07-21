@@ -4,6 +4,8 @@ import Script from "next/script";
 import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
 import { GTMLoader } from "@/components/GTMLoader";
 import { CalendlyLazyLoader } from "@/components/CalendlyLazyLoader";
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"], weight: ["200","300","400","500","600"] });
 
 export const metadata: Metadata = {
   title: "Hesham Badr | Certified AI Transformation Consultant & Strategy Partner",
@@ -48,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={`dark ${inter.className}`}>
       <head>
         {/* GTM loaded conditionally to reduce unused JavaScript */}
         <meta name="google-site-verification" content="B2jZGoMehuT2xfbKUL3J1qTxonbEcN43peLfP3CrN60" />
