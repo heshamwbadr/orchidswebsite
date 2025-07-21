@@ -142,27 +142,15 @@
   }
 
   .gradient-lavender {
-    background: linear-gradient(
-      135deg,
-      var(--color-lavender-start),
-      var(--color-lavender-end)
-    );
+    background: linear-gradient(135deg at 0 0, var(--color-lavender-start), var(--color-lavender-end));
   }
 
   .gradient-electric {
-    background: linear-gradient(
-      135deg,
-      var(--color-electric-blue),
-      var(--color-neon-cyan)
-    );
+    background: linear-gradient(135deg at 0 0, var(--color-electric-blue), var(--color-neon-cyan));
   }
 
   .text-gradient {
-    background: linear-gradient(
-      135deg,
-      var(--color-neon-cyan),
-      var(--color-electric-blue)
-    );
+    background: linear-gradient(135deg at 0 0, var(--color-neon-cyan), var(--color-electric-blue));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

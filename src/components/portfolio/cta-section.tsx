@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Check, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -57,7 +57,7 @@ export const CTASection = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const recaptchaRef = useRef<any>(null); // Changed type to any as ReCAPTCHA is now dynamic
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 
   const validateEmail = (email: string) => {
