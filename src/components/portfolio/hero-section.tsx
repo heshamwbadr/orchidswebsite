@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, GraduationCap, Wrench, Globe, ShieldCheck, Lightbulb, Building2, Trophy, Cpu, Map } from "lucide-react";
 import { motion } from "framer-motion";
 import { openCalendlyPopup } from "@/lib/calendly";
-import Image from "next/image";
 
 const trustCredentials = [
   {
@@ -467,13 +466,11 @@ export const HeroSection = () => {
             className="hidden lg:flex flex-col items-center justify-end order-1 lg:order-2 mt-8 lg:mt-0"
           >
             <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex flex-col items-center justify-center lg:justify-center">
-              <Image
-                src="/pics/mypictransparent.webp"
+              <img
+                src="/pics/mypictransparent-576.webp"
+                srcSet="/pics/mypictransparent-576.webp 576w, /pics/mypictransparent.webp 1200w"
+                sizes="(max-width: 768px) 576px, 1200px"
                 alt="Hesham Badr - AI & Digital Transformation Strategist"
-                width={576}
-                height={711}
-                sizes="(max-width: 768px) 90vw, 576px"
-                priority
                 className="w-full h-auto max-h-[60vh] sm:max-h-[70vh] lg:max-h-none object-contain"
                 style={{
                   transform: "scale(0.65) translateY(15px)",
@@ -488,13 +485,11 @@ export const HeroSection = () => {
         {/* Mobile-only portrait at the bottom of HeroSection */}
         <div className="block lg:hidden mt-8 sm:mt-12 w-full flex flex-col items-center justify-center">
           <div className="relative">
-          <Image
-            src="/pics/mypictransparent.webp"
+          <img
+            src="/pics/mypictransparent-576.webp"
+            srcSet="/pics/mypictransparent-576.webp 576w, /pics/mypictransparent.webp 1200w"
+            sizes="(max-width: 768px) 576px, 1200px"
             alt="Hesham Badr - AI & Digital Transformation Strategist"
-            width={176}
-            height={176}
-            sizes="(max-width: 768px) 50vw, 176px"
-            priority
             className="w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full shadow-xl border-2 border-primary/20 object-cover"
             style={{
               transform: "scale(0.85)",
