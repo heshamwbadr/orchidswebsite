@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, GraduationCap, Wrench, Globe, ShieldCheck, Lightbulb, Building2, Trophy, Cpu, Map } from "lucide-react";
 import { motion } from "framer-motion";
@@ -467,11 +468,13 @@ export const HeroSection = () => {
             className="hidden lg:flex flex-col items-center justify-end order-1 lg:order-2 mt-8 lg:mt-0"
           >
             <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex flex-col items-center justify-center lg:justify-center">
-              <img
-                src="/pics/mypictransparent-576.webp"
-                srcSet="/pics/mypictransparent-576.webp 576w, /pics/mypictransparent.webp 1200w"
-                sizes="(max-width: 768px) 576px, 1200px"
+              <Image
+                src="/pics/mypictransparent.webp"
                 alt="Hesham Badr - AI & Digital Transformation Strategist"
+                width={2141}
+                height={2644}
+                sizes="(max-width: 1024px) 50vw, 40vw"
+                priority
                 className="w-full h-auto max-h-[60vh] sm:max-h-[70vh] lg:max-h-none object-contain"
                 style={{
                   transform: "scale(0.65) translateY(15px)",
@@ -486,11 +489,12 @@ export const HeroSection = () => {
         {/* Mobile-only portrait at the bottom of HeroSection */}
         <div className="block lg:hidden mt-8 sm:mt-12 w-full flex flex-col items-center justify-center">
           <div className="relative">
-          <img
-            src="/pics/mypictransparent-576.webp"
-            srcSet="/pics/mypictransparent-576.webp 576w, /pics/mypictransparent.webp 1200w"
-            sizes="(max-width: 768px) 576px, 1200px"
+          <Image
+            src="/pics/mypictransparent.webp"
             alt="Hesham Badr - AI & Digital Transformation Strategist"
+            width={2141}
+            height={2644}
+            sizes="(max-width: 640px) 9rem, (max-width: 768px) 10rem, 11rem"
             className="w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full shadow-xl border-2 border-primary/20 object-cover"
             style={{
               transform: "scale(0.85)",

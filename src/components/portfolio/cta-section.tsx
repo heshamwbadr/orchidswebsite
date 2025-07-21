@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Check, Send, Loader2 } from "lucide-react";
@@ -411,11 +412,12 @@ export const CTASection = () => {
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="flex items-center justify-center"
               >
-                <img
-                  src="/pics/mypictransparent-576.webp"
-                  srcSet="/pics/mypictransparent-576.webp 576w, /pics/mypictransparent.webp 1200w"
-                  sizes="(max-width: 768px) 576px, 1200px"
+                <Image
+                  src="/pics/mypictransparent.webp"
                   alt="Professional headshot"
+                  width={2141}
+                  height={2644}
+                  sizes="(max-width: 1024px) 100vw, 320px"
                   className="responsive-image-contain w-full h-auto max-w-full"
                   style={{ transform: "scale(0.7) sm:scale(0.8)" }}
                 />

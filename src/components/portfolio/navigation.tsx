@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { safeScrollToElement, createThrottledScrollHandler } from "@/lib/dom-utils";
@@ -158,11 +159,12 @@ export const Navigation = () => {
             onClick={scrollToTop}
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity duration-300 touch-target p-2 -ml-2"
           >
-            <img
-                              src="/pics/signaturetransparent1-171.webp"
-                srcSet="/pics/signaturetransparent1-171.webp 171w, /pics/signaturetransparent1.webp 400w"
-                sizes="(max-width: 768px) 171px, 400px"
+            <Image
+              src="/pics/signaturetransparent1.webp"
               alt="Hesham Badr Signature"
+              width={1366}
+              height={768}
+              priority
               className="h-10 sm:h-12 lg:h-14 xl:h-16 w-auto object-contain"
             />
           </button>

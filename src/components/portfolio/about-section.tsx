@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Briefcase,
@@ -553,12 +554,13 @@ export const AboutSection = () => {
           className="text-center mb-12 lg:mb-16"
         >
           <div className="flex justify-center mb-4">
-            <img
+            <Image
               id="about-signature"
-                              src="/pics/signaturetransparent1-171.webp"
-                srcSet="/pics/signaturetransparent1-171.webp 171w, /pics/signaturetransparent1.webp 400w"
-                sizes="(max-width: 768px) 171px, 400px"
+              src="/pics/signaturetransparent1.webp"
               alt="Hesham Badr Signature"
+              width={1366}
+              height={768}
+              priority
               className="h-16 sm:h-20 lg:h-20 xl:h-24 w-auto object-contain"
             />
           </div>
