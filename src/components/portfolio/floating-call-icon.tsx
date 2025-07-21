@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone } from "lucide-react";
+import { Phone, Loader2 } from "lucide-react";
 import { useCalendly } from "@/components/CalendlyLazyLoader";
 
 declare global {
@@ -13,7 +13,7 @@ declare global {
 
 export const FloatingCallButton = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const { openPopup } = useCalendly();
+  const { openPopup, isLoading } = useCalendly();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,6 +61,7 @@ export const FloatingCallButton = () => {
             {/* Main button with subtle bounce */}
             <motion.button
               onClick={handleClick}
+              disabled={isLoading}
               id="floating-cta-button"
               className="floating-cta-btn relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target pointer-events-auto"
               aria-label="Schedule a call - Opens Calendly popup"
@@ -77,10 +78,14 @@ export const FloatingCallButton = () => {
               whileTap={{ scale: 0.96 }}
             >
               <div className="flex items-center justify-center h-full">
-                <Phone
-                  className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white"
-                  strokeWidth={2}
-                />
+                {isLoading ? (
+                  <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white animate-spin" />
+                ) : (
+                  <Phone
+                    className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white"
+                    strokeWidth={2}
+                  />
+                )}
               </div>
             </motion.button>
 

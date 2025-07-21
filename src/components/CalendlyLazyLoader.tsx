@@ -1,166 +1,98 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
-import Script from "next/script";
+
+import { useState, useCallback } from 'react';
 
 const CALENDLY_URL = "https://calendly.com/hesham-badr-neuronovate/30min";
 
-interface CalendlyLazyLoaderProps {
-  onLoad?: () => void;
-  onError?: (error: Error) => void;
-}
+// A singleton pattern to ensure the script is only loaded once.
+let calendlyScriptState: 'idle' | 'loading' | 'ready' | 'error' = 'idle';
+let pendingSubscribers: ((status: 'ready' | 'error') => void)[] = [];
 
-export const CalendlyLazyLoader: React.FC<CalendlyLazyLoaderProps> = ({ 
-  onLoad, 
-  onError 
-}) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+const loadCalendlyScript = () => {
+  if (calendlyScriptState === 'loading' || calendlyScriptState === 'ready') {
+    return;
+  }
 
-  const loadCalendly = useCallback(async () => {
-    if (isLoaded || isLoading || hasError) return;
+  calendlyScriptState = 'loading';
 
-    setIsLoading(true);
+  // Load CSS non-render-blocking
+  const cssHref = "https://assets.calendly.com/assets/external/widget.css";
+  if (!document.querySelector(`link[href="${cssHref}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.href = cssHref;
+    link.as = 'style';
+    link.onload = () => { link.rel = 'stylesheet'; };
+    document.head.appendChild(link);
+  }
 
-    try {
-      // Check if Calendly is already available
-      if (typeof window !== "undefined" && window.Calendly) {
-        setIsLoaded(true);
-        onLoad?.();
-        return;
-      }
+  // Load Script
+  const script = document.createElement('script');
+  script.src = "https://assets.calendly.com/assets/external/widget.js";
+  script.async = true;
 
-      // Preload CSS to avoid render-blocking
-      const cssHref = "https://assets.calendly.com/assets/external/widget.css";
-      if (!document.querySelector(`link[href="${cssHref}"]`)) {
-        const link = document.createElement("link");
-        link.rel = "preload";
-        link.href = cssHref;
-        link.as = "style";
-        // Onload, switch rel to stylesheet to apply styles
-        link.onload = () => {
-          link.rel = "stylesheet";
-        };
-        document.head.appendChild(link);
-      }
+  script.onload = () => {
+    calendlyScriptState = 'ready';
+    pendingSubscribers.forEach(cb => cb('ready'));
+    pendingSubscribers = [];
+  };
 
-      // Load script with timeout
-      const scriptLoadPromise = new Promise<void>((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = "https://assets.calendly.com/assets/external/widget.js";
-        script.async = true;
-        script.defer = true;
+  script.onerror = () => {
+    calendlyScriptState = 'error';
+    pendingSubscribers.forEach(cb => cb('error'));
+    pendingSubscribers = [];
+  };
 
-        const timeout = setTimeout(() => {
-          reject(new Error("Calendly script load timeout"));
-        }, 10000); // 10 second timeout
-
-        script.onload = () => {
-          clearTimeout(timeout);
-          // Wait for Calendly to initialize
-          const checkCalendly = () => {
-            if (window.Calendly) {
-              resolve();
-            } else {
-              setTimeout(checkCalendly, 100);
-            }
-          };
-          checkCalendly();
-        };
-
-        script.onerror = () => {
-          clearTimeout(timeout);
-          reject(new Error("Failed to load Calendly script"));
-        };
-
-        document.head.appendChild(script);
-      });
-
-      await scriptLoadPromise;
-      setIsLoaded(true);
-      onLoad?.();
-    } catch (error) {
-      console.error("Failed to load Calendly:", error);
-      setHasError(true);
-      onError?.(error as Error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isLoaded, isLoading, hasError, onLoad, onError]);
-
-  // Auto-load after user interaction or delay
-  useEffect(() => {
-    let loadTimeout: NodeJS.Timeout;
-
-    const handleUserInteraction = () => {
-      if (!isLoaded && !isLoading && !hasError) {
-        loadCalendly();
-      }
-      // Remove listeners after first interaction
-      document.removeEventListener("click", handleUserInteraction);
-      document.removeEventListener("scroll", handleUserInteraction);
-      clearTimeout(loadTimeout);
-    };
-
-    // Load after user interaction or 8 seconds
-    document.addEventListener("click", handleUserInteraction, { passive: true });
-    document.addEventListener("scroll", handleUserInteraction, { passive: true });
-    
-    loadTimeout = setTimeout(() => {
-      if (!isLoaded && !isLoading && !hasError) {
-        loadCalendly();
-      }
-    }, 8000);
-
-    return () => {
-      document.removeEventListener("click", handleUserInteraction);
-      document.removeEventListener("scroll", handleUserInteraction);
-      clearTimeout(loadTimeout);
-    };
-  }, [isLoaded, isLoading, hasError, loadCalendly]);
-
-  return null; // This component doesn't render anything
+  document.head.appendChild(script);
 };
 
-// Hook for using Calendly with lazy loading
+/**
+ * A high-performance hook for lazily loading the Calendly pop-up widget.
+ * The script is only loaded on the first click of a Calendly button, ensuring
+ * zero impact on initial page load performance.
+ */
 export const useCalendly = () => {
-  const [isReady, setIsReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const openPopup = useCallback(async () => {
-    if (!isReady) {
-      // If not ready, open in new tab as fallback
-      if (typeof window !== "undefined") {
-        window.open(CALENDLY_URL, "_blank", "noopener,noreferrer");
-      }
+  const openPopup = useCallback(() => {
+    if (calendlyScriptState === 'ready' && window.Calendly) {
+      window.Calendly.initPopupWidget({ url: CALENDLY_URL });
       return;
     }
 
-    try {
-      if (typeof window !== "undefined" && window.Calendly) {
-        window.Calendly.initPopupWidget({
-          url: CALENDLY_URL,
-        });
-      } else {
-        // Fallback to new tab
-        window.open(CALENDLY_URL, "_blank", "noopener,noreferrer");
-      }
-    } catch (error) {
-      console.error("Failed to open Calendly popup:", error);
-      // Fallback to new tab
-      if (typeof window !== "undefined") {
-        window.open(CALENDLY_URL, "_blank", "noopener,noreferrer");
-      }
+    if (calendlyScriptState === 'error') {
+      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+      return;
     }
-  }, [isReady]);
 
-  return {
-    isReady,
-    openPopup,
-    CalendlyLoader: () => (
-      <CalendlyLazyLoader
-        onLoad={() => setIsReady(true)}
-        onError={() => setIsReady(false)}
-      />
-    ),
-  };
-}; 
+    setIsLoading(true);
+
+    const subscriber = (status: 'ready' | 'error') => {
+      setIsLoading(false);
+      if (status === 'ready' && window.Calendly) {
+        window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+      } else {
+        window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+      }
+    };
+
+    pendingSubscribers.push(subscriber);
+
+    // Start loading only if it's the first time.
+    if (calendlyScriptState === 'idle') {
+      loadCalendlyScript();
+    }
+
+  }, []);
+
+  return { openPopup, isLoading };
+};
+
+// Define the window.Calendly type for TypeScript
+declare global {
+  interface Window {
+    Calendly?: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}

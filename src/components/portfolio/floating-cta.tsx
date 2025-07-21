@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { Phone } from "lucide-react";
+import { Phone, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { triggerGTM } from "@/components/GTMLoader";
 import { useCalendly } from "@/components/CalendlyLazyLoader";
 
 export const FloatingCallToAction = () => {
-  const { openPopup } = useCalendly();
+  const { openPopup, isLoading } = useCalendly();
 
   const handleCallClick = () => {
     // Trigger GTM loading for conversion tracking
@@ -41,6 +41,7 @@ export const FloatingCallToAction = () => {
       {/* Main button */}
       <motion.button
         onClick={handleCallClick}
+        disabled={isLoading}
         className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg backdrop-blur-sm border border-white/20 bg-gradient-to-r from-secondary to-primary touch-target pointer-events-auto"
         whileHover={{
           scale: 1.1,
@@ -70,10 +71,11 @@ export const FloatingCallToAction = () => {
           transition={{ duration: 0.2 }}
           className="flex items-center justify-center h-full"
         >
-          <Phone
-            className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white"
-            strokeWidth={2}
-          />
+          {isLoading ? (
+            <Loader2 className="h-6 w-6 animate-spin" />
+          ) : (
+            <Phone className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" strokeWidth={2} />
+          )}
         </motion.div>
       </motion.button>
 

@@ -53,21 +53,6 @@ export const BackgroundBeamsWithCollision = ({
       repeatDelay: 2,
       className: "h-20",
     },
-    {
-      initialX: 1000,
-      translateX: 1000,
-      duration: 4,
-      repeatDelay: 2,
-      className: "h-12",
-    },
-    {
-      initialX: 1200,
-      translateX: 1200,
-      duration: 6,
-      repeatDelay: 4,
-      delay: 2,
-      className: "h-6",
-    },
   ];
 
   return (
@@ -237,7 +222,7 @@ const CollisionMechanism = React.forwardRef<
 CollisionMechanism.displayName = "CollisionMechanism";
 
 const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
-  const spans = Array.from({ length: 20 }, (_, index) => ({
+  const spans = Array.from({ length: 8 }, (_, index) => ({
     id: index,
     initialX: 0,
     initialY: 0,

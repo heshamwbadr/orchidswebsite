@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Script from "next/script";
 import { FloatingCallToAction } from "@/components/portfolio/floating-cta";
-import { GlobalCalendlyProvider } from "@/components/GlobalCalendlyProvider";
+
 import { GTMLoader } from "@/components/GTMLoader";
 import { Inter } from "next/font/google";
 
@@ -195,7 +195,7 @@ export default function RootLayout({
           ></iframe>
         </noscript>
         <GTMLoader />
-        <GlobalCalendlyProvider />
+
         <div className="relative min-h-screen">{children}</div>
         <FloatingCallToAction />
       </body>
