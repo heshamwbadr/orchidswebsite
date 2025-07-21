@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 /**
@@ -16,6 +16,13 @@ export function BackgroundWithFullVideo() {
 }
 
 const Background = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -23,28 +30,41 @@ const Background = () => {
       transition={{ duration: 1, ease: "easeOut" }}
       className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-hidden dark:opacity-20"
     >
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="h-full w-full object-cover dark:[mask-image:radial-gradient(circle_at_center,white,transparent)]"
-      >
-        <source
-          src="https://assets.aceternity.com/background-demo.mp4"
-          type="video/mp4"
-        />
-      </video>
+      {isMobile ? (
+        <div className="h-full w-full bg-black/80" />
+      ) : (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="h-full w-full object-cover dark:[mask-image:radial-gradient(circle_at_center,white,transparent)]"
+        >
+          <source
+            src="https://assets.aceternity.com/background-demo.mp4"
+            type="video/mp4"
+          />
+        </video>
+      )}
     </motion.div>
   );
 };
 
 const Content = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   return (
     <div className="relative z-10">
-      <div className="pointer-events-none absolute inset-0 h-full w-full rounded-full bg-black blur-2xl"></div>
+      {!isMobile && (
+        <div className="pointer-events-none absolute inset-0 h-full w-full rounded-full bg-black blur-2xl"></div>
+      )}
       <h1 className="z-2 relative text-center font-sans text-2xl font-bold text-white md:text-5xl lg:text-7xl">
-        The best <ColourfulText text="components" /> <br /> you will ever find
+        The best {isMobile ? <span>components</span> : <ColourfulText text="components" />} <br /> you will ever find
       </h1>
     </div>
   );

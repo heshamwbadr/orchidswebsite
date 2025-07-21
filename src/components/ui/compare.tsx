@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { SparklesCore } from "@/components/ui/sparkles";
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { IconDotsVertical } from "@tabler/icons-react";
@@ -147,6 +147,8 @@ export const Compare = ({
     [handleMove, autoplay],
   );
 
+  const DynamicSparklesCore = dynamic(() => import("@/components/ui/sparkles").then(mod => mod.SparklesCore), { ssr: false });
+
   return (
     <div
       ref={sliderRef}
@@ -177,7 +179,7 @@ export const Compare = ({
           <div className="w-36 h-full [mask-image:radial-gradient(100px_at_left,white,transparent)] absolute top-1/2 -translate-y-1/2 left-0 bg-gradient-to-r from-indigo-400 via-transparent to-transparent z-20 opacity-50" />
           <div className="w-10 h-1/2 [mask-image:radial-gradient(50px_at_left,white,transparent)] absolute top-1/2 -translate-y-1/2 left-0 bg-gradient-to-r from-cyan-400 via-transparent to-transparent z-10 opacity-100" />
           <div className="w-10 h-3/4 top-1/2 -translate-y-1/2 absolute -right-10 [mask-image:radial-gradient(100px_at_left,white,transparent)]">
-            <MemoizedSparklesCore
+            <DynamicSparklesCore
               background="transparent"
               minSize={0.4}
               maxSize={1}
@@ -236,5 +238,3 @@ export const Compare = ({
     </div>
   );
 };
-
-const MemoizedSparklesCore = React.memo(SparklesCore);

@@ -3,7 +3,8 @@ import React, { useEffect, useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
-import { SparklesCore } from "@/components/ui/sparkles";
+import dynamic from "next/dynamic";
+const DynamicSparklesCore = dynamic(() => import("@/components/ui/sparkles").then(mod => mod.SparklesCore), { ssr: false });
 
 export const Cover = ({
   children,
@@ -66,7 +67,7 @@ export const Cover = ({
               }}
               className="w-[200%] h-full flex"
             >
-              <SparklesCore
+              <DynamicSparklesCore
                 background="transparent"
                 minSize={0.4}
                 maxSize={1}
@@ -74,7 +75,7 @@ export const Cover = ({
                 className="w-full h-full"
                 particleColor="#FFFFFF"
               />
-              <SparklesCore
+              <DynamicSparklesCore
                 background="transparent"
                 minSize={0.4}
                 maxSize={1}

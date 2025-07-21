@@ -2,8 +2,10 @@
 
 import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
 import React, { MouseEvent as ReactMouseEvent, useState } from "react";
-import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
+
+const DynamicCanvasRevealEffect = dynamic(() => import("@/components/ui/canvas-reveal-effect"), { ssr: false });
 
 export const CardSpotlight = ({
   children,
@@ -57,7 +59,7 @@ export const CardSpotlight = ({
         }}
       >
         {isHovering && (
-          <CanvasRevealEffect
+          <DynamicCanvasRevealEffect
             animationSpeed={5}
             containerClassName="bg-transparent absolute inset-0 pointer-events-none"
             colors={[
