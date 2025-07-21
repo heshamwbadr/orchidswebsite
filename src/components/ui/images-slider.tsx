@@ -45,7 +45,7 @@ export const ImagesSlider = ({
     setLoading(true);
     const loadPromises = images.map((image) => {
       return new Promise((resolve, reject) => {
-        const img = new Image();
+        const img: HTMLImageElement = document.createElement('img');
         img.src = image;
         img.onload = () => resolve(image);
         img.onerror = reject;
