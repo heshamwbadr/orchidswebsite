@@ -4,8 +4,14 @@ import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
 import React, { MouseEvent as ReactMouseEvent, useState } from "react";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
+import type { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
 
-const DynamicCanvasRevealEffect = dynamic(() => import("@/components/ui/canvas-reveal-effect"), { ssr: false });
+const DynamicCanvasRevealEffect = dynamic(
+  () => import("@/components/ui/canvas-reveal-effect").then(
+    (mod) => mod.CanvasRevealEffect as React.ComponentType<any>
+  ),
+  { ssr: false }
+);
 
 export const CardSpotlight = ({
   children,
