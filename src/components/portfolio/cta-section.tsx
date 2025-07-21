@@ -47,6 +47,8 @@ const processSteps = [
   },
 ];
 
+const ReCAPTCHA = dynamic(() => import("react-google-recaptcha"), { ssr: false });
+
 export const CTASection = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -57,14 +59,7 @@ export const CTASection = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const recaptchaRef = useRef<any>(null); // Changed type to any as ReCAPTCHA is now dynamic
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
-  const [isRecaptchaReady, setIsRecaptchaReady] = useState(false);
-
-  useEffect(() => {
-    // Dynamically import ReCAPTCHA and set ready state
-    import("react-google-recaptcha").then(() => setIsRecaptchaReady(true));
-  }, []);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -112,10 +107,6 @@ export const CTASection = () => {
     e.preventDefault();
 
     if (!validateForm()) {
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
-      setIsSubmitting(false);
       return;
     }
 
@@ -132,9 +123,6 @@ export const CTASection = () => {
       setIsSubmitted(false);
       setFormData({ name: "", email: "", company: "", message: "" });
       setRecaptchaValue(null);
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
     }, 3000);
   };
 
@@ -304,16 +292,11 @@ export const CTASection = () => {
                   {/* reCAPTCHA */}
                   {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
                     <div className="my-4 flex justify-center">
-                      {isRecaptchaReady ? (
-                        <ReCAPTCHA
-                          ref={recaptchaRef}
-                          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                          onChange={setRecaptchaValue}
-                          theme="dark"
-                        />
-                      ) : (
-                        <div className="text-gray-400">Loading reCAPTCHA...</div>
-                      )}
+                      <ReCAPTCHA
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                        onChange={setRecaptchaValue}
+                        theme="dark"
+                      />
                     </div>
                   )}
                   {errors.recaptcha && (
