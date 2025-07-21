@@ -131,16 +131,20 @@ const CollisionMechanism = React.forwardRef<
   const [cycleCollisionDetected, setCycleCollisionDetected] = useState(false);
 
   useEffect(() => {
-    let animationFrameId: number;
-
     const checkCollision = () => {
       if (
-        beamRef.current &&
-        containerRef.current &&
-        parentRef.current &&
-        !cycleCollisionDetected
+        !beamRef.current ||
+        !containerRef.current ||
+        !parentRef.current ||
+        cycleCollisionDetected
       ) {
-        // Batch DOM reads
+        return;
+      }
+
+      // Batch DOM reads within a single animation frame
+      requestAnimationFrame(() => {
+        if (!beamRef.current || !containerRef.current || !parentRef.current) return;
+
         const beamRect = beamRef.current.getBoundingClientRect();
         const containerRect = containerRef.current.getBoundingClientRect();
         const parentRect = parentRef.current.getBoundingClientRect();
@@ -150,25 +154,23 @@ const CollisionMechanism = React.forwardRef<
             beamRect.left - parentRect.left + beamRect.width / 2;
           const relativeY = beamRect.bottom - parentRect.top;
 
-          // Batch DOM writes
-          requestAnimationFrame(() => {
-            setCollision({
-              detected: true,
-              coordinates: {
-                x: relativeX,
-                y: relativeY,
-              },
-            });
-            setCycleCollisionDetected(true);
+          // State updates are batched by React and don't need a separate rAF
+          setCollision({
+            detected: true,
+            coordinates: {
+              x: relativeX,
+              y: relativeY,
+            },
           });
+          setCycleCollisionDetected(true);
         }
-      }
-      animationFrameId = requestAnimationFrame(checkCollision);
+      });
     };
 
-    animationFrameId = requestAnimationFrame(checkCollision);
+    // Check for collision at a reasonable interval instead of every frame
+    const intervalId = setInterval(checkCollision, 100);
 
-    return () => cancelAnimationFrame(animationFrameId);
+    return () => clearInterval(intervalId);
   }, [cycleCollisionDetected, containerRef, parentRef]);
 
   useEffect(() => {
