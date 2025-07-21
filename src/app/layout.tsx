@@ -73,17 +73,18 @@ export default function RootLayout({
           name="keywords"
           content="AI transformation, digital transformation, strategy consulting, artificial intelligence, business transformation"
         />
-        {/* Preload critical fonts */}
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap"
-          as="style"
-        />
+        {/* Optimize font loading to reduce render blocking */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap"
+          media="print"
+          onLoad={(e) => { (e.target as HTMLLinkElement).media = 'all'; }}
         />
         <script
           type="application/ld+json"
@@ -98,7 +99,7 @@ export default function RootLayout({
                   "jobTitle": "AI Transformation Consultant & Founder",
                   "description": "Trusted advisor and certified AI consultant helping businesses achieve AI-led transformation, strategy execution, and agentic AI enablement.",
                   "url": "https://hesham.badr.neuronovate.consulting",
-                  "image": "/pics/mypictransparent.webp",
+                  "image": "/pics/mypictransparent-576.webp",
                   "alumniOf": {
                     "@type": "Organization",
                     "name": "University of Sydney"
@@ -130,7 +131,7 @@ export default function RootLayout({
                   "url": "https://www.neuronovate.consulting",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "/pics/signaturetransparent1.webp"
+                    "url": "/pics/signaturetransparent1-171.webp"
                   },
                   "contactPoint": [
                     {

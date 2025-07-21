@@ -1,4 +1,4 @@
-// Performance utilities to reduce main-thread blocking
+// Performance utilities to reduce main-thread blocking and forced reflows
 
 // Batch DOM reads to avoid layout thrashing
 export const batchDOMReads = (readOperations: (() => void)[]) => {
@@ -75,5 +75,46 @@ export const batchStateUpdates = <T extends Record<string, any>>(
 ) => {
   setState(prevState => {
     return updates.reduce((acc, update) => ({ ...acc, ...update }), prevState) as T;
+  });
+};
+
+// Prevent forced reflows by batching DOM measurements
+export const measureElement = (element: HTMLElement) => {
+  // Cache measurements to avoid repeated layout calculations
+  const measurements = {
+    width: element.offsetWidth,
+    height: element.offsetHeight,
+    top: element.offsetTop,
+    left: element.offsetLeft,
+    scrollTop: element.scrollTop,
+    scrollLeft: element.scrollLeft,
+  };
+  return measurements;
+};
+
+// Throttled scroll handler specifically for mobile performance
+export const createThrottledScrollHandler = (callback: () => void, delay: number = 16) => {
+  let ticking = false;
+  return () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        callback();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+};
+
+// Optimize image loading with intersection observer
+export const createLazyImageObserver = (callback: (entry: IntersectionObserverEntry) => void) => {
+  if (typeof window === 'undefined') return null;
+  
+  return new IntersectionObserver((entries) => {
+    entries.forEach(callback);
+  }, {
+    root: null,
+    rootMargin: '50px',
+    threshold: 0.01,
   });
 }; 
