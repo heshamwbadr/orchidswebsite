@@ -113,7 +113,7 @@ export default function RootLayout({
                   "jobTitle": "AI Transformation Consultant & Founder",
                   "description": "Trusted advisor and certified AI consultant helping businesses achieve AI-led transformation, strategy execution, and agentic AI enablement.",
                   "url": "https://hesham.badr.neuronovate.consulting",
-                  "image": "/pics/mypictransparent.png",
+                  "image": "/pics/mypictransparent.webp",
                   "alumniOf": {
                     "@type": "Organization",
                     "name": "University of Sydney"
@@ -145,7 +145,7 @@ export default function RootLayout({
                   "url": "https://www.neuronovate.consulting",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "/pics/signaturetransparent1.png"
+                    "url": "/pics/signaturetransparent1.webp"
                   },
                   "contactPoint": [
                     {

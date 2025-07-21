@@ -198,7 +198,7 @@ export const Navigation = () => {
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity duration-300 touch-target p-2 -ml-2"
           >
             <img
-              src="/pics/signaturetransparent1.png"
+              src="/pics/signaturetransparent1.webp"
               alt="Hesham Badr Signature"
               className="h-10 sm:h-12 lg:h-14 xl:h-16 w-auto object-contain"
             />

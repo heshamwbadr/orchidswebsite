@@ -397,50 +397,10 @@ export const AboutSection = () => {
   };
 
   const handleMetricClickWithPosition = (index: number, event: React.MouseEvent) => {
+    // Get the optimal popup position using the existing logic
     const position = getPopupPosition(event);
     
-    // Additional fallback check for extreme edge cases
-    const rect = event.currentTarget.getBoundingClientRect();
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-    
-    // Check if there's enough space below the tile for the popup
-    const popupHeight = 220; // approximate height
-    const spaceBelow = screenHeight - rect.bottom;
-    const spaceAbove = rect.top;
-    const hasEnoughSpaceBelow = spaceBelow >= popupHeight + 40; // 40px margin
-    const hasEnoughSpaceAbove = spaceAbove >= popupHeight + 40; // 40px margin
-    
-    // Check distance to next section
-    const distanceToBottom = screenHeight - rect.bottom;
-    const isCloseToNextSection = distanceToBottom < (popupHeight + 100); // 100px buffer
-    
-    // If tile is in an extreme position, force center positioning
-    if (rect.left < 50 || rect.right > screenWidth - 50) {
-      position.horizontal = rect.left < screenWidth / 2 ? 'right' : 'left';
-    }
-    
-    if (rect.top < 50 || rect.bottom > screenHeight - 50) {
-      position.vertical = rect.top < screenHeight / 2 ? 'below' : 'above';
-    }
-    
-    // If screen is too close to next section, force above positioning
-    if (isCloseToNextSection) {
-      position.vertical = 'above';
-    }
-    
-    // Prioritize space availability over aesthetic positioning
-    if (position.vertical === 'below' && !hasEnoughSpaceBelow && hasEnoughSpaceAbove) {
-      position.vertical = 'above';
-    } else if (position.vertical === 'above' && !hasEnoughSpaceAbove && hasEnoughSpaceBelow) {
-      position.vertical = 'below';
-    }
-    
-    // If neither above nor below has enough space, choose the one with more space
-    if (!hasEnoughSpaceBelow && !hasEnoughSpaceAbove) {
-      position.vertical = spaceAbove > spaceBelow ? 'above' : 'below';
-    }
-    
+    // Apply the position settings
     setPopupPosition(position.horizontal);
     setPopupVerticalPosition(position.vertical);
     setActivePopup(activePopup === index ? null : index);
@@ -541,7 +501,7 @@ export const AboutSection = () => {
           <div className="flex justify-center mb-4">
             <img
               id="about-signature"
-              src="/pics/signaturetransparent1.png"
+                              src="/pics/signaturetransparent1.webp"
               alt="Hesham Badr Signature"
               className="h-16 sm:h-20 lg:h-20 xl:h-24 w-auto object-contain"
             />
