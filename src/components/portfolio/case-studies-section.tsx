@@ -758,3 +758,5 @@ export function CaseStudiesSection() {
     </section>
   );
 }
+
+export default CaseStudiesSection;

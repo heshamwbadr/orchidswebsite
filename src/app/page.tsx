@@ -3,8 +3,11 @@ import { HeroSection } from "@/components/portfolio/hero-section";
 import { AboutSection } from "@/components/portfolio/about-section";
 import { WhyMeSection } from "@/components/portfolio/why-me-section";
 import { ServicesSection } from "@/components/portfolio/services-section";
-import { CaseStudiesSection } from "@/components/portfolio/case-studies-section";
-import { Testimonials } from "@/components/portfolio/testimonials-section";
+import dynamic from "next/dynamic";
+import { LazySection } from "@/components/portfolio/LazySection";
+
+const TestimonialsSection = dynamic(() => import("@/components/portfolio/testimonials-section"), { ssr: false });
+const CaseStudiesSection = dynamic(() => import("@/components/portfolio/case-studies-section"), { ssr: false });
 import { CTASection } from "@/components/portfolio/cta-section";
 import { Footer } from "@/components/portfolio/footer";
 
@@ -27,11 +30,15 @@ export default function Home() {
       </section>
 
       <section id="case-studies">
-        <CaseStudiesSection />
+        <LazySection placeholder={null}>
+          <CaseStudiesSection />
+        </LazySection>
       </section>
 
       <section id="testimonials">
-        <Testimonials />
+        <LazySection placeholder={null}>
+          <TestimonialsSection />
+        </LazySection>
       </section>
 
       <section id="contact">
