@@ -1,0 +1,20 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "@next/next/no-page-custom-font": "warn",
+    "@next/next/no-html-link-for-pages": "warn"
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/components/ui/background-beams-with-collision.tsx",
+        "src/components/ui/sparkles.tsx",
+        "src/components/ui/stars-background.tsx",
+        "src/components/ui/vortex.tsx"
+      ],
+      "rules": {
+        "react-hooks/rules-of-hooks": "off"
+      }
+    }
+  ]
+}

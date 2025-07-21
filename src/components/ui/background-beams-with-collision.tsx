@@ -11,11 +11,11 @@ export const BackgroundBeamsWithCollision = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  const isMobile = useIsMobile();
-  if (isMobile) return null;
-
   const containerRef = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+  
+  if (isMobile) return null;
 
   const beams = [
     {
