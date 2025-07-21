@@ -15,7 +15,7 @@ const testimonials = [
     industry: "Banking & Finance",
     rating: 5,
     metric: "Inclusive Leadership",
-    image: "/testimonials/preeti.jpeg",
+    image: "/testimonials/preeti.webp",
   },
   {
     id: 2,
@@ -27,7 +27,7 @@ const testimonials = [
     industry: "Banking & Finance",
     rating: 5,
     metric: "Strategic Excellence",
-    image: "/testimonials/janine.jpeg"
+    image: "/testimonials/janine.webp"
   },
   {
     id: 3,
@@ -39,7 +39,7 @@ const testimonials = [
     industry: "Corporate Governance",
     rating: 5,
     metric: "Innovation Catalyst",
-    image: "/testimonials/angela.jpeg",
+    image: "/testimonials/angela.webp",
   },
   {
     id: 4,
@@ -51,7 +51,7 @@ const testimonials = [
     industry: "Banking & Finance",
     rating: 5,
     metric: "Transformation Impact",
-    image: "/testimonials/michael.jpeg",
+    image: "/testimonials/michael.webp",
   },
   {
     id: 5,
@@ -63,7 +63,7 @@ const testimonials = [
     industry: "Finance",
     rating: 5,
     metric: "Strategic Decision Impact",
-    image: "/testimonials/LD.jpeg",
+    image: "/testimonials/LD.webp",
   },
   {
     id: 6,
@@ -75,7 +75,7 @@ const testimonials = [
     industry: "Banking & Finance",
     rating: 5,
     metric: "Executive Advisory",
-    image: "/testimonials/Waleed.jpeg",
+    image: "/testimonials/Waleed.webp",
   },
 ];
 

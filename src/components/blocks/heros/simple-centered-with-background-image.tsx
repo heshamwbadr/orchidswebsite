@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 const navigation = [
   { name: "Product", href: "#" },
@@ -111,10 +112,14 @@ export default function SimpleCenteredWithBackgroundImage() {
       </header>
 
       <div className="relative isolate overflow-hidden pt-14">
-        <img
+        <Image
           alt=""
           src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
           className="absolute inset-0 -z-10 size-full object-cover"
+          width={2830}
+          height={1887}
+          style={{ objectFit: "cover" }}
+          sizes="(max-width: 768px) 100vw, 2830px"
         />
         <div
           aria-hidden="true"

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export const ParallaxScrollSecond = ({
   images,
@@ -51,12 +52,14 @@ export const ParallaxScrollSecond = ({
               }} // Apply the translateY motion value here
               key={"grid-1" + idx}
             >
-              <img
+              <Image
                 src={el}
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"
-                height="400"
-                width="400"
+                height={400}
+                width={400}
                 alt="thumbnail"
+                style={{ objectFit: "cover", objectPosition: "left top" }}
+                sizes="(max-width: 768px) 100vw, 400px"
               />
             </motion.div>
           ))}
@@ -64,12 +67,14 @@ export const ParallaxScrollSecond = ({
         <div className="grid gap-10">
           {secondPart.map((el, idx) => (
             <motion.div key={"grid-2" + idx}>
-              <img
+              <Image
                 src={el}
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"
-                height="400"
-                width="400"
+                height={400}
+                width={400}
                 alt="thumbnail"
+                style={{ objectFit: "cover", objectPosition: "left top" }}
+                sizes="(max-width: 768px) 100vw, 400px"
               />
             </motion.div>
           ))}
@@ -84,12 +89,14 @@ export const ParallaxScrollSecond = ({
               }}
               key={"grid-3" + idx}
             >
-              <img
+              <Image
                 src={el}
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"
-                height="400"
-                width="400"
+                height={400}
+                width={400}
                 alt="thumbnail"
+                style={{ objectFit: "cover", objectPosition: "left top" }}
+                sizes="(max-width: 768px) 100vw, 400px"
               />
             </motion.div>
           ))}

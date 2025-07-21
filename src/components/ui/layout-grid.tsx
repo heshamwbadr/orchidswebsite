@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type Card = {
   id: number;
@@ -60,15 +61,16 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
 
 const ImageComponent = ({ card }: { card: Card }) => {
   return (
-    <motion.img
-      layoutId={`image-${card.id}-image`}
+    <Image
       src={card.thumbnail}
-      height="500"
-      width="500"
+      height={500}
+      width={500}
       className={cn(
         "object-cover object-top absolute inset-0 h-full w-full transition duration-200",
       )}
       alt="thumbnail"
+      style={{ objectFit: "cover", objectPosition: "top" }}
+      sizes="(max-width: 768px) 100vw, 500px"
     />
   );
 };
