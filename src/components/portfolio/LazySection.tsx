@@ -1,6 +1,12 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, ReactNode } from "react";
 
-export function LazySection({ children, placeholder = null, rootMargin = "200px" }) {
+interface LazySectionProps {
+  children: ReactNode;
+  placeholder?: ReactNode;
+  rootMargin?: string;
+}
+
+export function LazySection({ children, placeholder = null, rootMargin = "200px" }: LazySectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
