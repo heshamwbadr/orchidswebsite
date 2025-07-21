@@ -30,14 +30,16 @@ export const CalendlyLazyLoader: React.FC<CalendlyLazyLoaderProps> = ({
         return;
       }
 
-      // Load CSS first (non-blocking)
-      if (!document.querySelector('link[href*="calendly.com"]')) {
+      // Preload CSS to avoid render-blocking
+      const cssHref = "https://assets.calendly.com/assets/external/widget.css";
+      if (!document.querySelector(`link[href="${cssHref}"]`)) {
         const link = document.createElement("link");
-        link.href = "https://assets.calendly.com/assets/external/widget.css";
-        link.rel = "stylesheet";
-        link.media = "print"; // Load in background
+        link.rel = "preload";
+        link.href = cssHref;
+        link.as = "style";
+        // Onload, switch rel to stylesheet to apply styles
         link.onload = () => {
-          link.media = "all"; // Apply styles when loaded
+          link.rel = "stylesheet";
         };
         document.head.appendChild(link);
       }
