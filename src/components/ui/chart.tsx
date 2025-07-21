@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import dynamic from "next/dynamic";
+import { ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 import { cn } from "@/lib/utils";
 
@@ -44,6 +44,7 @@ function ChartContainer({
   config: ChartConfig;
   id?: string;
   className?: string;
+  children: React.ReactNode;
 }> & React.ComponentProps<"div">) {
   const uniqueId = React.useId();
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`;
@@ -61,7 +62,7 @@ function ChartContainer({
       >
         <ChartStyle id={chartId} config={config} />
         <ResponsiveContainer>
-          {children}
+          <>{children}</>
         </ResponsiveContainer>
       </div>
     </ChartContext.Provider>
