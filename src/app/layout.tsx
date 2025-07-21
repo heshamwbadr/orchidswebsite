@@ -1,3 +1,4 @@
+// Trigger Vercel redeploy: 2025-07-21
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Script from "next/script";
