@@ -1,25 +1,10 @@
-# This robots.txt controls search indexing for hesham.badr.neuronovate.consulting
-# Generated on 2025-07-20
+# See https://www.robotstxt.org/robotstxt.html for documentation
 
 User-agent: *
-Allow: /
 
-# Allow image indexing for SEO
-Allow: /pics/
-
-# Sitemap
-Sitemap: https://hesham.badr.neuronovate.consulting/sitemap.xml
-
-# Disallow admin or private areas (if any)
+# Disallow indexing of API routes and Next.js internal files
 Disallow: /api/
 Disallow: /_next/
-Disallow: /admin/
 
-# Allow all other content
-Allow: /about
-Allow: /contact
-Allow: /case-studies
-Allow: /testimonials
-
-# Crawl-delay for respectful crawling
-Crawl-delay: 1 
+# Sitemap location
+Sitemap: https://hesham.badr.neuronovate.consulting/sitemap.xml
