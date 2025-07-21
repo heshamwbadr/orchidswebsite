@@ -131,6 +131,8 @@ const CollisionMechanism = React.forwardRef<
   const [cycleCollisionDetected, setCycleCollisionDetected] = useState(false);
 
   useEffect(() => {
+    let animationFrameId: number;
+
     const checkCollision = () => {
       if (
         beamRef.current &&
@@ -138,6 +140,7 @@ const CollisionMechanism = React.forwardRef<
         parentRef.current &&
         !cycleCollisionDetected
       ) {
+        // Batch DOM reads
         const beamRect = beamRef.current.getBoundingClientRect();
         const containerRect = containerRef.current.getBoundingClientRect();
         const parentRect = parentRef.current.getBoundingClientRect();
@@ -147,22 +150,26 @@ const CollisionMechanism = React.forwardRef<
             beamRect.left - parentRect.left + beamRect.width / 2;
           const relativeY = beamRect.bottom - parentRect.top;
 
-          setCollision({
-            detected: true,
-            coordinates: {
-              x: relativeX,
-              y: relativeY,
-            },
+          // Batch DOM writes
+          requestAnimationFrame(() => {
+            setCollision({
+              detected: true,
+              coordinates: {
+                x: relativeX,
+                y: relativeY,
+              },
+            });
+            setCycleCollisionDetected(true);
           });
-          setCycleCollisionDetected(true);
         }
       }
+      animationFrameId = requestAnimationFrame(checkCollision);
     };
 
-    const animationInterval = setInterval(checkCollision, 50);
+    animationFrameId = requestAnimationFrame(checkCollision);
 
-    return () => clearInterval(animationInterval);
-  }, [cycleCollisionDetected, containerRef]);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [cycleCollisionDetected, containerRef, parentRef]);
 
   useEffect(() => {
     if (collision.detected && collision.coordinates) {
