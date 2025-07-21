@@ -279,6 +279,7 @@ export const HeroSection = () => {
           muted
           loop
           playsInline
+          poster="/pics/mypictransparent-576.webp"
           className="h-full w-full object-cover opacity-20 sm:opacity-30 [mask-image:radial-gradient(ellipse_at_center,white_40%,transparent_70%)]"
         >
           <source

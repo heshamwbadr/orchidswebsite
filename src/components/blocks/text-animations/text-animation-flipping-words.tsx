@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import Image from 'next/image';
 
 const FlippingText = ({
   words,
@@ -310,7 +311,7 @@ export const IphoneMockup = ({ image, children }: IphoneMockupProps) => {
         <div className="relative h-full w-full overflow-hidden rounded-[35px] bg-white dark:bg-neutral-950">
           <div className="absolute inset-0 top-[2.3rem]">
             {image && (
-              <img src={image} alt="App screenshot" className="object-cover" />
+              <Image src={image} alt="App screenshot" className="object-cover" fill />
             )}
             {children}
           </div>
