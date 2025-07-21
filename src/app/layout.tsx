@@ -5,7 +5,14 @@ import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
 import { GTMLoader } from "@/components/GTMLoader";
 import { CalendlyLazyLoader } from "@/components/CalendlyLazyLoader";
 import { Inter } from "next/font/google";
+import dynamic from 'next/dynamic';
+
 const inter = Inter({ subsets: ["latin"], weight: ["200","300","400","500","600"] });
+
+// Dynamically import FontLoader with no SSR to ensure it only runs on client side
+const FontLoader = dynamic(() => import('@/components/ui/font-loader'), {
+  ssr: false,
+});
 
 export const metadata: Metadata = {
   title: "Hesham Badr | Certified AI Transformation Consultant & Strategy Partner",
@@ -84,7 +91,7 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap"
           media="print"
-          onLoad={(e) => { (e.target as HTMLLinkElement).media = 'all'; }}
+          id="font-stylesheet"
         />
         <script
           type="application/ld+json"
@@ -195,6 +202,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground antialiased overflow-x-hidden">
+        <FontLoader />
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-TJZF93FB"
