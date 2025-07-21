@@ -20,8 +20,8 @@ const nextConfig: NextConfig = {
       'tailwind-merge',
       'class-variance-authority'
     ],
-    // Optimize CSS loading
-    optimizeCss: true,
+    // Optimize CSS loading - temporarily disabled due to missing critters dependency
+    // optimizeCss: true,
     // Enable modern bundling
     turbo: {
       rules: {
