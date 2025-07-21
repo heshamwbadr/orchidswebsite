@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  productionBrowserSourceMaps: true,
   // Modern browser optimization
   experimental: {
     // Enable modern JavaScript features
