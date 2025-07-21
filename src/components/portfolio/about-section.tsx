@@ -582,7 +582,7 @@ export const AboutSection = () => {
               className="flex items-center gap-2 mb-6"
             >
               <Briefcase className="w-6 h-6 text-primary align-middle relative top-[1px]" />
-              <span className="text-lg md:text-2xl font-semibold">Here's How I Help You Win</span>
+              <h2 className="text-lg md:text-2xl font-semibold m-0">Here's How I Help You Win</h2>
             </motion.div>
 
             {/* Stacked Cards Layout */}
@@ -660,14 +660,14 @@ export const AboutSection = () => {
                             </motion.div>
 
                             <div className="min-w-0 flex-1">
-                              <h4
+                              <h3
                                 className={`
                                 responsive-text-lg lg:responsive-text-xl font-semibold mb-1 sm:mb-2 transition-colors duration-300 leading-tight
                                 ${isExpanded ? "text-primary" : "text-foreground group-hover:text-primary"}
                               `}
                               >
                                 {pillar.title}
-                              </h4>
+                              </h3>
                               <p className="responsive-text-sm text-muted-foreground leading-relaxed font-light line-clamp-2">
                                 {pillar.subtitle}
                               </p>
