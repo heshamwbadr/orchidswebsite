@@ -22,13 +22,14 @@ const nextConfig: NextConfig = {
     ],
     // Optimize CSS loading
     optimizeCss: true,
-    // Enable modern bundling
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+
+  // Enable modern bundling with Turbopack
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
