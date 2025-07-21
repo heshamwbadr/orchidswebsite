@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Check, Send, Loader2 } from "lucide-react";
@@ -59,6 +59,12 @@ export const CTASection = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const recaptchaRef = useRef<any>(null); // Changed type to any as ReCAPTCHA is now dynamic
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
+  const [isRecaptchaReady, setIsRecaptchaReady] = useState(false);
+
+  useEffect(() => {
+    // Dynamically import ReCAPTCHA and set ready state
+    import("react-google-recaptcha").then(() => setIsRecaptchaReady(true));
+  }, []);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -298,12 +304,16 @@ export const CTASection = () => {
                   {/* reCAPTCHA */}
                   {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
                     <div className="my-4 flex justify-center">
-                      <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                        onChange={setRecaptchaValue}
-                        theme="dark"
-                      />
+                      {isRecaptchaReady ? (
+                        <ReCAPTCHA
+                          ref={recaptchaRef}
+                          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                          onChange={setRecaptchaValue}
+                          theme="dark"
+                        />
+                      ) : (
+                        <div className="text-gray-400">Loading reCAPTCHA...</div>
+                      )}
                     </div>
                   )}
                   {errors.recaptcha && (
