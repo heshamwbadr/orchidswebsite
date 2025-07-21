@@ -166,10 +166,7 @@ export const CTASection = () => {
               }}
             >
               {!isSubmitted ? (
-                <form
-                  onSubmit={handleSubmit}
-                  className="space-y-4 lg:space-y-6"
-                >
+                <form id="contact-form" onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
                   {/* Name Field */}
                   <div className="space-y-2">
                     <Label

@@ -7,6 +7,7 @@ import React, {
   RefObject,
   useCallback,
 } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface StarProps {
   x: number;
@@ -33,6 +34,9 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
   maxTwinkleSpeed = 1,
   className,
 }) => {
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
+
   const [stars, setStars] = useState<StarProps[]>([]);
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);

@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import React, { useEffect, useRef } from "react";
 import { createNoise3D } from "simplex-noise";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface VortexProps {
   children?: any;
@@ -18,6 +19,9 @@ interface VortexProps {
 }
 
 export const Vortex = (props: VortexProps) => {
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef(null);
   const animationFrameId = useRef<number>();

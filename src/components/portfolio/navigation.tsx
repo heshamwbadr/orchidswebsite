@@ -10,7 +10,7 @@ const navigationItems = [
   { name: "Why Leaders Trust me?", sectionId: "trust" },
   { name: "Portfolio", sectionId: "case-studies" },
   { name: "Testimonials", sectionId: "testimonials" },
-  { name: "Contact", sectionId: "contact" },
+  { name: "Contact", sectionId: "contact-form" },
 ];
 
 export const Navigation = () => {
@@ -89,21 +89,12 @@ export const Navigation = () => {
   };
 
   const scrollToContactForm = () => {
-    // On mobile, scroll directly to the contact form
-    const isMobile = window.innerWidth < 768;
-    const targetId = isMobile ? "contact-form" : "contact";
-    const element = document.getElementById(targetId);
-    
+    const element = document.getElementById("contact-form");
     if (element) {
-      // Use safe scroll with cached measurements
       safeScrollToElement(element, 80);
-      
-      // On mobile, add a small delay to ensure the form is visible
-      if (isMobile) {
-        setTimeout(() => {
-          safeScrollToElement(element, 80);
-        }, 100);
-      }
+      setTimeout(() => {
+        safeScrollToElement(element, 80);
+      }, 100);
     }
     setIsOpen(false);
   };

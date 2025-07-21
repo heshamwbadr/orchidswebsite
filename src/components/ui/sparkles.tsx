@@ -6,6 +6,7 @@ import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { cn } from "@/lib/utils";
 import { motion, useAnimation } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type ParticlesProps = {
   id?: string;
@@ -19,6 +20,8 @@ type ParticlesProps = {
   particleDensity?: number;
 };
 export const SparklesCore = (props: ParticlesProps) => {
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
   const {
     id,
     className,

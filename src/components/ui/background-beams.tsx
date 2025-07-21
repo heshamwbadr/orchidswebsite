@@ -2,9 +2,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const BackgroundBeams = React.memo(
   ({ className }: { className?: string }) => {
+    const isMobile = useIsMobile();
+    if (isMobile) return null;
     const paths = [
       "M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875",
       "M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867",
