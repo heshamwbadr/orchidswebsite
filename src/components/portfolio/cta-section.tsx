@@ -128,10 +128,7 @@ export const CTASection = () => {
   };
 
   return (
-    <section
-      style={{ backgroundColor: "#0A0A0B" }}
-      className="relative responsive-py-lg mobile-safe-area overflow-hidden mb-24 lg:mb-32"
-    >
+    <section id="contact" className="relative py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden bg-background">
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-yellow-500/5" />
 

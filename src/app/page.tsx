@@ -34,9 +34,7 @@ export default function Home() {
         <LazySectionsClient />
       </section>
 
-      <section id="contact">
-        <CTASection />
-      </section>
+      <CTASection />
 
       <Footer />
     </main>

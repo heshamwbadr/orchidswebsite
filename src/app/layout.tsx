@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Script from "next/script";
-import { FloatingCallButton } from "@/components/portfolio/floating-call-icon";
+import { FloatingCallToAction } from "@/components/portfolio/floating-cta";
+import { GlobalCalendlyProvider } from "@/components/GlobalCalendlyProvider";
 import { GTMLoader } from "@/components/GTMLoader";
-import { CalendlyLazyLoader } from "@/components/CalendlyLazyLoader";
 import { Inter } from "next/font/google";
 
 
@@ -194,10 +194,10 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        <CalendlyLazyLoader />
         <GTMLoader />
+        <GlobalCalendlyProvider />
         <div className="relative min-h-screen">{children}</div>
-        <FloatingCallButton />
+        <FloatingCallToAction />
       </body>
     </html>
   );

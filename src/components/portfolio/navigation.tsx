@@ -29,74 +29,19 @@ export const Navigation = () => {
     return () => window.removeEventListener("scroll", throttledScrollHandler);
   }, [throttledScrollHandler]);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setIsOpen(false);
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    console.log('=== NAVIGATION DEBUG ===');
-    console.log('Attempting to scroll to section:', sectionId);
-    console.log('Navigation item clicked:', sectionId);
-    
-    // Add a small delay to ensure DOM is ready
+  const handleNavigationClick = (sectionId: string) => {
+    // Add a small delay to ensure the DOM is ready, especially for initial loads.
     setTimeout(() => {
       const element = document.getElementById(sectionId);
-      console.log('Found element:', element);
-      console.log('Element tag name:', element?.tagName);
-      console.log('Element ID:', element?.id);
-      
       if (element) {
-        // Use safe scroll with cached measurements
         safeScrollToElement(element, 80); // 80px navbar offset
-        console.log('Scroll command executed');
-      } else {
-        console.error('Element not found with ID:', sectionId);
-        console.log('Available elements with similar IDs:');
-        
-        // Check for similar elements
-        const allElements = document.querySelectorAll('[id*="about"], [id*="subheader"], [id*="trust"], [id*="signature"]');
-        allElements.forEach(el => {
-          console.log('Found element:', el.id, el.tagName, el.textContent?.substring(0, 50));
-        });
-        
-        // Fallback: try to scroll to the about section
-        if (sectionId === "about") {
-          console.log('Trying fallback to about section...');
-          const aboutSection = document.getElementById("about");
-          if (aboutSection) {
-            safeScrollToElement(aboutSection, 80);
-            console.log('Fallback: scrolled to about section');
-          } else {
-            console.error('About section also not found!');
-          }
-        }
-        
-        // Fallback: try to scroll to the trust section
-        if (sectionId === "trust") {
-          console.log('Trying fallback to trust section...');
-          const trustSection = document.getElementById("trust");
-          if (trustSection) {
-            safeScrollToElement(trustSection, 80);
-            console.log('Fallback: scrolled to trust section');
-          } else {
-            console.error('Trust section also not found!');
-          }
-        }
       }
-    }, 100); // Small delay to ensure DOM is ready
-    
+    }, 100);
     setIsOpen(false);
   };
 
-  const scrollToContactForm = () => {
-    const element = document.getElementById("contact-form");
-    if (element) {
-      safeScrollToElement(element, 80);
-      setTimeout(() => {
-        safeScrollToElement(element, 80);
-      }, 100);
-    }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setIsOpen(false);
   };
 
@@ -175,17 +120,7 @@ export const Navigation = () => {
               {navigationItems.map((item) => (
                 <button
                   key={item.name}
-                  onClick={() => {
-                    console.log('Navigation button clicked:', item.name);
-                    if (item.name === "Contact") {
-                      scrollToContactForm();
-                    } else if (item.name === "Here's How I Help You Win" || item.name === "Why Leaders Trust me?") {
-                      console.log(`${item.name} clicked - calling scrollToSection with:`, item.sectionId);
-                      scrollToSection(item.sectionId);
-                    } else {
-                      scrollToSection(item.sectionId);
-                    }
-                  }}
+                  onClick={() => handleNavigationClick(item.sectionId)}
                   className={`relative responsive-text-base font-medium transition-colors duration-300 touch-target px-3 py-2 group no-underline hover:no-underline ${
                     item.name === "Contact"
                       ? "text-primary hover:text-primary/80"
@@ -243,17 +178,7 @@ export const Navigation = () => {
                   {navigationItems.map((item) => (
                     <button
                       key={item.name}
-                      onClick={() => {
-                        console.log('Mobile navigation button clicked:', item.name);
-                        if (item.name === "Contact") {
-                          scrollToContactForm();
-                        } else if (item.name === "Here's How I Help You Win" || item.name === "Why Leaders Trust me?") {
-                          console.log(`Mobile: ${item.name} clicked - calling scrollToSection with:`, item.sectionId);
-                          scrollToSection(item.sectionId);
-                        } else {
-                          scrollToSection(item.sectionId);
-                        }
-                      }}
+                      onClick={() => handleNavigationClick(item.sectionId)}
                       className={`mobile-nav-item responsive-text-base font-medium transition-all duration-300 group no-underline hover:no-underline ${
                         item.name === "Contact"
                           ? "text-primary hover:text-primary/80 hover:bg-primary/5 active:bg-primary/10"
