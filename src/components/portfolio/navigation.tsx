@@ -11,7 +11,7 @@ const navigationItems = [
   { name: "Why Leaders Trust me?", sectionId: "trust" },
   { name: "Portfolio", sectionId: "case-studies" },
   { name: "Testimonials", sectionId: "testimonials" },
-  { name: "Contact", sectionId: "contact-form" },
+  { name: "Contact", sectionId: "contact" },
 ];
 
 export const Navigation = () => {
